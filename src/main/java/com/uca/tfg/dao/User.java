@@ -1,6 +1,7 @@
-package dao;
+package com.uca.tfg.dao;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -16,7 +17,7 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 @Entity
-@Table(name = "user")
+@Table(name = "userTable")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class User implements Serializable {
 
@@ -31,82 +32,68 @@ public class User implements Serializable {
 	private String surname;
 	@Column(name = "userAddress", unique = true, nullable = false, length = 120)
 	private String address;
-	@Column(name = "userPhone", unique = true, nullable = false, length = 12)
+	@Column(name = "userPhone", unique = true, nullable = false, length = 18)
 	private String phone;
-	@OneToMany(cascade=CascadeType.ALL, mappedBy="user")
-	@JoinColumn(name="userID")
+	@Column(name = "userEmail", unique = true, nullable = false, length = 50)
+	private String email;
+	@OneToMany(mappedBy = "user")
 	private List<Order> orders;
 
 	public User() {
 
 	}
 
-	public User(String name, String surname, String address, String phone) {
+	public User(String name, String surname, String address, String phone, String email) {
 		super();
 		this.setName(name);
 		this.setSurname(surname);
 		this.setAddress(address);
 		this.setPhone(phone);
+		this.setEmail(email);
 	}
 
-	/**
-	 * @return the name
-	 */
+	public Collection<Order> getOrders() {
+		return this.orders;
+	}
+
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * @param name
-	 *            the name to set
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * @return the surname
-	 */
 	public String getSurname() {
 		return surname;
 	}
 
-	/**
-	 * @param surname
-	 *            the surname to set
-	 */
 	public void setSurname(String surname) {
 		this.surname = surname;
 	}
 
-	/**
-	 * @return the address
-	 */
 	public String getAddress() {
 		return address;
 	}
 
-	/**
-	 * @param address
-	 *            the address to set
-	 */
 	public void setAddress(String address) {
 		this.address = address;
 	}
 
-	/**
-	 * @return the phone
-	 */
 	public String getPhone() {
 		return phone;
 	}
 
-	/**
-	 * @param phone
-	 *            the phone to set
-	 */
 	public void setPhone(String phone) {
 		this.phone = phone;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public String toString() {

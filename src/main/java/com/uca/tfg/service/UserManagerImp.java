@@ -1,0 +1,67 @@
+package com.uca.tfg.service;
+
+import java.util.Collection;
+
+import javax.annotation.PostConstruct;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+
+import com.uca.tfg.dao.User;
+import com.uca.tfg.dao.UserDAO;
+
+@Service("userManager")
+public class UserManagerImp implements UserManager {
+
+	@Autowired
+	private UserDAO users;
+
+	@PostConstruct
+	public void init() {
+		if (users.findAll().isEmpty()) {
+			users.save(new User("User", "One", "AddressUserOne", "+34 000000001", "userOne@gmail.com"));
+			users.save(new User("User", "Two", "AddressUserTwo", "+34 000000002", "userTwo@gmail.com"));
+			users.save(new User("User", "Three", "AddressUserThree", "+34 000000003", "userThree@gmail.com"));
+		}
+	}
+
+	public Collection<User> getAllUsers() {
+		return users.findAll();
+	}
+
+	public ResponseEntity<User> getUser(long id) {
+		User user = users.findOne(id);
+
+		if (user != null)
+			return new ResponseEntity<>(user, HttpStatus.OK);
+		else
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	}
+
+	public ResponseEntity<User> getUserByEmail(String email) {
+		User user = users.findByEmail(email);
+
+		if (user != null)
+			return new ResponseEntity<>(user, HttpStatus.OK);
+		else
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	}
+
+	public User addUser(User user) {
+		users.save(user);
+
+		return user;
+	}
+
+	public ResponseEntity<User> deleteUser(long id) {
+		User user = users.findOne(id);
+
+		if (user != null) {
+			user.getOrders().clear();
+			return new ResponseEntity<>(user, HttpStatus.OK);
+		} else
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	}
+}

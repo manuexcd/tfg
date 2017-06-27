@@ -1,4 +1,4 @@
-package dao;
+package com.uca.tfg.dao;
 
 import java.io.Serializable;
 

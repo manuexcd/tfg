@@ -1,4 +1,4 @@
-package dao;
+package com.uca.tfg.dao;
 
 import java.io.Serializable;
 
@@ -28,11 +28,9 @@ public class OrderLine implements Serializable {
 	private long id;
 	@Column(name = "orderLineQuantity", unique = false, nullable = false)
 	private int quantity;
-	@OneToOne(cascade=CascadeType.PERSIST, fetch = FetchType.LAZY)
-	@JoinColumn(name = "productID")
+	@OneToOne
 	private Product product;
 	@ManyToOne
-	@JoinColumn(name="orderID")
 	private Order order;
 
 	public OrderLine() {
