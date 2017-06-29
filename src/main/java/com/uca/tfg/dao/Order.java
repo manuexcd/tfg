@@ -7,6 +7,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -31,10 +32,10 @@ public class Order implements Serializable {
 	private double totalPrice;
 	@Column(name = "orderDate", unique = false, nullable = false)
 	private Date date;
-	@OneToMany(mappedBy = "order")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "order", orphanRemoval = true, fetch = FetchType.EAGER)
 	private List<OrderLine> orderLines;
 	@ManyToOne
-	@JoinColumn(name="userID")
+	@JoinColumn(name = "userID")
 	private User user;
 
 	public Order() {

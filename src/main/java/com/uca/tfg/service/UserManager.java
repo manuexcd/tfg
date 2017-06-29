@@ -16,5 +16,5 @@ public interface UserManager {
 	public User addUser(User user);
 
 	public ResponseEntity<User> deleteUser(long id);
-	
+
 }

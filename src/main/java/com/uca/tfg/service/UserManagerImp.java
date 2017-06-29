@@ -60,6 +60,7 @@ public class UserManagerImp implements UserManager {
 
 		if (user != null) {
 			user.getOrders().clear();
+			users.delete(id);
 			return new ResponseEntity<>(user, HttpStatus.OK);
 		} else
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);

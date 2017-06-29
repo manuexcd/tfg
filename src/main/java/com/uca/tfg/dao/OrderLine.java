@@ -2,7 +2,6 @@ package com.uca.tfg.dao;
 
 import java.io.Serializable;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -28,9 +27,10 @@ public class OrderLine implements Serializable {
 	private long id;
 	@Column(name = "orderLineQuantity", unique = false, nullable = false)
 	private int quantity;
-	@OneToOne
+	@OneToOne(fetch = FetchType.LAZY)
 	private Product product;
 	@ManyToOne
+	@JoinColumn(name = "orderID")
 	private Order order;
 
 	public OrderLine() {

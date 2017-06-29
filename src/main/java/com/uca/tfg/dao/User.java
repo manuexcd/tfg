@@ -10,7 +10,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -36,7 +35,7 @@ public class User implements Serializable {
 	private String phone;
 	@Column(name = "userEmail", unique = true, nullable = false, length = 50)
 	private String email;
-	@OneToMany(mappedBy = "user")
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Order> orders;
 
 	public User() {
@@ -50,6 +49,10 @@ public class User implements Serializable {
 		this.setAddress(address);
 		this.setPhone(phone);
 		this.setEmail(email);
+	}
+	
+	public long getId() {
+		return this.id;
 	}
 
 	public Collection<Order> getOrders() {
