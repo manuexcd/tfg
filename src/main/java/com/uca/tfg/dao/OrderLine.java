@@ -27,7 +27,7 @@ public class OrderLine implements Serializable {
 	private long id;
 	@Column(name = "orderLineQuantity", unique = false, nullable = false)
 	private int quantity;
-	@OneToOne(fetch = FetchType.LAZY)
+	@OneToOne
 	private Product product;
 	@ManyToOne
 	@JoinColumn(name = "orderID")
@@ -37,7 +37,6 @@ public class OrderLine implements Serializable {
 	}
 
 	public OrderLine(Product product, int quantity) {
-		super();
 		this.setProduct(product);
 		this.setQuantity(quantity);
 	}
@@ -50,17 +49,10 @@ public class OrderLine implements Serializable {
 		this.product = product;
 	}
 
-	/**
-	 * @return the quantity
-	 */
 	public int getQuantity() {
 		return quantity;
 	}
 
-	/**
-	 * @param quantity
-	 *            the quantity to set
-	 */
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}

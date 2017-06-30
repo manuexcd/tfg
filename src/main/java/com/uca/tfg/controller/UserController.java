@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.uca.tfg.dao.Order;
 import com.uca.tfg.dao.User;
 import com.uca.tfg.service.UserManager;
 
@@ -41,6 +42,12 @@ public class UserController {
 	@ResponseStatus(HttpStatus.CREATED)
 	public User addUser(@RequestBody User user) {
 		return userManager.addUser(user);
+	}
+	
+	@RequestMapping(value ="/{id}", method = RequestMethod.POST)
+	@ResponseStatus(HttpStatus.CREATED)
+	public ResponseEntity<Order> addOrder(@PathVariable long id) {
+		return userManager.addOrder(id);
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)

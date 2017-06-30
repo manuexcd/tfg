@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.uca.tfg.dao.Order;
 import com.uca.tfg.dao.User;
 import com.uca.tfg.dao.UserDAO;
 
@@ -29,6 +30,15 @@ public class UserManagerImp implements UserManager {
 
 	public Collection<User> getAllUsers() {
 		return users.findAll();
+	}
+	
+	public Collection<Order> getOrders(long id) {
+		User user = users.findOne(id);
+		
+		if(user != null)
+			return user.getOrders();
+		else
+			return null;
 	}
 
 	public ResponseEntity<User> getUser(long id) {
@@ -53,6 +63,19 @@ public class UserManagerImp implements UserManager {
 		users.save(user);
 
 		return user;
+	}
+	
+	public ResponseEntity<Order> addOrder(long id) {
+		User user = users.findOne(id);
+		Order order = new Order(new java.sql.Date(new java.util.Date().getTime()));
+		
+		if(user != null) {
+			user.getOrders().add(order);
+			users.save(user);
+			return new ResponseEntity<>(order, HttpStatus.OK);
+		}
+		else
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 
 	public ResponseEntity<User> deleteUser(long id) {

@@ -33,15 +33,21 @@ public class Order implements Serializable {
 	private double totalPrice;
 	@Column(name = "orderDate", unique = false, nullable = false)
 	private Date date;
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "order", orphanRemoval = true, fetch = FetchType.EAGER)
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
 	private List<OrderLine> orderLines;
 	@ManyToOne
 	@JoinColumn(name = "userID")
 	private User user;
 
 	public Order() {
+
 	}
-	
+
+	public Order(Date date) {
+		this.setDate(date);
+		this.setTotalPrice(0);
+	}
+
 	public Collection<OrderLine> getOrderLines() {
 		return this.orderLines;
 	}
@@ -60,5 +66,14 @@ public class Order implements Serializable {
 
 	public void setDate(Date date) {
 		this.date = date;
+	}
+	
+	public void updatePrice() {
+		double total = 0;
+		for(OrderLine orderLine : this.orderLines)
+		{
+			total += (orderLine.getProduct().getPrice() * orderLine.getQuantity());
+		}
+		this.setTotalPrice(total);
 	}
 }

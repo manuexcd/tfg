@@ -7,7 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.uca.tfg.dao.Order;
 import com.uca.tfg.dao.OrderLine;
 import com.uca.tfg.dao.OrderLineDAO;
 
@@ -28,17 +27,6 @@ public class OrderLineManagerImp implements OrderLineManager {
 			return new ResponseEntity<>(orderLine, HttpStatus.OK);
 		else
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-	}
-
-	/*
-	 * public Collection<OrderLine> getOrderLines(Order order) { return
-	 * order.getOrderLines(); }
-	 */
-
-	public OrderLine addOrderLine(OrderLine orderLine) {
-		orderLines.save(orderLine);
-
-		return orderLine;
 	}
 
 	public ResponseEntity<OrderLine> deleteOrderLine(long id) {
