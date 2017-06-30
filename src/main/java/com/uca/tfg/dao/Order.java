@@ -2,6 +2,7 @@ package com.uca.tfg.dao;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -39,6 +40,10 @@ public class Order implements Serializable {
 	private User user;
 
 	public Order() {
+	}
+	
+	public Collection<OrderLine> getOrderLines() {
+		return this.orderLines;
 	}
 
 	public double getTotalPrice() {
