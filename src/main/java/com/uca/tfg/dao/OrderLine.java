@@ -4,15 +4,14 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 @Entity
@@ -30,15 +29,32 @@ public class OrderLine implements Serializable {
 	@OneToOne
 	private Product product;
 	@ManyToOne
-	@JoinColumn(name = "orderID")
+	@JsonIgnore
 	private Order order;
 
 	public OrderLine() {
 	}
 
-	public OrderLine(Product product, int quantity) {
+	public OrderLine(Product product, int quantity, Order order) {
 		this.setProduct(product);
 		this.setQuantity(quantity);
+		this.setOrder(order);
+	}
+
+	public void setOrder(Order order) {
+		this.order = order;
+	}
+
+	public Order getOrder() {
+		return this.order;
+	}
+
+	public long getId() {
+		return this.id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
 	}
 
 	public Product getProduct() {

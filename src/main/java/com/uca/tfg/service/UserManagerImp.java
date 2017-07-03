@@ -22,20 +22,20 @@ public class UserManagerImp implements UserManager {
 	@PostConstruct
 	public void init() {
 		if (users.findAll().isEmpty()) {
-			users.save(new User("User", "One", "AddressUserOne", "+34 000000001", "userOne@gmail.com"));
-			users.save(new User("User", "Two", "AddressUserTwo", "+34 000000002", "userTwo@gmail.com"));
-			users.save(new User("User", "Three", "AddressUserThree", "+34 000000003", "userThree@gmail.com"));
+			users.save(new User("User", "One", "AddressUserOne", "+34 000000001", "userOne@gmail.com", null));
+			users.save(new User("User", "Two", "AddressUserTwo", "+34 000000002", "userTwo@gmail.com", null));
+			users.save(new User("User", "Three", "AddressUserThree", "+34 000000003", "userThree@gmail.com", null));
 		}
 	}
 
 	public Collection<User> getAllUsers() {
 		return users.findAll();
 	}
-	
+
 	public Collection<Order> getOrders(long id) {
 		User user = users.findOne(id);
-		
-		if(user != null)
+
+		if (user != null)
 			return user.getOrders();
 		else
 			return null;
@@ -64,17 +64,16 @@ public class UserManagerImp implements UserManager {
 
 		return user;
 	}
-	
+
 	public ResponseEntity<Order> addOrder(long id) {
 		User user = users.findOne(id);
-		Order order = new Order(new java.sql.Date(new java.util.Date().getTime()));
-		
-		if(user != null) {
+		Order order = new Order(new java.sql.Date(new java.util.Date().getTime()), user);
+
+		if (user != null) {
 			user.getOrders().add(order);
 			users.save(user);
 			return new ResponseEntity<>(order, HttpStatus.OK);
-		}
-		else
+		} else
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 
@@ -82,7 +81,6 @@ public class UserManagerImp implements UserManager {
 		User user = users.findOne(id);
 
 		if (user != null) {
-			user.getOrders().clear();
 			users.delete(id);
 			return new ResponseEntity<>(user, HttpStatus.OK);
 		} else

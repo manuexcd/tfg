@@ -43,8 +43,8 @@ public class UserController {
 	public User addUser(@RequestBody User user) {
 		return userManager.addUser(user);
 	}
-	
-	@RequestMapping(value ="/{id}", method = RequestMethod.POST)
+
+	@RequestMapping(value = "/{id}", method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<Order> addOrder(@PathVariable long id) {
 		return userManager.addOrder(id);

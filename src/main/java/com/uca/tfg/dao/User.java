@@ -2,7 +2,6 @@ package com.uca.tfg.dao;
 
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -35,28 +34,37 @@ public class User implements Serializable {
 	private String phone;
 	@Column(name = "userEmail", unique = true, nullable = false, length = 50)
 	private String email;
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Order> orders;
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	private Collection<Order> orders;
 
 	public User() {
 
 	}
 
-	public User(String name, String surname, String address, String phone, String email) {
+	public User(String name, String surname, String address, String phone, String email, Collection<Order> orders) {
 		super();
 		this.setName(name);
 		this.setSurname(surname);
 		this.setAddress(address);
 		this.setPhone(phone);
 		this.setEmail(email);
+		this.setOrders(orders);
 	}
-	
+
 	public long getId() {
 		return this.id;
 	}
 
+	public void setId(long id) {
+		this.id = id;
+	}
+
 	public Collection<Order> getOrders() {
 		return this.orders;
+	}
+
+	public void setOrders(Collection<Order> orders) {
+		this.orders = orders;
 	}
 
 	public String getName() {
