@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import com.uca.tfg.dao.Order;
 import com.uca.tfg.dao.User;
 import com.uca.tfg.dao.UserDAO;
+import com.uca.tfg.exceptions.DuplicateUserException;
+import com.uca.tfg.exceptions.UserNotFoundException;
 
 @Service("userManager")
 public class UserManagerImp implements UserManager {
@@ -32,13 +34,13 @@ public class UserManagerImp implements UserManager {
 		return users.findAll();
 	}
 
-	public Collection<Order> getOrders(long id) {
+	public Collection<Order> getOrders(long id) throws UserNotFoundException{
 		User user = users.findOne(id);
 
 		if (user != null)
 			return user.getOrders();
 		else
-			return null;
+			throw new UserNotFoundException();
 	}
 
 	public ResponseEntity<User> getUser(long id) {
@@ -59,13 +61,15 @@ public class UserManagerImp implements UserManager {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 
-	public User addUser(User user) {
-		users.save(user);
-
-		return user;
+	public User addUser(User user) throws DuplicateUserException{
+		if(!users.exists(user.getId())) {
+			return users.save(user);
+		}
+		else
+			throw new DuplicateUserException();
 	}
 
-	public ResponseEntity<Order> addOrder(long id) {
+	public ResponseEntity<Order> addOrder(long id) throws UserNotFoundException{
 		User user = users.findOne(id);
 		Order order = new Order(new java.sql.Date(new java.util.Date().getTime()), user);
 
@@ -74,7 +78,7 @@ public class UserManagerImp implements UserManager {
 			users.save(user);
 			return new ResponseEntity<>(order, HttpStatus.OK);
 		} else
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			throw new UserNotFoundException();
 	}
 
 	public ResponseEntity<User> deleteUser(long id) {

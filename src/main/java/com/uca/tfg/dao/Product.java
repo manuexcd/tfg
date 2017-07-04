@@ -80,4 +80,8 @@ public class Product implements Serializable {
 	public void setStockAvaiable(int stockAvaiable) {
 		this.stockAvaiable = stockAvaiable;
 	}
+	
+	public void updateStock(int stock) {
+		this.stockAvaiable -= stock;
+	}
 }

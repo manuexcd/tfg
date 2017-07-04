@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.uca.tfg.dao.Order;
 import com.uca.tfg.dao.User;
+import com.uca.tfg.exceptions.DuplicateUserException;
+import com.uca.tfg.exceptions.UserNotFoundException;
 import com.uca.tfg.service.UserManager;
 
 @RestController
@@ -40,13 +42,13 @@ public class UserController {
 
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.CREATED)
-	public User addUser(@RequestBody User user) {
+	public User addUser(@RequestBody User user) throws DuplicateUserException {
 		return userManager.addUser(user);
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.CREATED)
-	public ResponseEntity<Order> addOrder(@PathVariable long id) {
+	public ResponseEntity<Order> addOrder(@PathVariable long id) throws UserNotFoundException {
 		return userManager.addOrder(id);
 	}
 

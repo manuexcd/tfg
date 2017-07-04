@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.uca.tfg.dao.Order;
 import com.uca.tfg.dao.OrderLine;
+import com.uca.tfg.exceptions.OrderNotFoundException;
 import com.uca.tfg.service.OrderManager;
 
 @RestController
@@ -28,7 +29,7 @@ public class OrderController {
 	}
 
 	@RequestMapping(value = "/{id}/lines", method = RequestMethod.GET)
-	public Collection<OrderLine> getOrderLines(@PathVariable long id) {
+	public Collection<OrderLine> getOrderLines(@PathVariable long id) throws OrderNotFoundException {
 		return orderManager.getOrderLines(id);
 	}
 
@@ -39,7 +40,7 @@ public class OrderController {
 
 	@RequestMapping(value = "/{id}/{idProduct}-{n}", method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.CREATED)
-	public OrderLine addOrderLine(@PathVariable long id, @PathVariable long idProduct, @PathVariable int n) {
+	public OrderLine addOrderLine(@PathVariable long id, @PathVariable long idProduct, @PathVariable int n) throws Exception {
 		return orderManager.addOrderLine(id, idProduct, n);
 	}
 
