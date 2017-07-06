@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.uca.tfg.dao.OrderLine;
+import com.uca.tfg.model.OrderLine;
 import com.uca.tfg.service.OrderLineManager;
 
 @RestController

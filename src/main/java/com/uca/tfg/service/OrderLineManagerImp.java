@@ -7,8 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.uca.tfg.dao.OrderLine;
 import com.uca.tfg.dao.OrderLineDAO;
+import com.uca.tfg.model.OrderLine;
 
 @Service("orderLineManager")
 public class OrderLineManagerImp implements OrderLineManager {

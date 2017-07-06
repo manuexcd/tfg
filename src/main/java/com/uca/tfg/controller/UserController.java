@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.uca.tfg.dao.Order;
-import com.uca.tfg.dao.User;
 import com.uca.tfg.exceptions.DuplicateUserException;
 import com.uca.tfg.exceptions.UserNotFoundException;
+import com.uca.tfg.model.Order;
+import com.uca.tfg.model.User;
 import com.uca.tfg.service.UserManager;
 
 @RestController

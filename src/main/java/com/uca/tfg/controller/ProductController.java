@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.uca.tfg.dao.Product;
+import com.uca.tfg.model.Product;
 import com.uca.tfg.service.ProductManager;
 
 @RestController

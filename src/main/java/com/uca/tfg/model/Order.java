@@ -1,7 +1,7 @@
-package com.uca.tfg.dao;
+package com.uca.tfg.model;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 import java.util.Collection;
 
 import javax.persistence.CascadeType;
@@ -13,6 +13,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -30,6 +32,7 @@ public class Order implements Serializable {
 	@Column(name = "orderTotalPrice", unique = false, nullable = false)
 	private double totalPrice;
 	@Column(name = "orderDate", unique = false, nullable = false)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date date;
 	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
 	private Collection<OrderLine> orderLines;
@@ -38,7 +41,7 @@ public class Order implements Serializable {
 	private User user;
 
 	public Order() {
-
+		
 	}
 
 	public Order(Date date, User user) {
@@ -50,7 +53,7 @@ public class Order implements Serializable {
 	public long getId() {
 		return this.id;
 	}
-	
+
 	public void setId(long id) {
 		this.id = id;
 	}
@@ -58,8 +61,8 @@ public class Order implements Serializable {
 	public Collection<OrderLine> getOrderLines() {
 		return this.orderLines;
 	}
-	
-	public void setOrderLines(Collection<OrderLine> orderLines){
+
+	public void setOrderLines(Collection<OrderLine> orderLines) {
 		this.orderLines = orderLines;
 	}
 
@@ -82,7 +85,7 @@ public class Order implements Serializable {
 	public void setUser(User user) {
 		this.user = user;
 	}
-	
+
 	public User getUser() {
 		return this.user;
 	}

@@ -7,15 +7,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.uca.tfg.dao.Order;
 import com.uca.tfg.dao.OrderDAO;
-import com.uca.tfg.dao.OrderLine;
 import com.uca.tfg.dao.OrderLineDAO;
-import com.uca.tfg.dao.Product;
 import com.uca.tfg.dao.ProductDAO;
 import com.uca.tfg.exceptions.NoStockException;
 import com.uca.tfg.exceptions.OrderNotFoundException;
 import com.uca.tfg.exceptions.ProductNotFoundException;
+import com.uca.tfg.model.Order;
+import com.uca.tfg.model.OrderLine;
+import com.uca.tfg.model.Product;
 
 @Service("orderManager")
 public class OrderManagerImp implements OrderManager {

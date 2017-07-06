@@ -4,10 +4,10 @@ import java.util.Collection;
 
 import org.springframework.http.ResponseEntity;
 
-import com.uca.tfg.dao.Order;
-import com.uca.tfg.dao.User;
 import com.uca.tfg.exceptions.DuplicateUserException;
 import com.uca.tfg.exceptions.UserNotFoundException;
+import com.uca.tfg.model.Order;
+import com.uca.tfg.model.User;
 
 public interface UserManager {
 	public Collection<User> getAllUsers();

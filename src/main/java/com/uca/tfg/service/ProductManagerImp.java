@@ -9,8 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.uca.tfg.dao.Product;
 import com.uca.tfg.dao.ProductDAO;
+import com.uca.tfg.model.Product;
 
 @Service("productManager")
 public class ProductManagerImp implements ProductManager {

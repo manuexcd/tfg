@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.uca.tfg.dao.Order;
-import com.uca.tfg.dao.OrderLine;
 import com.uca.tfg.exceptions.OrderNotFoundException;
+import com.uca.tfg.model.Order;
+import com.uca.tfg.model.OrderLine;
 import com.uca.tfg.service.OrderManager;
 
 @RestController

@@ -4,7 +4,7 @@ import java.util.Collection;
 
 import org.springframework.http.ResponseEntity;
 
-import com.uca.tfg.dao.OrderLine;
+import com.uca.tfg.model.OrderLine;
 
 public interface OrderLineManager {
 

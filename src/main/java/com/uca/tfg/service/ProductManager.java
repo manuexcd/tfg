@@ -4,7 +4,7 @@ import java.util.Collection;
 
 import org.springframework.http.ResponseEntity;
 
-import com.uca.tfg.dao.Product;
+import com.uca.tfg.model.Product;
 
 public interface ProductManager {
 	public Collection<Product> getAllProducts();

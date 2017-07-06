@@ -4,9 +4,9 @@ import java.util.Collection;
 
 import org.springframework.http.ResponseEntity;
 
-import com.uca.tfg.dao.Order;
-import com.uca.tfg.dao.OrderLine;
 import com.uca.tfg.exceptions.OrderNotFoundException;
+import com.uca.tfg.model.Order;
+import com.uca.tfg.model.OrderLine;
 
 public interface OrderManager {
 

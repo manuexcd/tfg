@@ -1,4 +1,4 @@
-package com.uca.tfg.dao;
+package com.uca.tfg.model;
 
 import java.io.Serializable;
 import java.util.Collection;
