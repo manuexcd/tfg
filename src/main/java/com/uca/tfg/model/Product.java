@@ -80,8 +80,17 @@ public class Product implements Serializable {
 	public void setStockAvaiable(int stockAvaiable) {
 		this.stockAvaiable = stockAvaiable;
 	}
-	
+
 	public void updateStock(int stock) {
 		this.stockAvaiable -= stock;
+	}
+	
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(this.getName() + ". Stock avaiable: " + this.getStockAvaiable() + ".\n");
+		sb.append(this.getPrice() + " €\n");
+		sb.append(this.getDescription());
+		
+		return sb.toString();
 	}
 }

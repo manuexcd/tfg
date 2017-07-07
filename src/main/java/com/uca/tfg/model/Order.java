@@ -41,10 +41,11 @@ public class Order implements Serializable {
 	private User user;
 
 	public Order() {
-		
+
 	}
 
 	public Order(Date date, User user) {
+		super();
 		this.setDate(date);
 		this.setTotalPrice(0);
 		this.setUser(user);
@@ -96,5 +97,13 @@ public class Order implements Serializable {
 			total += (orderLine.getProduct().getPrice() * orderLine.getQuantity());
 		}
 		this.setTotalPrice(total);
+	}
+
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("Order ID: " + this.getId() + ". Date: " + this.getDate().toString() + "\n");
+		sb.append(this.getOrderLines().toString());
+
+		return sb.toString();
 	}
 }

@@ -36,6 +36,7 @@ public class OrderLine implements Serializable {
 	}
 
 	public OrderLine(Product product, int quantity, Order order) {
+		super();
 		this.setProduct(product);
 		this.setQuantity(quantity);
 		this.setOrder(order);
@@ -71,5 +72,12 @@ public class OrderLine implements Serializable {
 
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
+	}
+
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(this.getProduct() + "\t x \t" + this.getQuantity());
+
+		return sb.toString();
 	}
 }
