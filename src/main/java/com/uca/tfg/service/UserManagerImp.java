@@ -25,9 +25,9 @@ public class UserManagerImp implements UserManager {
 	@PostConstruct
 	public void init() {
 		if (users.findAll().isEmpty()) {
-			users.save(new User("User", "One", "AddressUserOne", "+34 000000001", "userOne@gmail.com", null));
-			users.save(new User("User", "Two", "AddressUserTwo", "+34 000000002", "userTwo@gmail.com", null));
-			users.save(new User("User", "Three", "AddressUserThree", "+34 000000003", "userThree@gmail.com", null));
+			users.save(new User("User", "One", "AddressUserOne", "+34 000000001", "userOne@gmail.com", null, null));
+			users.save(new User("User", "Two", "AddressUserTwo", "+34 000000002", "userTwo@gmail.com", null, null));
+			users.save(new User("User", "Three", "AddressUserThree", "+34 000000003", "userThree@gmail.com", null, null));
 		}
 	}
 
@@ -44,22 +44,22 @@ public class UserManagerImp implements UserManager {
 			throw new UserNotFoundException();
 	}
 
-	public ResponseEntity<User> getUser(long id) {
+	public User getUser(long id) {
 		User user = users.findOne(id);
 
 		if (user != null)
-			return new ResponseEntity<>(user, HttpStatus.OK);
+			return user;
 		else
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			return null;
 	}
 
-	public ResponseEntity<User> getUserByEmail(String email) {
+	public User getUserByEmail(String email) {
 		User user = users.findByEmail(email);
 
 		if (user != null)
-			return new ResponseEntity<>(user, HttpStatus.OK);
+			return user;
 		else
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			return null;
 	}
 
 	public User addUser(User user) throws DuplicateUserException {
@@ -81,13 +81,13 @@ public class UserManagerImp implements UserManager {
 			throw new UserNotFoundException();
 	}
 
-	public ResponseEntity<User> deleteUser(long id) {
+	public User deleteUser(long id) {
 		User user = users.findOne(id);
 
 		if (user != null) {
 			users.delete(id);
-			return new ResponseEntity<>(user, HttpStatus.OK);
+			return user;
 		} else
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			return null;
 	}
 }

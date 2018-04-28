@@ -32,12 +32,20 @@ public class UserController {
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<User> getUser(@PathVariable long id) {
-		return userManager.getUser(id);
+		User user = userManager.getUser(id);
+		if(user != null)
+			return new ResponseEntity<User>(user, HttpStatus.OK);
+		else
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 
 	@RequestMapping(value = "/email/{email}", method = RequestMethod.GET)
 	public ResponseEntity<User> getUserByEmail(@PathVariable String email) {
-		return userManager.getUserByEmail(email);
+		User user = userManager.getUserByEmail(email);
+		if(user != null)
+			return new ResponseEntity<User>(user, HttpStatus.OK);
+		else
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
@@ -54,6 +62,10 @@ public class UserController {
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<User> deleteUser(@PathVariable long id) {
-		return userManager.deleteUser(id);
+		User user = userManager.getUser(id);
+		if(user != null)
+			return new ResponseEntity<User>(user, HttpStatus.OK);
+		else
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 }

@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -36,12 +37,14 @@ public class User implements Serializable {
 	private String email;
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private Collection<Order> orders;
+	@OneToOne
+	private Image userImage;
 
 	public User() {
 
 	}
 
-	public User(String name, String surname, String address, String phone, String email, Collection<Order> orders) {
+	public User(String name, String surname, String address, String phone, String email, Collection<Order> orders, Image userImage) {
 		super();
 		this.setName(name);
 		this.setSurname(surname);
@@ -49,6 +52,7 @@ public class User implements Serializable {
 		this.setPhone(phone);
 		this.setEmail(email);
 		this.setOrders(orders);
+		this.setUserImage(userImage);
 	}
 
 	public long getId() {
@@ -105,6 +109,14 @@ public class User implements Serializable {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	
+	public Image getUserImage() {
+		return this.userImage;
+	}
+	
+	public void setUserImage(Image userImage) {
+		this.userImage = userImage;
 	}
 
 	public String toString() {
