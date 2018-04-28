@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -29,16 +30,19 @@ public class Product implements Serializable {
 	private double price;
 	@Column(name = "productStock", unique = false, nullable = true)
 	private int stockAvaiable;
+	@OneToOne
+	private Image productImage;
 
 	public Product() {
 	}
 
-	public Product(String name, String description, double price, int stockAvaiable) {
+	public Product(String name, String description, double price, int stockAvaiable, Image productImage) {
 		super();
 		this.setName(name);
 		this.setDescription(description);
 		this.setPrice(price);
 		this.setStockAvaiable(stockAvaiable);
+		this.setProductImage(productImage);
 	}
 
 	public long getId() {
@@ -83,6 +87,14 @@ public class Product implements Serializable {
 
 	public void updateStock(int stock) {
 		this.stockAvaiable -= stock;
+	}
+	
+	public Image getProductImage() {
+		return this.productImage;
+	}
+	
+	public void setProductImage(Image productImage) {
+		this.productImage = productImage;
 	}
 	
 	public String toString() {

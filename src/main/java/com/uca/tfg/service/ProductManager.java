@@ -10,6 +10,8 @@ public interface ProductManager {
 	public Collection<Product> getAllProducts();
 
 	public ResponseEntity<Product> getProduct(long id);
+	
+	public Product updateProduct(Product product);
 
 	public Product addProduct(Product product);
 
