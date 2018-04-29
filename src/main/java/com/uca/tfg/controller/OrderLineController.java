@@ -3,6 +3,7 @@ package com.uca.tfg.controller;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,11 +27,20 @@ public class OrderLineController {
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<OrderLine> getOneOrderLine(@PathVariable long id) {
-		return orderLineManager.getOneOrderLine(id);
+		OrderLine orderLine = orderLineManager.getOrderLine(id);
+		if (orderLine != null)
+			return new ResponseEntity<OrderLine>(orderLine, HttpStatus.OK);
+		else
+			return new ResponseEntity<OrderLine>(HttpStatus.NOT_FOUND);
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<OrderLine> deleteOrderLine(@PathVariable long id) {
-		return orderLineManager.deleteOrderLine(id);
+		OrderLine orderLine = orderLineManager.getOrderLine(id);
+		if (orderLine != null) {
+			orderLineManager.deleteOrderLine(id);
+			return new ResponseEntity<OrderLine>(orderLine, HttpStatus.OK);
+		} else
+			return new ResponseEntity<OrderLine>(HttpStatus.NOT_FOUND);
 	}
 }
