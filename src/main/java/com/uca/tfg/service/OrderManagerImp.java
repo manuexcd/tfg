@@ -3,8 +3,6 @@ package com.uca.tfg.service;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.uca.tfg.dao.OrderDAO;
@@ -33,13 +31,8 @@ public class OrderManagerImp implements OrderManager {
 		return orders.findAll();
 	}
 
-	public ResponseEntity<Order> getOrder(long id) {
-		Order order = orders.findOne(id);
-
-		if (order != null)
-			return new ResponseEntity<>(order, HttpStatus.OK);
-		else
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	public Order getOrder(long id) {
+		return orders.findOne(id);
 	}
 
 	public Collection<OrderLine> getOrderLines(long id) throws OrderNotFoundException {
@@ -74,13 +67,13 @@ public class OrderManagerImp implements OrderManager {
 			throw new OrderNotFoundException();
 	}
 
-	public ResponseEntity<Order> deleteOrder(long id) {
+	public Order deleteOrder(long id) {
 		Order order = orders.findOne(id);
 
 		if (order != null) {
 			orders.delete(id);
-			return new ResponseEntity<>(order, HttpStatus.OK);
+			return order;
 		} else
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			return null;
 	}
 }

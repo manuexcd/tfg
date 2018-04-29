@@ -26,7 +26,7 @@ public class OrderController {
 	@RequestMapping(method = RequestMethod.GET)
 	public Collection<Order> getAllOrders() {
 		return orderManager.getAllOrders();
-	}
+	} 
 
 	@RequestMapping(value = "/{id}/lines", method = RequestMethod.GET)
 	public Collection<OrderLine> getOrderLines(@PathVariable long id) throws OrderNotFoundException {
@@ -35,17 +35,29 @@ public class OrderController {
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Order> getOrder(@PathVariable long id) {
-		return orderManager.getOrder(id);
+		Order order = orderManager.getOrder(id);
+
+		if (order != null)
+			return new ResponseEntity<Order>(order, HttpStatus.OK);
+		else
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 
 	@RequestMapping(value = "/{id}/{idProduct}-{n}", method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.CREATED)
-	public OrderLine addOrderLine(@PathVariable long id, @PathVariable long idProduct, @PathVariable int n) throws Exception {
+	public OrderLine addOrderLine(@PathVariable long id, @PathVariable long idProduct, @PathVariable int n)
+			throws Exception {
 		return orderManager.addOrderLine(id, idProduct, n);
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Order> deleteOrder(@PathVariable long id) {
-		return orderManager.deleteOrder(id);
+		Order order = orderManager.getOrder(id);
+
+		if (order != null) {
+			orderManager.deleteOrder(id);
+			return new ResponseEntity<Order>(order, HttpStatus.OK);
+		} else
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 }
