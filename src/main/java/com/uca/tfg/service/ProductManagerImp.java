@@ -35,13 +35,8 @@ public class ProductManagerImp implements ProductManager {
 	}
 
 	@Override
-	public ResponseEntity<Product> getProduct(long id) {
-		Product product = products.findOne(id);
-
-		if (product != null)
-			return new ResponseEntity<>(product, HttpStatus.OK);
-		else
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	public Product getProduct(long id) {
+		return products.findOne(id);
 	}
 	
 	@Override
@@ -59,13 +54,13 @@ public class ProductManagerImp implements ProductManager {
 	}
 
 	@Override
-	public ResponseEntity<Product> deleteProduct(long id) {
+	public Product deleteProduct(long id) {
 		Product product = products.findOne(id);
 
 		if (product != null) {
 			products.delete(id);
-			return new ResponseEntity<>(product, HttpStatus.OK);
+			return product;
 		} else
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			return null;
 	}
 }

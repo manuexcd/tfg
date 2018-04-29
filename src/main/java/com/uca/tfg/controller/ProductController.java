@@ -28,26 +28,33 @@ public class ProductController {
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	@ResponseStatus(HttpStatus.OK)
 	public ResponseEntity<Product> getProduct(@PathVariable long id) {
-		return productManager.getProduct(id);
+		Product product = productManager.getProduct(id);
+		if (product != null)
+			return new ResponseEntity<Product>(product, HttpStatus.OK);
+		else
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
-	
-	@RequestMapping(value="/{id}", method=RequestMethod.PUT)
+
+	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	@ResponseStatus(HttpStatus.OK)
-	public Product updateProduct (@RequestBody Product product) {
+	public Product updateProduct(@RequestBody Product product) {
 		return productManager.updateProduct(product);
 	}
-	
+
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.CREATED)
 	public Product addProduct(@RequestBody Product product) {
 		return productManager.addProduct(product);
 	}
-	
-	@RequestMapping(value="/{id}", method = RequestMethod.DELETE)
-	@ResponseStatus(HttpStatus.OK)
+
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Product> deleteProduct(@PathVariable long id) {
-		return productManager.deleteProduct(id);
+		Product product = productManager.getProduct(id);
+		if (product != null) {
+			productManager.deleteProduct(id);
+			return new ResponseEntity<Product>(product, HttpStatus.OK);
+		} else
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 }
