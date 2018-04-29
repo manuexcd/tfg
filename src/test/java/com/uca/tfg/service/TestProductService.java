@@ -21,7 +21,7 @@ import java.util.Collection;
 public class TestProductService {
 	
 	@Mock
-	private ProductDAO Products;
+	private ProductDAO products;
 
 	@InjectMocks
 	private ProductManager service = new ProductManagerImp();
@@ -29,8 +29,8 @@ public class TestProductService {
 	@Test
 	public void testGetAllProducts() {
 		when(service.getAllProducts()).thenReturn(new ArrayList<Product>());
-		Collection<Product> Product = service.getAllProducts();
-		Assert.assertNotNull(Product);
+		Collection<Product> products = service.getAllProducts();
+		Assert.assertNotNull(products);
 	}
 	
 	@Test
@@ -47,8 +47,8 @@ public class TestProductService {
 	
 	@Test
 	public void testGetProductName() {
-		Product Product = mock(Product.class);
-		when(Product.getName()).thenReturn("Name");
-		Assert.assertEquals("Name", Product.getName());
+		Product product = mock(Product.class);
+		when(product.getName()).thenReturn("Name");
+		Assert.assertEquals("Name", product.getName());
 	}
 }

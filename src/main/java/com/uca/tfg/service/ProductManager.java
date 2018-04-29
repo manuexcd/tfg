@@ -2,8 +2,6 @@ package com.uca.tfg.service;
 
 import java.util.Collection;
 
-import org.springframework.http.ResponseEntity;
-
 import com.uca.tfg.model.Product;
 
 public interface ProductManager {
