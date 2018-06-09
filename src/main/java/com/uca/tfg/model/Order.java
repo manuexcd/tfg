@@ -7,6 +7,7 @@ import java.util.Collection;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,6 +19,7 @@ import javax.persistence.TemporalType;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 @Entity
 @Table(name = "orderTable")
@@ -33,8 +35,9 @@ public class Order implements Serializable {
 	private double totalPrice;
 	@Column(name = "orderDate", unique = false, nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
+	@JsonSerialize(using = CustomDateSerializer.class)
 	private Date date;
-	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Collection<OrderLine> orderLines;
 	@ManyToOne
 	@JsonIgnore

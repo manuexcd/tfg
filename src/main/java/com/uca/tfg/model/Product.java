@@ -2,6 +2,7 @@ package com.uca.tfg.model;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -30,7 +31,7 @@ public class Product implements Serializable {
 	private double price;
 	@Column(name = "productStock", unique = false, nullable = true)
 	private int stockAvaiable;
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	private Image productImage;
 
 	public Product() {

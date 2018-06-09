@@ -1,6 +1,9 @@
 package com.uca.tfg.service;
 
 import java.util.Collection;
+import java.util.Date;
+
+import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.uca.tfg.dao.OrderDAO;
 import com.uca.tfg.dao.OrderLineDAO;
 import com.uca.tfg.dao.ProductDAO;
+import com.uca.tfg.dao.UserDAO;
 import com.uca.tfg.exceptions.NoStockException;
 import com.uca.tfg.exceptions.OrderNotFoundException;
 import com.uca.tfg.exceptions.ProductNotFoundException;
@@ -26,6 +30,23 @@ public class OrderManagerImp implements OrderManager {
 
 	@Autowired
 	private ProductDAO products;
+
+	@Autowired
+	private UserDAO users;
+
+	@PostConstruct
+	public void init() {
+		if (orders.findAll().isEmpty()) {
+			orders.save(new Order(new Date(), users.findOne((long) 1)));
+			orders.save(new Order(new Date(), users.findOne((long) 1)));
+			orders.save(new Order(new Date(), users.findOne((long) 2)));
+			orders.save(new Order(new Date(), users.findOne((long) 3)));
+		}
+		for (Order order : orders.findAll()) {
+			order.updatePrice();
+			orders.save(order);
+		}
+	}
 
 	public Collection<Order> getAllOrders() {
 		return orders.findAll();
