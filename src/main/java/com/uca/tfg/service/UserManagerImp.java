@@ -1,7 +1,7 @@
 package com.uca.tfg.service;
 
+import java.sql.Timestamp;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -85,7 +85,7 @@ public class UserManagerImp implements UserManager {
 
 	public ResponseEntity<Order> addOrder(long id) throws UserNotFoundException {
 		User user = users.findOne(id);
-		Order order = new Order(new Date(), user);
+		Order order = new Order(new Timestamp(System.currentTimeMillis()), user);
 
 		if (user != null) {
 			user.getOrders().add(order);

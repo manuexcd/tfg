@@ -12,7 +12,7 @@ public interface OrderManager {
 	
 	public Collection<Order> getAllOrdersByOrderStatus();
 	
-	public Collection<Order> getOrdersByParam(String param);
+	public Collection<Order> getAllOrdersByDate();
 	
 	public Collection<Order> getOrdersByUser(long userId);
 	

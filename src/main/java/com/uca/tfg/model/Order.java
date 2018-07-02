@@ -1,7 +1,7 @@
 package com.uca.tfg.model;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Timestamp;
 import java.util.Collection;
 
 import javax.persistence.CascadeType;
@@ -12,11 +12,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -25,7 +22,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 @Entity
 @Table(name = "orderTable")
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@NamedQuery(name = "Order.findByParam", query = "SELECT o FROM Order o WHERE o.id = ?1")
 public class Order implements Serializable {
 	
 	private enum OrderStatus {RECEIVED, IN_PROGRESS, IN_DELIVERY, DELIVERED}
@@ -38,9 +34,9 @@ public class Order implements Serializable {
 	@Column(name = "orderTotalPrice", unique = false, nullable = false)
 	private double totalPrice;
 	@Column(name = "orderDate", unique = false, nullable = false)
-	@Temporal(TemporalType.TIMESTAMP)
+	//@Temporal(TemporalType.TIMESTAMP)
 	@JsonSerialize(using = CustomDateSerializer.class)
-	private Date date;
+	private Timestamp date;
 	@Column(name = "orderStatus", unique = false, nullable = false)
 	private OrderStatus orderStatus = OrderStatus.RECEIVED;
 	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -53,7 +49,7 @@ public class Order implements Serializable {
 
 	}
 
-	public Order(Date date, User user) {
+	public Order(Timestamp date, User user) {
 		super();
 		this.setDate(date);
 		this.setTotalPrice(0);
@@ -84,11 +80,11 @@ public class Order implements Serializable {
 		this.totalPrice = totalPrice;
 	}
 
-	public Date getDate() {
+	public Timestamp getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(Timestamp date) {
 		this.date = date;
 	}
 	

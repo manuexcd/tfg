@@ -1,7 +1,7 @@
 package com.uca.tfg.service;
 
+import java.sql.Timestamp;
 import java.util.Collection;
-import java.util.Date;
 
 import javax.annotation.PostConstruct;
 
@@ -41,10 +41,10 @@ public class OrderManagerImp implements OrderManager {
 	public void init() {
 		if (orders.findAll().isEmpty()) {
 			System.out.println("PostConstruct ORDERS");
-			orders.save(new Order(new Date(), users.findOne((long) 1)));
-			orders.save(new Order(new Date(), users.findOne((long) 1)));
-			orders.save(new Order(new Date(), users.findOne((long) 2)));
-			orders.save(new Order(new Date(), users.findOne((long) 3)));
+			orders.save(new Order(new Timestamp(System.currentTimeMillis() - 1000), users.findOne((long) 1)));
+			orders.save(new Order(new Timestamp(System.currentTimeMillis() - 2500), users.findOne((long) 1)));
+			orders.save(new Order(new Timestamp(System.currentTimeMillis() - 5000), users.findOne((long) 2)));
+			orders.save(new Order(new Timestamp(System.currentTimeMillis() - 10000), users.findOne((long) 3)));
 		}
 	}
 
@@ -56,10 +56,10 @@ public class OrderManagerImp implements OrderManager {
 		return orders.findAllByOrderByOrderStatus();
 	}
 	
-	public Collection<Order> getOrdersByParam(String param) {
-		return orders.findByParam(Long.valueOf(param));
+	public Collection<Order> getAllOrdersByDate() {
+		return orders.findAllByOrderByDate();
 	}
-
+	
 	public Order getOrder(long id) {
 		return orders.findOne(id);
 	}
