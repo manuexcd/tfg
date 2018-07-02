@@ -10,6 +10,12 @@ public interface OrderManager {
 
 	public Collection<Order> getAllOrders();
 	
+	public Collection<Order> getAllOrdersByOrderStatus();
+	
+	public Collection<Order> getOrdersByParam(String param);
+	
+	public Collection<Order> getOrdersByUser(long userId);
+	
 	public Collection<OrderLine> getOrderLines(long id) throws OrderNotFoundException;
 
 	public Order getOrder(long id);

@@ -12,20 +12,24 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 @Entity
 @Table(name = "orderTable")
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@NamedQuery(name = "Order.findByParam", query = "SELECT o FROM Order o WHERE o.id = ?1")
 public class Order implements Serializable {
-
+	
+	private enum OrderStatus {RECEIVED, IN_PROGRESS, IN_DELIVERY, DELIVERED}
+	
 	private static final long serialVersionUID = 6892693125355139371L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -37,10 +41,12 @@ public class Order implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	@JsonSerialize(using = CustomDateSerializer.class)
 	private Date date;
+	@Column(name = "orderStatus", unique = false, nullable = false)
+	private OrderStatus orderStatus = OrderStatus.RECEIVED;
 	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Collection<OrderLine> orderLines;
 	@ManyToOne
-	@JsonIgnore
+	@JsonManagedReference
 	private User user;
 
 	public Order() {
@@ -84,6 +90,14 @@ public class Order implements Serializable {
 
 	public void setDate(Date date) {
 		this.date = date;
+	}
+	
+	public OrderStatus getOrderStatus() {
+		return this.orderStatus;
+	}
+	
+	public void setOrderStatus(OrderStatus orderStatus) {
+		this.orderStatus = orderStatus;
 	}
 
 	public void setUser(User user) {

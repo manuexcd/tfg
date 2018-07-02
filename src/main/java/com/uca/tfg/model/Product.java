@@ -31,6 +31,8 @@ public class Product implements Serializable {
 	private double price;
 	@Column(name = "productStock", unique = false, nullable = true)
 	private int stockAvaiable;
+	@Column(name = "isVisible", unique = false, nullable = false)
+	private boolean isVisible = true;
 	@OneToOne(cascade = CascadeType.ALL)
 	private Image productImage;
 
@@ -90,6 +92,14 @@ public class Product implements Serializable {
 		this.stockAvaiable -= stock;
 	}
 	
+	public boolean isVisible() {
+		return isVisible;
+	}
+
+	public void setVisible(boolean isVisible) {
+		this.isVisible = isVisible;
+	}
+
 	public Image getProductImage() {
 		return this.productImage;
 	}

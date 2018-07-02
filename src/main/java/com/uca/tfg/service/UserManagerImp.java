@@ -2,14 +2,17 @@ package com.uca.tfg.service;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.uca.tfg.dao.ImageDAO;
 import com.uca.tfg.dao.UserDAO;
 import com.uca.tfg.exceptions.DuplicateUserException;
 import com.uca.tfg.exceptions.UserNotFoundException;
@@ -17,22 +20,27 @@ import com.uca.tfg.model.Order;
 import com.uca.tfg.model.User;
 
 @Service("userManager")
+@DependsOn("imageManager")
 public class UserManagerImp implements UserManager {
 
 	@Autowired
 	private UserDAO users;
+	
+	@Autowired
+	private ImageDAO images;
 
 	@PostConstruct
 	public void init() {
 		if (users.findAll().isEmpty()) {
-			users.save(new User("User", "One", "AddressUserOne", "+34 000000001", "userOne@gmail.com", null, null));
-			users.save(new User("User", "Two", "AddressUserTwo", "+34 000000002", "userTwo@gmail.com", null, null));
-			users.save(new User("User", "Three", "AddressUserThree", "+34 000000003", "userThree@gmail.com", null, null));
+			System.out.println("PostConstruct USERS");
+			users.save(new User("Manuel", "Lara", "Plaza Algodonales 2 3ºD", "+34 638489260", "manuexcd@gmail.com", null, images.findOne((long) 6)));
+			users.save(new User("Cristiano", "Ronaldo", "Estadio Santiago Bernabéu", "+34 000000002", "CR7@gmail.com", null, images.findOne((long) 4)));
+			users.save(new User("Lionel", "Messi", "Estadio Nou Camp", "+34 000000003", "leomessi@gmail.com", null, images.findOne((long) 5)));
 		}
 	}
 
 	public Collection<User> getAllUsers() {
-		return users.findAll();
+		return users.findByOrderByName();
 	}
 
 	public Collection<Order> getOrders(long id) throws UserNotFoundException {
@@ -60,6 +68,12 @@ public class UserManagerImp implements UserManager {
 			return user;
 		else
 			return null;
+	}
+	
+	public List<User> getUsersByParam(String param) {
+		if(param != null)
+			return users.findByParam(param);
+		return users.findAll();
 	}
 
 	public User addUser(User user) throws DuplicateUserException {

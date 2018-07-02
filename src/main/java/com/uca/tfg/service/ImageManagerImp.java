@@ -21,8 +21,12 @@ public class ImageManagerImp implements ImageManager {
 	@PostConstruct
 	public void init() {
 		if (images.findAll().isEmpty()) {
-			images.save(new Image("http://hdimages.org/wp-content/uploads/2017/03/placeholder-image1.gif"));
-			images.save(new Image("http://via.placeholder.com/350x150"));
+			images.save(new Image("https://cdn.hobbyconsolas.com/sites/navi.axelspringer.es/public/styles/main_element/public/media/image/2018/01/ps4-pro.jpg"));
+			images.save(new Image("https://images-na.ssl-images-amazon.com/images/G/30/kindle/dp/2015/KM/muscat-fam_stripe_icon-d-es-250x170._CB514233316_.png"));
+			images.save(new Image("https://images-na.ssl-images-amazon.com/images/I/61qL1jERsiL._SL1200_.jpg"));
+			images.save(new Image("https://ep01.epimg.net/elpais/imagenes/2018/06/20/icon/1529482734_084519_1529489313_noticia_normal_recorte1.jpg"));
+			images.save(new Image("https://amp.businessinsider.com/images/5b2d2faa1ae66235008b4705-750-563.jpg"));
+			images.save(new Image("https://thumbs.dreamstime.com/b/bot%C3%B3n-acertado-de-avatar-del-hombre-emoci%C3%B3n-masculina-feliz-84653510.jpg"));
 		}
 	}
 

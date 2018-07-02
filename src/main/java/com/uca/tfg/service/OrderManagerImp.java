@@ -6,6 +6,7 @@ import java.util.Date;
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Service;
 
 import com.uca.tfg.dao.OrderDAO;
@@ -18,8 +19,10 @@ import com.uca.tfg.exceptions.ProductNotFoundException;
 import com.uca.tfg.model.Order;
 import com.uca.tfg.model.OrderLine;
 import com.uca.tfg.model.Product;
+import com.uca.tfg.model.User;
 
 @Service("orderManager")
+@DependsOn("userManager")
 public class OrderManagerImp implements OrderManager {
 
 	@Autowired
@@ -37,23 +40,34 @@ public class OrderManagerImp implements OrderManager {
 	@PostConstruct
 	public void init() {
 		if (orders.findAll().isEmpty()) {
+			System.out.println("PostConstruct ORDERS");
 			orders.save(new Order(new Date(), users.findOne((long) 1)));
 			orders.save(new Order(new Date(), users.findOne((long) 1)));
 			orders.save(new Order(new Date(), users.findOne((long) 2)));
 			orders.save(new Order(new Date(), users.findOne((long) 3)));
-		}
-		for (Order order : orders.findAll()) {
-			order.updatePrice();
-			orders.save(order);
 		}
 	}
 
 	public Collection<Order> getAllOrders() {
 		return orders.findAll();
 	}
+	
+	public Collection<Order> getAllOrdersByOrderStatus() {
+		return orders.findAllByOrderByOrderStatus();
+	}
+	
+	public Collection<Order> getOrdersByParam(String param) {
+		return orders.findByParam(Long.valueOf(param));
+	}
 
 	public Order getOrder(long id) {
 		return orders.findOne(id);
+	}
+	
+	public Collection<Order> getOrdersByUser(long userId) {
+		User user = users.findOne(userId);
+		
+		return orders.findByUser(user);
 	}
 
 	public Collection<OrderLine> getOrderLines(long id) throws OrderNotFoundException {

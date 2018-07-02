@@ -6,6 +6,7 @@ import java.util.Collection;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -13,6 +14,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 @Entity
@@ -35,7 +37,8 @@ public class User implements Serializable {
 	private String phone;
 	@Column(name = "userEmail", unique = true, nullable = false, length = 50)
 	private String email;
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JsonBackReference
 	private Collection<Order> orders;
 	@OneToOne
 	private Image userImage;
@@ -117,6 +120,10 @@ public class User implements Serializable {
 	
 	public void setUserImage(Image userImage) {
 		this.userImage = userImage;
+	}
+	
+	public String getFullName() {
+		return this.name.concat(" ").concat(this.surname);
 	}
 
 	public String toString() {

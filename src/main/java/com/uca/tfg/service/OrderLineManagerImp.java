@@ -5,14 +5,17 @@ import java.util.Collection;
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Service;
 
 import com.uca.tfg.dao.OrderDAO;
 import com.uca.tfg.dao.OrderLineDAO;
 import com.uca.tfg.dao.ProductDAO;
+import com.uca.tfg.model.Order;
 import com.uca.tfg.model.OrderLine;
 
 @Service("orderLineManager")
+@DependsOn(value = { "orderManager", "productManager" })
 public class OrderLineManagerImp implements OrderLineManager {
 
 	@Autowired
@@ -27,15 +30,18 @@ public class OrderLineManagerImp implements OrderLineManager {
 	@PostConstruct
 	public void init() {
 		if(orderLines.findAll().isEmpty()) {
+			System.out.println("PostConstruct ORDERLINES");
 			orderLines.save(new OrderLine(products.findOne((long) 1), 3, orders.findOne((long) 2)));
 			orderLines.save(new OrderLine(products.findOne((long) 2), 2, orders.findOne((long) 2)));
-			orders.findOne((long) 2).updatePrice();
 			orderLines.save(new OrderLine(products.findOne((long) 1), 1, orders.findOne((long) 3)));
 			orderLines.save(new OrderLine(products.findOne((long) 2), 1, orders.findOne((long) 3)));
 			orderLines.save(new OrderLine(products.findOne((long) 3), 1, orders.findOne((long) 3)));
-			orders.findOne((long) 3).updatePrice();
 			orderLines.save(new OrderLine(products.findOne((long) 4), 5, orders.findOne((long) 4)));
-			orders.findOne((long) 4).updatePrice();
+			
+			for (Order order : orders.findAll()) {
+				order.updatePrice();
+				orders.save(order);
+			}
 		}
 	}
 

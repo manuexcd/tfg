@@ -47,6 +47,11 @@ public class UserController {
 		else
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
+	
+	@RequestMapping(value = "/search/{param}", method = RequestMethod.GET)
+	public Collection<User> getUsersByParam(@PathVariable String param) {
+		return userManager.getUsersByParam(param);
+	}
 
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.CREATED)

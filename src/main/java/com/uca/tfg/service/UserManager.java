@@ -1,6 +1,7 @@
 package com.uca.tfg.service;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 
@@ -17,6 +18,8 @@ public interface UserManager {
 	public User getUser(long id);
 
 	public User getUserByEmail(String email);
+	
+	public List<User> getUsersByParam(String param);
 
 	public User addUser(User user) throws DuplicateUserException;
 	

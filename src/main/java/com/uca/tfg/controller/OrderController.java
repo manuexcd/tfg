@@ -26,7 +26,24 @@ public class OrderController {
 	@RequestMapping(method = RequestMethod.GET)
 	public Collection<Order> getAllOrders() {
 		return orderManager.getAllOrders();
-	} 
+	}
+	
+	@RequestMapping(value = "/status", method = RequestMethod.GET)
+	public Collection<Order> getAllOrdersByOrderStatus() {
+		return orderManager.getAllOrdersByOrderStatus();
+	}
+	
+	@RequestMapping(value = "/param/{param}", method = RequestMethod.GET)
+	public Collection<Order> getOrdersByParam(@PathVariable String param) {
+		if(param != null)
+			return orderManager.getOrdersByParam(param);
+		return orderManager.getAllOrders();
+	}
+	
+	@RequestMapping(value="/user/{userId}", method = RequestMethod.GET)
+	public Collection<Order> getOrdersByUser(@PathVariable long userId) {
+		return orderManager.getOrdersByUser(userId);
+	}
 
 	@RequestMapping(value = "/{id}/lines", method = RequestMethod.GET)
 	public Collection<OrderLine> getOrderLines(@PathVariable long id) throws OrderNotFoundException {
