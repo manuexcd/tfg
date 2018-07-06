@@ -26,6 +26,31 @@ public class ProductController {
 	public Collection<Product> getAllProducts() {
 		return productManager.getAllProducts();
 	}
+	
+	@RequestMapping(value = "/name", method = RequestMethod.GET)
+	public Collection<Product> getAllProductsOrderByName() {
+		return productManager.getAllProductsOrderByName();
+	}
+	
+	@RequestMapping(value = "/price", method = RequestMethod.GET)
+	public Collection<Product> getAllProductsOrderByPrice() {
+		return productManager.getAllProductsOrderByPrice();
+	}
+	
+	@RequestMapping(value = "/pricedesc", method = RequestMethod.GET)
+	public Collection<Product> getAllProductsOrderByPriceDesc() {
+		return productManager.getAllProductsOrderByPriceDesc();
+	}
+	
+	@RequestMapping(value = "/stock", method = RequestMethod.GET)
+	public Collection<Product> getAllProductsOrderByStockAvailable() {
+		return productManager.getAllProductsOrderByStockAvailable();
+	}
+	
+	@RequestMapping(value = "/search/{param}", method = RequestMethod.GET)
+	public Collection<Product> getProductsByParam(@PathVariable String param) {
+		return productManager.getProductsByParam(param);
+	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Product> getProduct(@PathVariable long id) {

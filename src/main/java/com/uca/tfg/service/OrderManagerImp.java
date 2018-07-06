@@ -84,7 +84,7 @@ public class OrderManagerImp implements OrderManager {
 		Product product = products.findOne(idProduct);
 		if (order != null) {
 			if (product != null) {
-				if (product.getStockAvaiable() >= n) {
+				if (product.getStockAvailable() >= n) {
 					OrderLine line = new OrderLine(product, n, order);
 					order.getOrderLines().add(line);
 					order.updatePrice();

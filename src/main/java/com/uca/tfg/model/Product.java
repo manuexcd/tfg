@@ -30,7 +30,7 @@ public class Product implements Serializable {
 	@Column(name = "productPrice", unique = false, nullable = false)
 	private double price;
 	@Column(name = "productStock", unique = false, nullable = true)
-	private int stockAvaiable;
+	private int stockAvailable;
 	@Column(name = "isVisible", unique = false, nullable = false)
 	private boolean isVisible = true;
 	@OneToOne(cascade = CascadeType.ALL)
@@ -39,12 +39,12 @@ public class Product implements Serializable {
 	public Product() {
 	}
 
-	public Product(String name, String description, double price, int stockAvaiable, Image productImage) {
+	public Product(String name, String description, double price, int stockAvailable, Image productImage) {
 		super();
 		this.setName(name);
 		this.setDescription(description);
 		this.setPrice(price);
-		this.setStockAvaiable(stockAvaiable);
+		this.setStockAvailable(stockAvailable);
 		this.setProductImage(productImage);
 	}
 
@@ -80,16 +80,16 @@ public class Product implements Serializable {
 		this.price = price;
 	}
 
-	public int getStockAvaiable() {
-		return stockAvaiable;
+	public int getStockAvailable() {
+		return stockAvailable;
 	}
 
-	public void setStockAvaiable(int stockAvaiable) {
-		this.stockAvaiable = stockAvaiable;
+	public void setStockAvailable(int stockAvailable) {
+		this.stockAvailable = stockAvailable;
 	}
 
 	public void updateStock(int stock) {
-		this.stockAvaiable -= stock;
+		this.stockAvailable -= stock;
 	}
 	
 	public boolean isVisible() {
@@ -110,7 +110,7 @@ public class Product implements Serializable {
 	
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(this.getName() + ". Stock avaiable: " + this.getStockAvaiable() + ".\n");
+		sb.append(this.getName() + ". Stock Available: " + this.getStockAvailable() + ".\n");
 		sb.append(this.getPrice() + " €\n");
 		sb.append(this.getDescription());
 		

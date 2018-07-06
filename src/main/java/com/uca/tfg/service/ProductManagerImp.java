@@ -37,6 +37,31 @@ public class ProductManagerImp implements ProductManager {
 	public Collection<Product> getAllProducts() {
 		return products.findAll();
 	}
+	
+	@Override
+	public Collection<Product> getAllProductsOrderByName() {
+		return products.findAllByOrderByName();
+	}
+	
+	@Override
+	public Collection<Product> getAllProductsOrderByPrice() {
+		return products.findAllByOrderByPrice();
+	}
+	
+	@Override
+	public Collection<Product> getAllProductsOrderByPriceDesc() {
+		return products.findAllByOrderByPriceDesc();
+	}
+	
+	@Override
+	public Collection<Product> getAllProductsOrderByStockAvailable() {
+		return products.findAllByOrderByStockAvailable();
+	}
+	
+	@Override
+	public Collection<Product> getProductsByParam(String param) {
+		return products.findByParam(param);
+	}
 
 	@Override
 	public Product getProduct(long id) {
