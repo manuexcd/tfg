@@ -15,13 +15,16 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 @Entity
-@Table(name = "orderTable")
+@Table(name = "order_table")
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
 public class Order implements Serializable {
 	
 	private enum OrderStatus {RECEIVED, IN_PROGRESS, IN_DELIVERY, DELIVERED}
@@ -42,7 +45,6 @@ public class Order implements Serializable {
 	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Collection<OrderLine> orderLines;
 	@ManyToOne
-	@JsonManagedReference
 	private User user;
 
 	public Order() {

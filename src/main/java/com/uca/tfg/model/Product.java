@@ -33,7 +33,7 @@ public class Product implements Serializable {
 	private int stockAvailable;
 	@Column(name = "isVisible", unique = false, nullable = false)
 	private boolean isVisible = true;
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.MERGE)
 	private Image productImage;
 
 	public Product() {

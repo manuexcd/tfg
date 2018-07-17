@@ -1,10 +1,13 @@
 package com.uca.tfg.model;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -14,12 +17,20 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
-@Table(name = "userTable")
+@Table(name = "user_table")
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
 public class User implements Serializable {
 
 	private static final long serialVersionUID = 7110275440135292814L;
@@ -37,17 +48,22 @@ public class User implements Serializable {
 	private String phone;
 	@Column(name = "userEmail", unique = true, nullable = false, length = 50)
 	private String email;
+	@Column(name = "userPassword", unique = false, nullable = false, length = 1000)
+	private String password;
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JsonBackReference
+	@JsonIgnore
 	private Collection<Order> orders;
 	@OneToOne
 	private Image userImage;
+	@ElementCollection(fetch = FetchType.LAZY)
+	@LazyCollection(LazyCollectionOption.FALSE)
+	private List<String> roles;
 
 	public User() {
-
+		super();
 	}
 
-	public User(String name, String surname, String address, String phone, String email, Collection<Order> orders, Image userImage) {
+	public User(String name, String surname, String address, String phone, String email, Collection<Order> orders, Image userImage, String password, String... roles) {
 		super();
 		this.setName(name);
 		this.setSurname(surname);
@@ -56,6 +72,8 @@ public class User implements Serializable {
 		this.setEmail(email);
 		this.setOrders(orders);
 		this.setUserImage(userImage);
+		this.setPassword(new BCryptPasswordEncoder().encode(password));
+		this.setRoles(Arrays.asList(roles));
 	}
 
 	public long getId() {
@@ -124,6 +142,22 @@ public class User implements Serializable {
 	
 	public String getFullName() {
 		return this.name.concat(" ").concat(this.surname);
+	}
+	
+	public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(final String password) {
+        this.password = password;
+    }
+    
+	public List<String> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<String> roles) {
+		this.roles = roles;
 	}
 
 	public String toString() {

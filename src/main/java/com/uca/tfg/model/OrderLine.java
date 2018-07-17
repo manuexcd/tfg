@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 @Entity
-@Table(name = "orderLine")
+@Table(name = "order_line")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class OrderLine implements Serializable {
 

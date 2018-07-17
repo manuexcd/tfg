@@ -14,3 +14,14 @@ spring:
     url: jdbc:mysql://localhost:3306/tfg?autoReconnect=true&useSSL=false&serverTimezone=UTC
     username: manuexcd
     password: contrasena
+---    
+server:
+   port: 8080
+--- 
+server:
+  port: 8443
+  ssl:
+    enabled: true
+    key-password: password
+    key-store: classpath:keystore.jks
+    key-store-password: password

@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.DependsOn;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import com.uca.tfg.dao.ImageDAO;
 import com.uca.tfg.dao.UserDAO;
 import com.uca.tfg.exceptions.DuplicateUserException;
+import com.uca.tfg.exceptions.EmailExistsException;
 import com.uca.tfg.exceptions.UserNotFoundException;
 import com.uca.tfg.model.Order;
 import com.uca.tfg.model.User;
@@ -25,18 +27,40 @@ public class UserManagerImp implements UserManager {
 
 	@Autowired
 	private UserDAO users;
-	
+
 	@Autowired
 	private ImageDAO images;
-
+	
 	@PostConstruct
 	public void init() {
 		if (users.findAll().isEmpty()) {
 			System.out.println("PostConstruct USERS");
-			users.save(new User("Manuel", "Lara", "Plaza Algodonales 2 3ºD", "+34 638489260", "manuexcd@gmail.com", null, images.findOne((long) 6)));
-			users.save(new User("Cristiano", "Ronaldo", "Estadio Santiago Bernabéu", "+34 000000002", "CR7@gmail.com", null, images.findOne((long) 4)));
-			users.save(new User("Lionel", "Messi", "Estadio Nou Camp", "+34 000000003", "leomessi@gmail.com", null, images.findOne((long) 5)));
+			users.save(new User("Manuel", "Lara", "Plaza Algodonales 2 3ºD", "+34 638489260", "manuexcd@gmail.com",
+					null, images.findOne((long) 6), "pass", "ROLE_ADMIN"));
+			users.save(new User("Cristiano", "Ronaldo", "Estadio Santiago Bernabéu", "+34 000000002", "CR7@gmail.com",
+					null, images.findOne((long) 4), "pass", "ROLE_USER"));
+			users.save(new User("Lionel", "Messi", "Estadio Nou Camp", "+34 000000003", "leomessi@gmail.com", null,
+					images.findOne((long) 5), "pass", "ROLE_USER"));
 		}
+	}
+
+	@Transactional
+	@Override
+	public User registerNewUserAccount(User user) throws EmailExistsException {
+
+		if (emailExist(user.getEmail())) {
+			throw new EmailExistsException("There is an account with that email adress: " + user.getEmail());
+		}
+
+		return users.save(user);
+	}
+
+	private boolean emailExist(String email) {
+		User user = users.findByEmail(email);
+		if (user != null) {
+			return true;
+		}
+		return false;
 	}
 
 	public Collection<User> getAllUsers() {
@@ -69,9 +93,9 @@ public class UserManagerImp implements UserManager {
 		else
 			return null;
 	}
-	
+
 	public List<User> getUsersByParam(String param) {
-		if(param != null)
+		if (param != null)
 			return users.findByParam(param);
 		return users.findAll();
 	}
