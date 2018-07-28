@@ -62,6 +62,11 @@ public class User implements Serializable {
 	public User() {
 		super();
 	}
+	
+	public User(String email, String password) {
+		this.setEmail(email);
+		this.setPassword(new BCryptPasswordEncoder().encode(password));
+	}
 
 	public User(String name, String surname, String address, String phone, String email, Collection<Order> orders, Image userImage, String password, String... roles) {
 		super();

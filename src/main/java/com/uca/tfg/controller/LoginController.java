@@ -7,7 +7,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.uca.tfg.model.User;
@@ -20,7 +22,8 @@ public class LoginController {
 	@Autowired
 	private UserComponent userComponent;
 
-	@RequestMapping(value = "/login")
+	@CrossOrigin
+	@RequestMapping(method = RequestMethod.POST, value = "/login")
 	public ResponseEntity<User> logIn() {
 		if (!userComponent.isLoggedUser()) {
 			log.info("No user logged");
@@ -32,7 +35,7 @@ public class LoginController {
 		}
 	}
 	
-	@RequestMapping(value = "/logout")
+	@RequestMapping(method = RequestMethod.GET, value = "/logout")
 	public ResponseEntity<Boolean> logOut(HttpSession session) {
 		if (!userComponent.isLoggedUser()) {
 			log.info("No user logged");
