@@ -31,12 +31,12 @@ public class OrderLineManagerImp implements OrderLineManager {
 	public void init() {
 		if(orderLines.findAll().isEmpty()) {
 			System.out.println("PostConstruct ORDERLINES");
-			orderLines.save(new OrderLine(products.findOne((long) 1), 3, orders.findOne((long) 2)));
-			orderLines.save(new OrderLine(products.findOne((long) 2), 2, orders.findOne((long) 2)));
-			orderLines.save(new OrderLine(products.findOne((long) 1), 1, orders.findOne((long) 3)));
-			orderLines.save(new OrderLine(products.findOne((long) 2), 1, orders.findOne((long) 3)));
-			orderLines.save(new OrderLine(products.findOne((long) 3), 1, orders.findOne((long) 3)));
-			orderLines.save(new OrderLine(products.findOne((long) 4), 5, orders.findOne((long) 4)));
+			orderLines.save(new OrderLine(products.findById((long) 1).get(), 3, orders.findById((long) 2).get()));
+			orderLines.save(new OrderLine(products.findById((long) 2).get(), 2, orders.findById((long) 2).get()));
+			orderLines.save(new OrderLine(products.findById((long) 1).get(), 1, orders.findById((long) 3).get()));
+			orderLines.save(new OrderLine(products.findById((long) 2).get(), 1, orders.findById((long) 3).get()));
+			orderLines.save(new OrderLine(products.findById((long) 3).get(), 1, orders.findById((long) 3).get()));
+			orderLines.save(new OrderLine(products.findById((long) 4).get(), 5, orders.findById((long) 4).get()));
 			
 			for (Order order : orders.findAll()) {
 				order.updatePrice();
@@ -50,14 +50,14 @@ public class OrderLineManagerImp implements OrderLineManager {
 	}
 
 	public OrderLine getOrderLine(long id) {
-		return orderLines.findOne(id);
+		return orderLines.findById(id).get();
 	}
 
 	public OrderLine deleteOrderLine(long id) {
-		OrderLine orderLine = orderLines.findOne(id);
+		OrderLine orderLine = orderLines.findById(id).get();
 
 		if (orderLine != null) {
-			orderLines.delete(id);
+			orderLines.delete(orderLine);
 			return orderLine;
 		} else
 			return null;

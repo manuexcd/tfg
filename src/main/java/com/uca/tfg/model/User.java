@@ -27,15 +27,22 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
 @Entity
 @Table(name = "user_table")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
+@Data
+@NoArgsConstructor
 public class User implements Serializable {
 
 	private static final long serialVersionUID = 7110275440135292814L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@ToString.Exclude
 	@Column(name = "userID", unique = true, nullable = false)
 	private long id;
 	@Column(name = "userName", unique = false, nullable = false, length = 20)
@@ -48,21 +55,21 @@ public class User implements Serializable {
 	private String phone;
 	@Column(name = "userEmail", unique = true, nullable = false, length = 50)
 	private String email;
+	@ToString.Exclude
 	@Column(name = "userPassword", unique = false, nullable = false, length = 1000)
 	private String password;
+	@ToString.Exclude
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JsonIgnore
 	private Collection<Order> orders;
+	@ToString.Exclude
 	@OneToOne
 	private Image userImage;
+	@ToString.Exclude
 	@ElementCollection(fetch = FetchType.LAZY)
 	@LazyCollection(LazyCollectionOption.FALSE)
 	private List<String> roles;
 
-	public User() {
-		super();
-	}
-	
 	public User(String email, String password) {
 		this.setEmail(email);
 		this.setPassword(new BCryptPasswordEncoder().encode(password));
@@ -81,96 +88,7 @@ public class User implements Serializable {
 		this.setRoles(Arrays.asList(roles));
 	}
 
-	public long getId() {
-		return this.id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
-
-	public Collection<Order> getOrders() {
-		return this.orders;
-	}
-
-	public void setOrders(Collection<Order> orders) {
-		this.orders = orders;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getSurname() {
-		return surname;
-	}
-
-	public void setSurname(String surname) {
-		this.surname = surname;
-	}
-
-	public String getAddress() {
-		return address;
-	}
-
-	public void setAddress(String address) {
-		this.address = address;
-	}
-
-	public String getPhone() {
-		return phone;
-	}
-
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-	
-	public Image getUserImage() {
-		return this.userImage;
-	}
-	
-	public void setUserImage(Image userImage) {
-		this.userImage = userImage;
-	}
-	
 	public String getFullName() {
 		return this.name.concat(" ").concat(this.surname);
-	}
-	
-	public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(final String password) {
-        this.password = password;
-    }
-    
-	public List<String> getRoles() {
-		return roles;
-	}
-
-	public void setRoles(List<String> roles) {
-		this.roles = roles;
-	}
-
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append(this.getName() + " " + this.getSurname() + ".\n");
-		sb.append(this.getAddress() + ".\n");
-		sb.append(this.getPhone());
-
-		return sb.toString();
 	}
 }

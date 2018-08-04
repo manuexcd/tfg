@@ -1,6 +1,8 @@
 package com.uca.tfg.model;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
+import java.util.Collection;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,70 +16,35 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import lombok.ToString;
+
 @Entity
 @Table(name = "order_line")
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@Data
+@NoArgsConstructor
+@RequiredArgsConstructor
 public class OrderLine implements Serializable {
 
 	private static final long serialVersionUID = -4745195410724554377L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@ToString.Exclude
 	@Column(name = "orderLineID", unique = true, nullable = false)
 	private long id;
-	@Column(name = "orderLineQuantity", unique = false, nullable = false)
-	private int quantity;
+	@NonNull
 	@OneToOne
 	private Product product;
+	@NonNull
+	@Column(name = "orderLineQuantity", unique = false, nullable = false)
+	private int quantity;
+	@NonNull
+	@ToString.Exclude
 	@ManyToOne
 	@JsonIgnore
 	private Order order;
-
-	public OrderLine() {
-	}
-
-	public OrderLine(Product product, int quantity, Order order) {
-		super();
-		this.setProduct(product);
-		this.setQuantity(quantity);
-		this.setOrder(order);
-	}
-
-	public void setOrder(Order order) {
-		this.order = order;
-	}
-
-	public Order getOrder() {
-		return this.order;
-	}
-
-	public long getId() {
-		return this.id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
-
-	public Product getProduct() {
-		return this.product;
-	}
-
-	public void setProduct(Product product) {
-		this.product = product;
-	}
-
-	public int getQuantity() {
-		return quantity;
-	}
-
-	public void setQuantity(int quantity) {
-		this.quantity = quantity;
-	}
-
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append(this.getProduct() + "\t x \t" + this.getQuantity());
-
-		return sb.toString();
-	}
 }
