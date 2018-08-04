@@ -1,6 +1,6 @@
 buildscript {
 	ext {
-		springBootVersion = '1.5.13.RELEASE'
+		springBootVersion = '2.0.4.RELEASE'
 	}
 	repositories {
 		mavenCentral()
@@ -11,23 +11,30 @@ buildscript {
 	}
 }
 
+plugins {
+    id 'net.ltgt.apt' version '0.10'
+}
+
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
 
-version = '0.0.6-SNAPSHOT'
+version = '0.0.8-SNAPSHOT'
 sourceCompatibility = 1.8
 
 repositories {
 	mavenCentral()
 }
 
-
 dependencies {
-	compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '1.5.13.RELEASE'
-	compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '1.5.13.RELEASE'
-	compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '1.5.13.RELEASE'
-	compile group: 'org.springframework.boot', name: 'spring-boot-devtools', version: '1.5.13.RELEASE'
+	compileOnly 'org.projectlombok:lombok:1.18.2'
+	apt "org.projectlombok:lombok:1.18.2"
+	
+	compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa'
+	compile group: 'org.springframework.boot', name: 'spring-boot-starter-web'
+	compile group: 'org.springframework.boot', name: 'spring-boot-starter-security'
+	compile group: 'org.springframework.boot', name: 'spring-boot-devtools'
 	compile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.0'
 	compile group: 'org.springframework', name: 'spring-context-support', version: '4.3.18.RELEASE'
 	compile group: 'commons-lang', name: 'commons-lang', version: '2.6'
@@ -35,6 +42,6 @@ dependencies {
 	compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.9.6'
 	compile group: 'org.modelmapper', name: 'modelmapper', version: '2.1.0'
 	compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.11'
-	testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '1.5.13.RELEASE'
+	testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
 	testCompile group: 'org.mockito', name: 'mockito-core', version: '2.18.3'
 }
