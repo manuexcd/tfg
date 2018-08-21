@@ -37,7 +37,7 @@ public class ImageManagerImp implements ImageManager {
 
 	@Override
 	public ResponseEntity<Image> getImage(long id) {
-		Image image = images.findOne(id);
+		Image image = images.findById(id).get();
 
 		if (image != null)
 			return new ResponseEntity<>(image, HttpStatus.OK);
@@ -54,10 +54,10 @@ public class ImageManagerImp implements ImageManager {
 
 	@Override
 	public ResponseEntity<Image> deleteImage(long id) {
-		Image image = images.findOne(id);
+		Image image = images.findById(id).get();
 
 		if (image != null) {
-			images.delete(id);
+			images.delete(image);
 			return new ResponseEntity<>(image, HttpStatus.OK);
 		} else
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);

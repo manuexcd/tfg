@@ -20,24 +20,24 @@ public class OrderLineManagerImp implements OrderLineManager {
 
 	@Autowired
 	private OrderLineDAO orderLines;
-	
+
 	@Autowired
 	private OrderDAO orders;
-	
+
 	@Autowired
 	private ProductDAO products;
-	
+
 	@PostConstruct
 	public void init() {
-		if(orderLines.findAll().isEmpty()) {
+		if (orderLines.findAll().isEmpty()) {
 			System.out.println("PostConstruct ORDERLINES");
-			orderLines.save(new OrderLine(products.findOne((long) 1), 3, orders.findOne((long) 2)));
-			orderLines.save(new OrderLine(products.findOne((long) 2), 2, orders.findOne((long) 2)));
-			orderLines.save(new OrderLine(products.findOne((long) 1), 1, orders.findOne((long) 3)));
-			orderLines.save(new OrderLine(products.findOne((long) 2), 1, orders.findOne((long) 3)));
-			orderLines.save(new OrderLine(products.findOne((long) 3), 1, orders.findOne((long) 3)));
-			orderLines.save(new OrderLine(products.findOne((long) 4), 5, orders.findOne((long) 4)));
-			
+			orderLines.save(new OrderLine(3, products.findById((long) 1).get(), orders.findById((long) 2).get()));
+			orderLines.save(new OrderLine(2, products.findById((long) 2).get(), orders.findById((long) 2).get()));
+			orderLines.save(new OrderLine(1, products.findById((long) 1).get(), orders.findById((long) 3).get()));
+			orderLines.save(new OrderLine(1, products.findById((long) 2).get(), orders.findById((long) 3).get()));
+			orderLines.save(new OrderLine(1, products.findById((long) 3).get(), orders.findById((long) 3).get()));
+			orderLines.save(new OrderLine(5, products.findById((long) 4).get(), orders.findById((long) 4).get()));
+
 			for (Order order : orders.findAll()) {
 				order.updatePrice();
 				orders.save(order);
@@ -50,14 +50,14 @@ public class OrderLineManagerImp implements OrderLineManager {
 	}
 
 	public OrderLine getOrderLine(long id) {
-		return orderLines.findOne(id);
+		return orderLines.findById(id).get();
 	}
 
 	public OrderLine deleteOrderLine(long id) {
-		OrderLine orderLine = orderLines.findOne(id);
+		OrderLine orderLine = orderLines.findById(id).get();
 
 		if (orderLine != null) {
-			orderLines.delete(id);
+			orderLines.delete(orderLine);
 			return orderLine;
 		} else
 			return null;

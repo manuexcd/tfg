@@ -17,121 +17,52 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import lombok.ToString;
+
 @Entity
 @Table(name = "userTable")
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@Data
+@NoArgsConstructor
+@RequiredArgsConstructor
 public class User implements Serializable {
 
 	private static final long serialVersionUID = 7110275440135292814L;
 	@Id
+	@ToString.Exclude
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "userID", unique = true, nullable = false)
 	private long id;
+	@NonNull
 	@Column(name = "userName", unique = false, nullable = false, length = 20)
 	private String name;
+	@NonNull
 	@Column(name = "userSurname", unique = false, nullable = false, length = 40)
 	private String surname;
+	@NonNull
 	@Column(name = "userAddress", unique = true, nullable = false, length = 120)
 	private String address;
+	@NonNull
 	@Column(name = "userPhone", unique = true, nullable = false, length = 18)
 	private String phone;
+	@NonNull
 	@Column(name = "userEmail", unique = true, nullable = false, length = 50)
 	private String email;
+	@ToString.Exclude
+	@NonNull
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JsonBackReference
 	private Collection<Order> orders;
+	@ToString.Exclude
+	@NonNull
 	@OneToOne
 	private Image userImage;
 
-	public User() {
-
-	}
-
-	public User(String name, String surname, String address, String phone, String email, Collection<Order> orders, Image userImage) {
-		super();
-		this.setName(name);
-		this.setSurname(surname);
-		this.setAddress(address);
-		this.setPhone(phone);
-		this.setEmail(email);
-		this.setOrders(orders);
-		this.setUserImage(userImage);
-	}
-
-	public long getId() {
-		return this.id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
-
-	public Collection<Order> getOrders() {
-		return this.orders;
-	}
-
-	public void setOrders(Collection<Order> orders) {
-		this.orders = orders;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getSurname() {
-		return surname;
-	}
-
-	public void setSurname(String surname) {
-		this.surname = surname;
-	}
-
-	public String getAddress() {
-		return address;
-	}
-
-	public void setAddress(String address) {
-		this.address = address;
-	}
-
-	public String getPhone() {
-		return phone;
-	}
-
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-	
-	public Image getUserImage() {
-		return this.userImage;
-	}
-	
-	public void setUserImage(Image userImage) {
-		this.userImage = userImage;
-	}
-	
 	public String getFullName() {
 		return this.name.concat(" ").concat(this.surname);
-	}
-
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append(this.getName() + " " + this.getSurname() + ".\n");
-		sb.append(this.getAddress() + ".\n");
-		sb.append(this.getPhone());
-
-		return sb.toString();
 	}
 }

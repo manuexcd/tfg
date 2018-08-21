@@ -33,9 +33,9 @@ public class UserManagerImp implements UserManager {
 	public void init() {
 		if (users.findAll().isEmpty()) {
 			System.out.println("PostConstruct USERS");
-			users.save(new User("Manuel", "Lara", "Plaza Algodonales 2 3ºD", "+34 638489260", "manuexcd@gmail.com", null, images.findOne((long) 6)));
-			users.save(new User("Cristiano", "Ronaldo", "Estadio Santiago Bernabéu", "+34 000000002", "CR7@gmail.com", null, images.findOne((long) 4)));
-			users.save(new User("Lionel", "Messi", "Estadio Nou Camp", "+34 000000003", "leomessi@gmail.com", null, images.findOne((long) 5)));
+			users.save(new User("Manuel", "Lara", "Plaza Algodonales 2 3ºD", "+34 638489260", "manuexcd@gmail.com", null, images.findById((long) 6).get()));
+			users.save(new User("Cristiano", "Ronaldo", "Estadio Santiago Bernabéu", "+34 000000002", "CR7@gmail.com", null, images.findById((long) 4).get()));
+			users.save(new User("Lionel", "Messi", "Estadio Nou Camp", "+34 000000003", "leomessi@gmail.com", null, images.findById((long) 5).get()));
 		}
 	}
 
@@ -44,7 +44,7 @@ public class UserManagerImp implements UserManager {
 	}
 
 	public Collection<Order> getOrders(long id) throws UserNotFoundException {
-		User user = users.findOne(id);
+		User user = users.findById(id).get();
 
 		if (user != null)
 			return user.getOrders();
@@ -53,7 +53,7 @@ public class UserManagerImp implements UserManager {
 	}
 
 	public User getUser(long id) {
-		User user = users.findOne(id);
+		User user = users.findById(id).get();
 
 		if (user != null)
 			return user;
@@ -77,14 +77,14 @@ public class UserManagerImp implements UserManager {
 	}
 
 	public User addUser(User user) throws DuplicateUserException {
-		if (!users.exists(user.getId())) {
+		if (!users.existsById(user.getId())) {
 			return users.save(user);
 		} else
 			throw new DuplicateUserException();
 	}
 
 	public ResponseEntity<Order> addOrder(long id) throws UserNotFoundException {
-		User user = users.findOne(id);
+		User user = users.findById(id).get();
 		Order order = new Order(new Date(), user);
 
 		if (user != null) {
@@ -96,10 +96,10 @@ public class UserManagerImp implements UserManager {
 	}
 
 	public User deleteUser(long id) {
-		User user = users.findOne(id);
+		User user = users.findById(id).get();
 
 		if (user != null) {
-			users.delete(id);
+			users.delete(user);
 			return user;
 		} else
 			return null;
