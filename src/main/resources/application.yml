@@ -1,11 +1,7 @@
-datasource:
-    url: jdbc:hsqldb:mem:dataSource
-    username: sa
-    password:
----
 spring:
+  application:
+    name: tfg
   jersey.type: filter
-  profiles.active: local
   jpa:
     hibernate:
       ddl-auto: update
@@ -14,7 +10,6 @@ spring:
     url: jdbc:mysql://localhost:3306/tfg?autoReconnect=true&useSSL=false&serverTimezone=UTC
     username: manuexcd
     password: contrasena
----
 server:
   port: 8443
   ssl:
@@ -22,3 +17,21 @@ server:
     key-password: password
     key-store: classpath:keystore.jks
     key-store-password: password
+datasource:
+    url: jdbc:hsqldb:mem:dataSource
+    username: sa
+    password:
+---
+spring:
+  profiles: docker
+  datasource:
+    url: jdbc:mysql://mysql:3306/tfg?autoReconnect=true&useSSL=false&serverTimezone=UTC
+    username: manuexcd
+    password: contrasena
+---
+spring:
+  profiles: kubernetes
+  datasource:
+    url: jdbc:mysql://mysql:3306/tfg?autoReconnect=true&useSSL=false&serverTimezone=UTC
+    username: manuexcd
+    password: contrasena
