@@ -8,7 +8,7 @@ USER java
 COPY *.jar /opt/app.jar
 
 # Puerto a exponer
-EXPOSE 8085
+EXPOSE 8443
 
 # Ejecutamos la aplicación al iniciar el contenedor
 ENTRYPOINT ["/usr/bin/java"]
