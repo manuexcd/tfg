@@ -35,8 +35,8 @@ public class UserManagerImp implements UserManager {
 	public void init() {
 		if (users.findAll().isEmpty()) {
 			System.out.println("PostConstruct USERS");
-			users.save(new User("Manuel", "Lara", "Plaza Algodonales 2 3ºD", "+34 638489260", "manuexcd@gmail.com", null, images.findById((long) 6).get(), "pass", "ROLE_ADMIN"));
-			users.save(new User("Cristiano", "Ronaldo", "Estadio Santiago Bernabéu", "+34 000000002", "CR7@gmail.com", null, images.findById((long) 4).get(), "pass", "ROLE_USER"));
+			users.save(new User("Manuel", "Lara", "Plaza Algodonales 2 3ÂºD", "+34 638489260", "manuexcd@gmail.com", null, images.findById((long) 6).get(), "pass", "ROLE_ADMIN"));
+			users.save(new User("Cristiano", "Ronaldo", "Estadio Santiago BernabÃ©u", "+34 000000002", "CR7@gmail.com", null, images.findById((long) 4).get(), "pass", "ROLE_USER"));
 			users.save(new User("Lionel", "Messi", "Estadio Nou Camp", "+34 000000003", "leomessi@gmail.com", null, images.findById((long) 5).get(), "pass", "ROLE_USER"));
 		}
 	}

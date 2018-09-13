@@ -26,8 +26,8 @@ public class ProductManagerImp implements ProductManager {
 	public void init() {
 		if (products.findAll().isEmpty()) {
 			products.save(new Product("PlayStation 4", "PlayStation 4 Slim representa una consola con 500 GB. Es un regalo adecuado en cualquier momento.", 299.99, 20, images.findById((long) 1).get()));
-			products.save(new Product("Kindle Paperwhite", "El e-reader Kindle Paperwhite est· especialmente diseÒado para leer. Disfruta de tu pasiÛn por la lectura sin molestas interrupciones como alertas de e-mail y notificaciones.", 21.95, 56, images.findById((long) 2).get()));
-			products.save(new Product("Bosch Tassimo Suny", "Cafetera multibebidas autom·tica de c·psulas con sistema SmartStart, color azul pacÌfico", 39.00, 123, images.findById((long) 3).get()));
+			products.save(new Product("Kindle Paperwhite", "El e-reader Kindle Paperwhite est√° especialmente dise√±ado para leer. Disfruta de tu pasi√≥n por la lectura sin molestas interrupciones como alertas de e-mail y notificaciones.", 21.95, 56, images.findById((long) 2).get()));
+			products.save(new Product("Bosch Tassimo Suny", "Cafetera multibebidas autom√°tica de c√°psulas con sistema SmartStart, color azul pac√≠fico", 39.00, 123, images.findById((long) 3).get()));
 			products.save(new Product("ProductFour", "Product four description", 45.50, 200, images.findById((long) 4).get()));
 			products.save(new Product("ProductFive", "Product five description", 20, 10, images.findById((long) 5).get()));
 		}
