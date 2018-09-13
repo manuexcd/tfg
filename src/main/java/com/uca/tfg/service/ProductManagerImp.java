@@ -25,11 +25,11 @@ public class ProductManagerImp implements ProductManager {
 	@PostConstruct
 	public void init() {
 		if (products.findAll().isEmpty()) {
-			products.save(new Product("PlayStation 4", "PlayStation 4 Slim representa una consola con 500 GB. Es un regalo adecuado en cualquier momento.", 299.99, 20, images.findById((long) 1).get()));
-			products.save(new Product("Kindle Paperwhite", "El e-reader Kindle Paperwhite está especialmente diseñado para leer. Disfruta de tu pasión por la lectura sin molestas interrupciones como alertas de e-mail y notificaciones.", 21.95, 56, images.findById((long) 2).get()));
-			products.save(new Product("Bosch Tassimo Suny", "Cafetera multibebidas automática de cápsulas con sistema SmartStart, color azul pacífico", 39.00, 123, images.findById((long) 3).get()));
-			products.save(new Product("ProductFour", "Product four description", 45.50, 200, images.findById((long) 4).get()));
-			products.save(new Product("ProductFive", "Product five description", 20, 10, images.findById((long) 5).get()));
+			products.save(new Product("PlayStation 4", "PlayStation 4 Slim representa una consola con 500 GB. Es un regalo adecuado en cualquier momento.", 299.99, 20, images.findById((long) 1).orElse(null)));
+			products.save(new Product("Kindle Paperwhite", "El e-reader Kindle Paperwhite está especialmente diseñado para leer. Disfruta de tu pasión por la lectura sin molestas interrupciones como alertas de e-mail y notificaciones.", 21.95, 56, images.findById((long) 2).orElse(null)));
+			products.save(new Product("Bosch Tassimo Suny", "Cafetera multibebidas automática de cápsulas con sistema SmartStart, color azul pacífico", 39.00, 123, images.findById((long) 3).orElse(null)));
+			products.save(new Product("ProductFour", "Product four description", 45.50, 200, images.findById((long) 4).orElse(null)));
+			products.save(new Product("ProductFive", "Product five description", 20, 10, images.findById((long) 5).orElse(null)));
 		}
 	}
 
@@ -65,7 +65,7 @@ public class ProductManagerImp implements ProductManager {
 
 	@Override
 	public Product getProduct(long id) {
-		return products.findById(id).get();
+		return products.findById(id).orElse(null);
 	}
 	
 	@Override
@@ -84,7 +84,7 @@ public class ProductManagerImp implements ProductManager {
 
 	@Override
 	public Product deleteProduct(long id) {
-		Product product = products.findById(id).get();
+		Product product = products.findById(id).orElse(null);
 
 		if (product != null) {
 			products.delete(product);

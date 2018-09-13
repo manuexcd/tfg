@@ -29,9 +29,9 @@ public class OrderLineController {
 	public ResponseEntity<OrderLine> getOneOrderLine(@PathVariable long id) {
 		OrderLine orderLine = orderLineManager.getOrderLine(id);
 		if (orderLine != null)
-			return new ResponseEntity<OrderLine>(orderLine, HttpStatus.OK);
+			return new ResponseEntity<>(orderLine, HttpStatus.OK);
 		else
-			return new ResponseEntity<OrderLine>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
@@ -39,8 +39,8 @@ public class OrderLineController {
 		OrderLine orderLine = orderLineManager.getOrderLine(id);
 		if (orderLine != null) {
 			orderLineManager.deleteOrderLine(id);
-			return new ResponseEntity<OrderLine>(orderLine, HttpStatus.OK);
+			return new ResponseEntity<>(orderLine, HttpStatus.OK);
 		} else
-			return new ResponseEntity<OrderLine>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 }

@@ -33,5 +33,5 @@ public class Image implements Serializable {
 	private long id;
 	@NonNull
 	@Column(name = "imageUrl", unique = true, nullable = true)
-	private String url;;
+	private String url;
 }

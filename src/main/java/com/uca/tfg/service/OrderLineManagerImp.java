@@ -30,13 +30,12 @@ public class OrderLineManagerImp implements OrderLineManager {
 	@PostConstruct
 	public void init() {
 		if(orderLines.findAll().isEmpty()) {
-			System.out.println("PostConstruct ORDERLINES");
-			orderLines.save(new OrderLine(products.findById((long) 1).get(), 3, orders.findById((long) 2).get()));
-			orderLines.save(new OrderLine(products.findById((long) 2).get(), 2, orders.findById((long) 2).get()));
-			orderLines.save(new OrderLine(products.findById((long) 1).get(), 1, orders.findById((long) 3).get()));
-			orderLines.save(new OrderLine(products.findById((long) 2).get(), 1, orders.findById((long) 3).get()));
-			orderLines.save(new OrderLine(products.findById((long) 3).get(), 1, orders.findById((long) 3).get()));
-			orderLines.save(new OrderLine(products.findById((long) 4).get(), 5, orders.findById((long) 4).get()));
+			orderLines.save(new OrderLine(products.findById((long) 1).orElse(null), 3, orders.findById((long) 2).orElse(null)));
+			orderLines.save(new OrderLine(products.findById((long) 2).orElse(null), 2, orders.findById((long) 2).orElse(null)));
+			orderLines.save(new OrderLine(products.findById((long) 1).orElse(null), 1, orders.findById((long) 3).orElse(null)));
+			orderLines.save(new OrderLine(products.findById((long) 2).orElse(null), 1, orders.findById((long) 3).orElse(null)));
+			orderLines.save(new OrderLine(products.findById((long) 3).orElse(null), 1, orders.findById((long) 3).orElse(null)));
+			orderLines.save(new OrderLine(products.findById((long) 4).orElse(null), 5, orders.findById((long) 4).orElse(null)));
 			
 			for (Order order : orders.findAll()) {
 				order.updatePrice();
@@ -50,11 +49,11 @@ public class OrderLineManagerImp implements OrderLineManager {
 	}
 
 	public OrderLine getOrderLine(long id) {
-		return orderLines.findById(id).get();
+		return orderLines.findById(id).orElse(null);
 	}
 
 	public OrderLine deleteOrderLine(long id) {
-		OrderLine orderLine = orderLines.findById(id).get();
+		OrderLine orderLine = orderLines.findById(id).orElse(null);
 
 		if (orderLine != null) {
 			orderLines.delete(orderLine);

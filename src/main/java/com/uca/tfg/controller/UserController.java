@@ -49,7 +49,7 @@ public class UserController {
 	public ResponseEntity<User> getUser(@PathVariable long id) {
 		User user = userManager.getUser(id);
 		if (user != null)
-			return new ResponseEntity<User>(user, HttpStatus.OK);
+			return new ResponseEntity<>(user, HttpStatus.OK);
 		else
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
@@ -58,7 +58,7 @@ public class UserController {
 	public ResponseEntity<User> getUserByEmail(@PathVariable String email) {
 		User user = userManager.getUserByEmail(email);
 		if (user != null)
-			return new ResponseEntity<User>(user, HttpStatus.OK);
+			return new ResponseEntity<>(user, HttpStatus.OK);
 		else
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
@@ -84,7 +84,7 @@ public class UserController {
 	public ResponseEntity<User> deleteUser(@PathVariable long id) {
 		User user = userManager.getUser(id);
 		if (user != null)
-			return new ResponseEntity<User>(user, HttpStatus.OK);
+			return new ResponseEntity<>(user, HttpStatus.OK);
 		else
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}

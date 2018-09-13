@@ -30,14 +30,16 @@ public class UserManagerImp implements UserManager {
 
 	@Autowired
 	private ImageDAO images;
-	
+
 	@PostConstruct
 	public void init() {
 		if (users.findAll().isEmpty()) {
-			System.out.println("PostConstruct USERS");
-			users.save(new User("Manuel", "Lara", "Plaza Algodonales 2 3ºD", "+34 638489260", "manuexcd@gmail.com", null, images.findById((long) 6).get(), "pass", "ROLE_ADMIN"));
-			users.save(new User("Cristiano", "Ronaldo", "Estadio Santiago Bernabéu", "+34 000000002", "CR7@gmail.com", null, images.findById((long) 4).get(), "pass", "ROLE_USER"));
-			users.save(new User("Lionel", "Messi", "Estadio Nou Camp", "+34 000000003", "leomessi@gmail.com", null, images.findById((long) 5).get(), "pass", "ROLE_USER"));
+			users.save(new User("Manuel", "Lara", "Plaza Algodonales 2 3ºD", "+34 638489260", "manuexcd@gmail.com",
+					null, images.findById((long) 6).orElse(null), "pass", "ROLE_ADMIN"));
+			users.save(new User("Cristiano", "Ronaldo", "Estadio Santiago Bernabéu", "+34 000000002", "CR7@gmail.com",
+					null, images.findById((long) 4).orElse(null), "pass", "ROLE_USER"));
+			users.save(new User("Lionel", "Messi", "Estadio Nou Camp", "+34 000000003", "leomessi@gmail.com", null,
+					images.findById((long) 5).orElse(null), "pass", "ROLE_USER"));
 		}
 	}
 
@@ -54,10 +56,10 @@ public class UserManagerImp implements UserManager {
 
 	private boolean emailExist(String email) {
 		User user = users.findByEmail(email);
-		if (user != null) {
+		if (user != null)
 			return true;
-		}
-		return false;
+		else
+			return false;
 	}
 
 	public Collection<User> getAllUsers() {
@@ -65,30 +67,18 @@ public class UserManagerImp implements UserManager {
 	}
 
 	public Collection<Order> getOrders(long id) throws UserNotFoundException {
-		User user = users.findById(id).get();
-
-		if (user != null)
-			return user.getOrders();
+		if (users.findById(id).isPresent())
+			return users.findById(id).orElse(null).getOrders();
 		else
 			throw new UserNotFoundException();
 	}
 
 	public User getUser(long id) {
-		User user = users.findById(id).get();
-
-		if (user != null)
-			return user;
-		else
-			return null;
+		return users.findById(id).orElse(null);
 	}
 
 	public User getUserByEmail(String email) {
-		User user = users.findByEmail(email);
-
-		if (user != null)
-			return user;
-		else
-			return null;
+		return users.findByEmail(email);
 	}
 
 	public List<User> getUsersByParam(String param) {
@@ -105,10 +95,11 @@ public class UserManagerImp implements UserManager {
 	}
 
 	public ResponseEntity<Order> addOrder(long id) throws UserNotFoundException {
-		User user = users.findById(id).get();
-		Order order = new Order(new Timestamp(System.currentTimeMillis()), user);
+		User user = null;
 
-		if (user != null) {
+		if (users.findById(id).isPresent()) {
+			user = users.findById(id).orElse(null);
+			Order order = new Order(new Timestamp(System.currentTimeMillis()), user);
 			user.getOrders().add(order);
 			users.save(user);
 			return new ResponseEntity<>(order, HttpStatus.OK);
@@ -117,9 +108,8 @@ public class UserManagerImp implements UserManager {
 	}
 
 	public User deleteUser(long id) {
-		User user = users.findById(id).get();
-
-		if (user != null) {
+		if (users.findById(id).isPresent()) {
+			User user = users.findById(id).orElse(null);
 			users.delete(user);
 			return user;
 		} else

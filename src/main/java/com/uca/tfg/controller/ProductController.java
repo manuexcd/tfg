@@ -56,7 +56,7 @@ public class ProductController {
 	public ResponseEntity<Product> getProduct(@PathVariable long id) {
 		Product product = productManager.getProduct(id);
 		if (product != null)
-			return new ResponseEntity<Product>(product, HttpStatus.OK);
+			return new ResponseEntity<>(product, HttpStatus.OK);
 		else
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
@@ -78,7 +78,7 @@ public class ProductController {
 		Product product = productManager.getProduct(id);
 		if (product != null) {
 			productManager.deleteProduct(id);
-			return new ResponseEntity<Product>(product, HttpStatus.OK);
+			return new ResponseEntity<>(product, HttpStatus.OK);
 		} else
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}

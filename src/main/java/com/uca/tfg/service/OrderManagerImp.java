@@ -40,11 +40,10 @@ public class OrderManagerImp implements OrderManager {
 	@PostConstruct
 	public void init() {
 		if (orders.findAll().isEmpty()) {
-			System.out.println("PostConstruct ORDERS");
-			orders.save(new Order(new Timestamp(System.currentTimeMillis() - 1000), users.findById((long) 1).get()));
-			orders.save(new Order(new Timestamp(System.currentTimeMillis() - 2500), users.findById((long) 1).get()));
-			orders.save(new Order(new Timestamp(System.currentTimeMillis() - 5000), users.findById((long) 2).get()));
-			orders.save(new Order(new Timestamp(System.currentTimeMillis() - 10000), users.findById((long) 3).get()));
+			orders.save(new Order(new Timestamp(System.currentTimeMillis() - 1000), users.findById((long) 1).orElse(null)));
+			orders.save(new Order(new Timestamp(System.currentTimeMillis() - 2500), users.findById((long) 1).orElse(null)));
+			orders.save(new Order(new Timestamp(System.currentTimeMillis() - 5000), users.findById((long) 2).orElse(null)));
+			orders.save(new Order(new Timestamp(System.currentTimeMillis() - 10000), users.findById((long) 3).orElse(null)));
 		}
 	}
 
@@ -61,17 +60,17 @@ public class OrderManagerImp implements OrderManager {
 	}
 	
 	public Order getOrder(long id) {
-		return orders.findById(id).get();
+		return orders.findById(id).orElse(null);
 	}
 	
 	public Collection<Order> getOrdersByUser(long userId) {
-		User user = users.findById(userId).get();
+		User user = users.findById(userId).orElse(null);
 		
 		return orders.findByUser(user);
 	}
 
 	public Collection<OrderLine> getOrderLines(long id) throws OrderNotFoundException {
-		Order order = orders.findById(id).get();
+		Order order = orders.findById(id).orElse(null);
 
 		if (order != null)
 			return order.getOrderLines();
@@ -81,7 +80,7 @@ public class OrderManagerImp implements OrderManager {
 
 	public OrderLine addOrderLine(long id, long idProduct, int n) throws Exception {
 		Order order = orders.getOne(id);
-		Product product = products.findById(idProduct).get();
+		Product product = products.findById(idProduct).orElse(null);
 		if (order != null) {
 			if (product != null) {
 				if (product.getStockAvailable() >= n) {
@@ -103,7 +102,7 @@ public class OrderManagerImp implements OrderManager {
 	}
 
 	public Order deleteOrder(long id) {
-		Order order = orders.findById(id).get();
+		Order order = orders.findById(id).orElse(null);
 
 		if (order != null) {
 			orders.delete(order);

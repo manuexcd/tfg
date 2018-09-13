@@ -18,7 +18,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) {
         com.uca.tfg.model.User applicationUser = users.findByEmail(username);
         if (applicationUser == null) {
             throw new UsernameNotFoundException(username);

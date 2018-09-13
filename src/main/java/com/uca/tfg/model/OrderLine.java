@@ -1,8 +1,6 @@
 package com.uca.tfg.model;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
-import java.util.Collection;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

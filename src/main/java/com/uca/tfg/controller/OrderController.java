@@ -48,7 +48,7 @@ public class OrderController {
 		Order order = orderManager.getOrder(id);
 
 		if (order != null)
-			return new ResponseEntity<Order>(order, HttpStatus.OK);
+			return new ResponseEntity<>(order, HttpStatus.OK);
 		else
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
@@ -66,7 +66,7 @@ public class OrderController {
 
 		if (order != null) {
 			orderManager.deleteOrder(id);
-			return new ResponseEntity<Order>(order, HttpStatus.OK);
+			return new ResponseEntity<>(order, HttpStatus.OK);
 		} else
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
