@@ -1,9 +1,6 @@
 package com.uca.tfg.service;
 
-import java.sql.Timestamp;
 import java.util.Collection;
-
-import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.DependsOn;
@@ -13,9 +10,9 @@ import com.uca.tfg.dao.OrderDAO;
 import com.uca.tfg.dao.OrderLineDAO;
 import com.uca.tfg.dao.ProductDAO;
 import com.uca.tfg.dao.UserDAO;
-import com.uca.tfg.exceptions.NoStockException;
-import com.uca.tfg.exceptions.OrderNotFoundException;
-import com.uca.tfg.exceptions.ProductNotFoundException;
+import com.uca.tfg.exception.NoStockException;
+import com.uca.tfg.exception.OrderNotFoundException;
+import com.uca.tfg.exception.ProductNotFoundException;
 import com.uca.tfg.model.Order;
 import com.uca.tfg.model.OrderLine;
 import com.uca.tfg.model.Product;
@@ -36,16 +33,6 @@ public class OrderManagerImp implements OrderManager {
 
 	@Autowired
 	private UserDAO users;
-
-	@PostConstruct
-	public void init() {
-		if (orders.findAll().isEmpty()) {
-			orders.save(new Order(new Timestamp(System.currentTimeMillis() - 1000), users.findById((long) 1).orElse(null)));
-			orders.save(new Order(new Timestamp(System.currentTimeMillis() - 2500), users.findById((long) 1).orElse(null)));
-			orders.save(new Order(new Timestamp(System.currentTimeMillis() - 5000), users.findById((long) 2).orElse(null)));
-			orders.save(new Order(new Timestamp(System.currentTimeMillis() - 10000), users.findById((long) 3).orElse(null)));
-		}
-	}
 
 	public Collection<Order> getAllOrders() {
 		return orders.findAll();
@@ -78,7 +65,7 @@ public class OrderManagerImp implements OrderManager {
 			throw new OrderNotFoundException();
 	}
 
-	public OrderLine addOrderLine(long id, long idProduct, int n) throws Exception {
+	public OrderLine addOrderLine(long id, long idProduct, int n) throws NoStockException, ProductNotFoundException, OrderNotFoundException {
 		Order order = orders.getOne(id);
 		Product product = products.findById(idProduct).orElse(null);
 		if (order != null) {

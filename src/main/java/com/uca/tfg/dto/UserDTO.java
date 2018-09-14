@@ -1,27 +1,18 @@
 package com.uca.tfg.dto;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@RequiredArgsConstructor
 public class UserDTO {
+	@NonNull
 	private String username;
+	@NonNull
 	private String password;
-	
-	public UserDTO(String username, String password) {
-		this.setUsername(username);
-		this.setPassword(password);
-	}
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
 }

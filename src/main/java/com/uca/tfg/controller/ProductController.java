@@ -64,7 +64,7 @@ public class ProductController {
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	@ResponseStatus(HttpStatus.OK)
 	public Product updateProduct(@RequestBody Product product) {
-		return productManager.updateProduct(product);
+		return productManager.addProduct(product);
 	}
 
 	@RequestMapping(method = RequestMethod.POST)

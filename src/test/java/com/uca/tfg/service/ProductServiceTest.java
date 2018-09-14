@@ -16,6 +16,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.uca.tfg.model.Product;
 
 @RunWith(SpringRunner.class)
+//@AutoConfigureTestDatabase(replace = Replace.NONE)
 public class ProductServiceTest {
 	
 	@MockBean

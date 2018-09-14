@@ -3,8 +3,8 @@ package com.uca.tfg.service;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
-import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +13,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.uca.tfg.dao.ImageDAO;
 import com.uca.tfg.dao.UserDAO;
-import com.uca.tfg.exceptions.DuplicateUserException;
-import com.uca.tfg.exceptions.EmailExistsException;
-import com.uca.tfg.exceptions.UserNotFoundException;
+import com.uca.tfg.exception.DuplicateUserException;
+import com.uca.tfg.exception.EmailExistsException;
+import com.uca.tfg.exception.UserNotFoundException;
 import com.uca.tfg.model.Order;
 import com.uca.tfg.model.User;
 
@@ -27,21 +26,6 @@ public class UserManagerImp implements UserManager {
 
 	@Autowired
 	private UserDAO users;
-
-	@Autowired
-	private ImageDAO images;
-
-	@PostConstruct
-	public void init() {
-		if (users.findAll().isEmpty()) {
-			users.save(new User("Manuel", "Lara", "Plaza Algodonales 2 3ºD", "+34 638489260", "manuexcd@gmail.com",
-					null, images.findById((long) 6).orElse(null), "pass", "ROLE_ADMIN"));
-			users.save(new User("Cristiano", "Ronaldo", "Estadio Santiago Bernabéu", "+34 000000002", "CR7@gmail.com",
-					null, images.findById((long) 4).orElse(null), "pass", "ROLE_USER"));
-			users.save(new User("Lionel", "Messi", "Estadio Nou Camp", "+34 000000003", "leomessi@gmail.com", null,
-					images.findById((long) 5).orElse(null), "pass", "ROLE_USER"));
-		}
-	}
 
 	@Transactional
 	@Override
@@ -54,12 +38,9 @@ public class UserManagerImp implements UserManager {
 		return users.save(user);
 	}
 
-	private boolean emailExist(String email) {
+	public boolean emailExist(String email) {
 		User user = users.findByEmail(email);
-		if (user != null)
-			return true;
-		else
-			return false;
+		return users.existsById(user.getId());
 	}
 
 	public Collection<User> getAllUsers() {
@@ -67,8 +48,9 @@ public class UserManagerImp implements UserManager {
 	}
 
 	public Collection<Order> getOrders(long id) throws UserNotFoundException {
-		if (users.findById(id).isPresent())
-			return users.findById(id).orElse(null).getOrders();
+		Optional<User> optional = users.findById(id); 
+		if (optional.isPresent())
+			return optional.get().getOrders();
 		else
 			throw new UserNotFoundException();
 	}
@@ -95,10 +77,11 @@ public class UserManagerImp implements UserManager {
 	}
 
 	public ResponseEntity<Order> addOrder(long id) throws UserNotFoundException {
+		Optional<User> optional = users.findById(id);
 		User user = null;
 
-		if (users.findById(id).isPresent()) {
-			user = users.findById(id).orElse(null);
+		if (optional.isPresent()) {
+			user = optional.get();
 			Order order = new Order(new Timestamp(System.currentTimeMillis()), user);
 			user.getOrders().add(order);
 			users.save(user);

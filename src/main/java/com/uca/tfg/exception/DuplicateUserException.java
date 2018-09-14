@@ -1,4 +1,4 @@
-package com.uca.tfg.exceptions;
+package com.uca.tfg.exception;
 
 public class DuplicateUserException extends Exception {
 	

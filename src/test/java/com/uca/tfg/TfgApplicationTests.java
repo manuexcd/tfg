@@ -13,4 +13,9 @@ public class TfgApplicationTests {
 	public void contextLoads() {
 	}
 
+	@Test
+	public void main() {
+		TfgApplication.main(new String[] {});
+	}
+
 }

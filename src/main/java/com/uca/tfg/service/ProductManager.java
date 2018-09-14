@@ -19,8 +19,6 @@ public interface ProductManager {
 
 	public Product getProduct(long id);
 	
-	public Product updateProduct(Product product);
-
 	public Product addProduct(Product product);
 
 	public Product deleteProduct(long id);

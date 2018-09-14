@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
 
-import com.uca.tfg.exceptions.DuplicateUserException;
-import com.uca.tfg.exceptions.EmailExistsException;
-import com.uca.tfg.exceptions.UserNotFoundException;
+import com.uca.tfg.exception.DuplicateUserException;
+import com.uca.tfg.exception.EmailExistsException;
+import com.uca.tfg.exception.UserNotFoundException;
 import com.uca.tfg.model.Order;
 import com.uca.tfg.model.User;
 import com.uca.tfg.service.UserManager;

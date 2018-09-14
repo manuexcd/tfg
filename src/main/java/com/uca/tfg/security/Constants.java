@@ -1,5 +1,9 @@
 package com.uca.tfg.security;
+
 public class Constants {
+
+	private Constants() {
+	}
 
 	// Spring Security
 

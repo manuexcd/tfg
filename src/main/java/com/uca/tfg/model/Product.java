@@ -54,6 +54,6 @@ public class Product implements Serializable {
 	private Image productImage;
 
 	public void updateStock(int stock) {
-		this.stockAvailable -= stock;
+		this.stockAvailable += stock;
 	}
 }

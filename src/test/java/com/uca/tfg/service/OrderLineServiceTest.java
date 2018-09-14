@@ -20,7 +20,7 @@ public class OrderLineServiceTest {
 	
 	@MockBean
 	private OrderLineManager service;
-
+	
 	@Test
 	public void testGetAllOrderLines() {
 		given(service.getAllOrderLines()).willReturn(Arrays.asList(new OrderLine()));

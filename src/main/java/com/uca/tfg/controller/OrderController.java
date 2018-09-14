@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.uca.tfg.exceptions.OrderNotFoundException;
+import com.uca.tfg.exception.NoStockException;
+import com.uca.tfg.exception.OrderNotFoundException;
+import com.uca.tfg.exception.ProductNotFoundException;
 import com.uca.tfg.model.Order;
 import com.uca.tfg.model.OrderLine;
 import com.uca.tfg.service.OrderManager;
@@ -27,13 +29,13 @@ public class OrderController {
 	public Collection<Order> getAllOrders() {
 		return orderManager.getAllOrdersByDate();
 	}
-	
+
 	@RequestMapping(value = "/status", method = RequestMethod.GET)
 	public Collection<Order> getAllOrdersByOrderStatus() {
 		return orderManager.getAllOrdersByOrderStatus();
 	}
-	
-	@RequestMapping(value="/user/{userId}", method = RequestMethod.GET)
+
+	@RequestMapping(value = "/user/{userId}", method = RequestMethod.GET)
 	public Collection<Order> getOrdersByUser(@PathVariable long userId) {
 		return orderManager.getOrdersByUser(userId);
 	}
@@ -56,7 +58,7 @@ public class OrderController {
 	@RequestMapping(value = "/{id}/{idProduct}-{n}", method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.CREATED)
 	public OrderLine addOrderLine(@PathVariable long id, @PathVariable long idProduct, @PathVariable int n)
-			throws Exception {
+			throws NoStockException, ProductNotFoundException, OrderNotFoundException {
 		return orderManager.addOrderLine(id, idProduct, n);
 	}
 
