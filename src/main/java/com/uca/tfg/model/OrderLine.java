@@ -28,7 +28,7 @@ import lombok.ToString;
 @RequiredArgsConstructor
 public class OrderLine implements Serializable {
 
-	private static final long serialVersionUID = -4745195410724554377L;
+	private static final long serialVersionUID = 4745195410724554377L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@ToString.Exclude
