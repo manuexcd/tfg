@@ -15,32 +15,32 @@ public class ProductManagerImp implements ProductManager {
 
 	@Autowired
 	private ProductDAO products;
-	
+
 	@Override
 	public Collection<Product> getAllProducts() {
 		return products.findAll();
 	}
-	
+
 	@Override
 	public Collection<Product> getAllProductsOrderByName() {
 		return products.findAllByOrderByName();
 	}
-	
+
 	@Override
 	public Collection<Product> getAllProductsOrderByPrice() {
 		return products.findAllByOrderByPrice();
 	}
-	
+
 	@Override
 	public Collection<Product> getAllProductsOrderByPriceDesc() {
 		return products.findAllByOrderByPriceDesc();
 	}
-	
+
 	@Override
 	public Collection<Product> getAllProductsOrderByStockAvailable() {
 		return products.findAllByOrderByStockAvailable();
 	}
-	
+
 	@Override
 	public Collection<Product> getProductsByParam(String param) {
 		return products.findByParam(param);
@@ -50,7 +50,7 @@ public class ProductManagerImp implements ProductManager {
 	public Product getProduct(long id) {
 		return products.findById(id).orElse(null);
 	}
-	
+
 	@Override
 	public Product addProduct(Product product) {
 		products.save(product);
@@ -59,13 +59,7 @@ public class ProductManagerImp implements ProductManager {
 	}
 
 	@Override
-	public Product deleteProduct(long id) {
-		Product product = products.findById(id).orElse(null);
-
-		if (product != null) {
-			products.delete(product);
-			return product;
-		} else
-			return null;
+	public void deleteProduct(long id) {
+		products.deleteById(id);
 	}
 }

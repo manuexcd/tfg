@@ -21,5 +21,5 @@ public interface ProductManager {
 	
 	public Product addProduct(Product product);
 
-	public Product deleteProduct(long id);
+	public void deleteProduct(long id);
 }
