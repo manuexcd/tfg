@@ -10,5 +10,5 @@ public interface OrderLineManager {
 
 	public OrderLine getOrderLine(long id);
 
-	public OrderLine deleteOrderLine(long id);
+	public void deleteOrderLine(long id);
 }

@@ -15,7 +15,7 @@ public class OrderLineManagerImp implements OrderLineManager {
 
 	@Autowired
 	private OrderLineDAO orderLines;
-	
+
 	public Collection<OrderLine> getAllOrderLines() {
 		return orderLines.findAll();
 	}
@@ -24,13 +24,7 @@ public class OrderLineManagerImp implements OrderLineManager {
 		return orderLines.findById(id).orElse(null);
 	}
 
-	public OrderLine deleteOrderLine(long id) {
-		OrderLine orderLine = orderLines.findById(id).orElse(null);
-
-		if (orderLine != null) {
-			orderLines.delete(orderLine);
-			return orderLine;
-		} else
-			return null;
+	public void deleteOrderLine(long id) {
+		orderLines.deleteById(id);
 	}
 }
