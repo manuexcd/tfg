@@ -3,8 +3,6 @@ package com.uca.tfg.service;
 import java.util.Collection;
 import java.util.List;
 
-import org.springframework.http.ResponseEntity;
-
 import com.uca.tfg.exception.DuplicateUserException;
 import com.uca.tfg.exception.EmailExistsException;
 import com.uca.tfg.exception.UserNotFoundException;
@@ -26,9 +24,9 @@ public interface UserManager {
 
 	public User addUser(User user) throws DuplicateUserException;
 
-	public ResponseEntity<Order> addOrder(long id) throws UserNotFoundException;
+	public Order addOrder(long id) throws UserNotFoundException;
 
-	public User deleteUser(long id);
+	public void deleteUser(long id);
 	
 	public boolean emailExist(String email);
 }

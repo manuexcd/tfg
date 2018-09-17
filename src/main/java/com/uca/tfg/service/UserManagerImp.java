@@ -9,8 +9,6 @@ import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.DependsOn;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.uca.tfg.dao.UserDAO;
@@ -76,7 +74,7 @@ public class UserManagerImp implements UserManager {
 			throw new DuplicateUserException();
 	}
 
-	public ResponseEntity<Order> addOrder(long id) throws UserNotFoundException {
+	public Order addOrder(long id) throws UserNotFoundException {
 		Optional<User> optional = users.findById(id);
 		User user = null;
 
@@ -85,17 +83,12 @@ public class UserManagerImp implements UserManager {
 			Order order = new Order(new Timestamp(System.currentTimeMillis()), user);
 			user.getOrders().add(order);
 			users.save(user);
-			return new ResponseEntity<>(order, HttpStatus.OK);
+			return order;
 		} else
 			throw new UserNotFoundException();
 	}
 
-	public User deleteUser(long id) {
-		if (users.findById(id).isPresent()) {
-			User user = users.findById(id).orElse(null);
-			users.delete(user);
-			return user;
-		} else
-			return null;
+	public void deleteUser(long id) {
+			users.deleteById(id);
 	}
 }

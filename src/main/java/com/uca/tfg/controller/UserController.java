@@ -76,16 +76,17 @@ public class UserController {
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.CREATED)
-	public ResponseEntity<Order> addOrder(@PathVariable long id) throws UserNotFoundException {
+	public Order addOrder(@PathVariable long id) throws UserNotFoundException {
 		return userManager.addOrder(id);
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<User> deleteUser(@PathVariable long id) {
 		User user = userManager.getUser(id);
-		if (user != null)
+		if (user != null) {
+			userManager.deleteUser(id);
 			return new ResponseEntity<>(user, HttpStatus.OK);
-		else
+		} else
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 }
