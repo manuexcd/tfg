@@ -24,5 +24,5 @@ public interface OrderManager {
 	
 	public OrderLine addOrderLine(long id, long idProduct, int n) throws NoStockException, ProductNotFoundException, OrderNotFoundException;
 
-	public Order deleteOrder(long id);
+	public void deleteOrder(long id);
 }

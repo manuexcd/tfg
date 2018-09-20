@@ -1,5 +1,6 @@
 package com.uca.tfg.service;
 
+import java.util.Arrays;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,17 +67,20 @@ public class OrderManagerImp implements OrderManager {
 	}
 
 	public OrderLine addOrderLine(long id, long idProduct, int n) throws NoStockException, ProductNotFoundException, OrderNotFoundException {
-		Order order = orders.getOne(id);
+		Order order = orders.findById(id).orElse(null);
 		Product product = products.findById(idProduct).orElse(null);
 		if (order != null) {
 			if (product != null) {
 				if (product.getStockAvailable() >= n) {
-					OrderLine line = new OrderLine(product, n, order);
-					order.getOrderLines().add(line);
-					order.updatePrice();
 					product.updateStock(n);
+					OrderLine line = new OrderLine(product, n, order);
+					if(order.getOrderLines() != null)
+						order.getOrderLines().add(line);
+					else
+						order.setOrderLines(Arrays.asList(line));
+					order.updatePrice();
+					orderLines.saveAndFlush(line);
 					products.save(product);
-					orderLines.save(line);
 					orders.save(order);
 
 					return line;
@@ -88,13 +92,7 @@ public class OrderManagerImp implements OrderManager {
 			throw new OrderNotFoundException();
 	}
 
-	public Order deleteOrder(long id) {
-		Order order = orders.findById(id).orElse(null);
-
-		if (order != null) {
-			orders.delete(order);
-			return order;
-		} else
-			return null;
+	public void deleteOrder(long id) {
+		orders.deleteById(id);
 	}
 }
