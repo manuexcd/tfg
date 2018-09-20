@@ -25,8 +25,8 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain chain)
 			throws IOException, ServletException {
-		String header = req.getHeader(Constants.HEADER_AUTHORIZACION_KEY);
-		if (header == null || !header.startsWith(Constants.TOKEN_BEARER_PREFIX)) {
+		String header = req.getHeader(SecurityConstants.HEADER_AUTHORIZACION_KEY);
+		if (header == null || !header.startsWith(SecurityConstants.TOKEN_BEARER_PREFIX)) {
 			chain.doFilter(req, res);
 			return;
 		}
@@ -36,11 +36,11 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 	}
 
 	private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
-		String token = request.getHeader(Constants.HEADER_AUTHORIZACION_KEY);
+		String token = request.getHeader(SecurityConstants.HEADER_AUTHORIZACION_KEY);
 		if (token != null) {
 			// Se procesa el token y se recupera el usuario.
-			String user = Jwts.parser().setSigningKey(Base64.getEncoder().encodeToString(Constants.SUPER_SECRET_KEY.getBytes()))
-					.parseClaimsJws(token.replace(Constants.TOKEN_BEARER_PREFIX, "")).getBody().getSubject();
+			String user = Jwts.parser().setSigningKey(Base64.getEncoder().encodeToString(SecurityConstants.SUPER_SECRET_KEY.getBytes()))
+					.parseClaimsJws(token.replace(SecurityConstants.TOKEN_BEARER_PREFIX, "")).getBody().getSubject();
 
 			if (user != null) {
 				return new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>());

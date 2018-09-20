@@ -16,6 +16,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.uca.tfg.model.User;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -23,7 +24,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
 	private AuthenticationManager authenticationManager;
-
+	
 	public JWTAuthenticationFilter(AuthenticationManager authenticationManager) {
 		this.authenticationManager = authenticationManager;
 	}
@@ -31,7 +32,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) {
 		try {
-			com.uca.tfg.model.User credenciales = new ObjectMapper().readValue(request.getInputStream(), com.uca.tfg.model.User.class);
+			User credenciales = new ObjectMapper().readValue(request.getInputStream(), User.class);
 
 			return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(credenciales.getEmail(), credenciales.getPassword(), new ArrayList<>()));
 		} catch (IOException e) {
@@ -43,8 +44,8 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication auth) throws IOException, ServletException {
 
 		String token = Jwts.builder().setSubject((auth.getName()))
-				.setExpiration(new Date(System.currentTimeMillis() + Constants.TOKEN_EXPIRATION_TIME))
-				.signWith(SignatureAlgorithm.HS512, Base64.getEncoder().encodeToString(Constants.SUPER_SECRET_KEY.getBytes())).compact();
-		response.addHeader(Constants.HEADER_AUTHORIZACION_KEY, Constants.TOKEN_BEARER_PREFIX + " " + token);
+				.setExpiration(new Date(System.currentTimeMillis() + SecurityConstants.TOKEN_EXPIRATION_TIME))
+				.signWith(SignatureAlgorithm.HS512, Base64.getEncoder().encodeToString(SecurityConstants.SUPER_SECRET_KEY.getBytes())).compact();
+		response.addHeader(SecurityConstants.HEADER_AUTHORIZACION_KEY, SecurityConstants.TOKEN_BEARER_PREFIX + " " + token);
 	}
 }

@@ -1,8 +1,8 @@
 package com.uca.tfg.security;
 
-public class Constants {
+public final class SecurityConstants {
 
-	private Constants() {
+	private SecurityConstants() {
 	}
 
 	// Spring Security

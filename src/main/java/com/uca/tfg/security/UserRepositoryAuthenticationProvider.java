@@ -31,10 +31,10 @@ public class UserRepositoryAuthenticationProvider implements AuthenticationProvi
 		String password = (String) authentication.getCredentials();
 
 		User user = users.findByEmail(username);
-
+		
 		if (user == null)
 			throw new BadCredentialsException("User not found");
-
+		
 		if (!new BCryptPasswordEncoder().matches(password, user.getPassword()))
 			throw new BadCredentialsException("Wrong password");
 		else {
