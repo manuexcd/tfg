@@ -5,11 +5,13 @@ import java.util.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.uca.tfg.model.Product;
@@ -22,37 +24,37 @@ public class ProductController {
 	@Autowired
 	private ProductManager productManager;
 
-	@RequestMapping(method = RequestMethod.GET)
-	public Collection<Product> getAllProducts() {
-		return productManager.getAllProducts();
-	}
-	
-	@RequestMapping(value = "/name", method = RequestMethod.GET)
-	public Collection<Product> getAllProductsOrderByName() {
-		return productManager.getAllProductsOrderByName();
-	}
-	
-	@RequestMapping(value = "/price", method = RequestMethod.GET)
-	public Collection<Product> getAllProductsOrderByPrice() {
-		return productManager.getAllProductsOrderByPrice();
-	}
-	
-	@RequestMapping(value = "/pricedesc", method = RequestMethod.GET)
-	public Collection<Product> getAllProductsOrderByPriceDesc() {
-		return productManager.getAllProductsOrderByPriceDesc();
-	}
-	
-	@RequestMapping(value = "/stock", method = RequestMethod.GET)
-	public Collection<Product> getAllProductsOrderByStockAvailable() {
-		return productManager.getAllProductsOrderByStockAvailable();
-	}
-	
-	@RequestMapping(value = "/search/{param}", method = RequestMethod.GET)
-	public Collection<Product> getProductsByParam(@PathVariable String param) {
-		return productManager.getProductsByParam(param);
+	@GetMapping
+	public ResponseEntity<Collection<Product>> getAllProducts() {
+		return new ResponseEntity<>(productManager.getAllProducts(), HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	@GetMapping(value = "/name")
+	public ResponseEntity<Collection<Product>> getAllProductsOrderByName() {
+		return new ResponseEntity<>(productManager.getAllProductsOrderByName(), HttpStatus.OK);
+	}
+
+	@GetMapping(value = "/price")
+	public ResponseEntity<Collection<Product>> getAllProductsOrderByPrice() {
+		return new ResponseEntity<>(productManager.getAllProductsOrderByPrice(), HttpStatus.OK);
+	}
+
+	@GetMapping(value = "/pricedesc")
+	public ResponseEntity<Collection<Product>> getAllProductsOrderByPriceDesc() {
+		return new ResponseEntity<>(productManager.getAllProductsOrderByPriceDesc(), HttpStatus.OK);
+	}
+
+	@GetMapping(value = "/stock")
+	public ResponseEntity<Collection<Product>> getAllProductsOrderByStockAvailable() {
+		return new ResponseEntity<>(productManager.getAllProductsOrderByStockAvailable(), HttpStatus.OK);
+	}
+
+	@GetMapping(value = "/search/{param}")
+	public ResponseEntity<Collection<Product>> getProductsByParam(@PathVariable String param) {
+		return new ResponseEntity<>(productManager.getProductsByParam(param), HttpStatus.OK);
+	}
+
+	@GetMapping(value = "/{id}")
 	public ResponseEntity<Product> getProduct(@PathVariable long id) {
 		Product product = productManager.getProduct(id);
 		if (product != null)
@@ -61,19 +63,17 @@ public class ProductController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	@ResponseStatus(HttpStatus.OK)
-	public Product updateProduct(@RequestBody Product product) {
-		return productManager.addProduct(product);
+	@PutMapping(value = "/{id}")
+	public ResponseEntity<Product> updateProduct(@RequestBody Product product) {
+		return new ResponseEntity<>(productManager.addProduct(product), HttpStatus.OK);
 	}
 
-	@RequestMapping(method = RequestMethod.POST)
-	@ResponseStatus(HttpStatus.CREATED)
-	public Product addProduct(@RequestBody Product product) {
-		return productManager.addProduct(product);
+	@PostMapping
+	public ResponseEntity<Product> addProduct(@RequestBody Product product) {
+		return new ResponseEntity<>(productManager.addProduct(product), HttpStatus.CREATED);
 	}
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Product> deleteProduct(@PathVariable long id) {
 		Product product = productManager.getProduct(id);
 		if (product != null) {

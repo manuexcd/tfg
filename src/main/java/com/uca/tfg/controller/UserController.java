@@ -5,10 +5,12 @@ import java.util.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
@@ -27,25 +29,12 @@ public class UserController {
 	@Autowired
 	private UserManager userManager;
 
-	@RequestMapping(value = "/registration", method = RequestMethod.POST)
-	@ResponseStatus(HttpStatus.CREATED)
-	public User registerUserAccount(@RequestBody User user, WebRequest request) {
-		User registered = null;
-		try {
-			registered = userManager.registerNewUserAccount(user);
-		} catch (EmailExistsException e) {
-			return null;
-		}
-
-		return registered;
+	@GetMapping
+	public ResponseEntity<Collection<User>> getAllUsers() {
+		return new ResponseEntity<>(userManager.getAllUsers(), HttpStatus.OK);
 	}
 
-	@RequestMapping(method = RequestMethod.GET)
-	public Collection<User> getAllUsers() {
-		return userManager.getAllUsers();
-	}
-
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	@GetMapping(value = "/{id}")
 	public ResponseEntity<User> getUser(@PathVariable long id) {
 		User user = userManager.getUser(id);
 		if (user != null)
@@ -54,7 +43,7 @@ public class UserController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 
-	@RequestMapping(value = "/email/{email}", method = RequestMethod.GET)
+	@GetMapping(value = "/email/{email}")
 	public ResponseEntity<User> getUserByEmail(@PathVariable String email) {
 		User user = userManager.getUserByEmail(email);
 		if (user != null)
@@ -63,24 +52,35 @@ public class UserController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 
-	@RequestMapping(value = "/search/{param}", method = RequestMethod.GET)
-	public Collection<User> getUsersByParam(@PathVariable String param) {
-		return userManager.getUsersByParam(param);
+	@GetMapping(value = "/search/{param}")
+	public ResponseEntity<Collection<User>> getUsersByParam(@PathVariable String param) {
+		return new ResponseEntity<>(userManager.getUsersByParam(param), HttpStatus.OK);
 	}
 
-	@RequestMapping(method = RequestMethod.POST)
+	@PostMapping
+	public ResponseEntity<User> addUser(@RequestBody User user) throws DuplicateUserException {
+		return new ResponseEntity<>(userManager.addUser(user), HttpStatus.CREATED);
+	}
+	
+	@PostMapping(value = "/registration")
 	@ResponseStatus(HttpStatus.CREATED)
-	public User addUser(@RequestBody User user) throws DuplicateUserException {
-		return userManager.addUser(user);
+	public ResponseEntity<User> registerUserAccount(@RequestBody User user, WebRequest request) {
+		User registered = null;
+		try {
+			registered = userManager.registerNewUserAccount(user);
+		} catch (EmailExistsException e) {
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+
+		return new ResponseEntity<>(registered, HttpStatus.CREATED);
 	}
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.POST)
-	@ResponseStatus(HttpStatus.CREATED)
-	public Order addOrder(@PathVariable long id) throws UserNotFoundException {
-		return userManager.addOrder(id);
+	@PostMapping(value = "/{id}")
+	public ResponseEntity<Order> addOrder(@PathVariable long id) throws UserNotFoundException {
+		return new ResponseEntity<>(userManager.addOrder(id), HttpStatus.CREATED);
 	}
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<User> deleteUser(@PathVariable long id) {
 		User user = userManager.getUser(id);
 		if (user != null) {

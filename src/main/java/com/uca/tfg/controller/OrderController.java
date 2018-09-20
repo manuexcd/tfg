@@ -5,10 +5,11 @@ import java.util.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.uca.tfg.exception.NoStockException;
@@ -25,44 +26,50 @@ public class OrderController {
 	@Autowired
 	private OrderManager orderManager;
 
-	@RequestMapping(method = RequestMethod.GET)
-	public Collection<Order> getAllOrders() {
-		return orderManager.getAllOrdersByDate();
+	@GetMapping
+	public ResponseEntity<Collection<Order>> getAllOrders() {
+		return new ResponseEntity<>(orderManager.getAllOrdersByDate(), HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/status", method = RequestMethod.GET)
-	public Collection<Order> getAllOrdersByOrderStatus() {
-		return orderManager.getAllOrdersByOrderStatus();
+	@GetMapping("/status")
+	public ResponseEntity<Collection<Order>> getAllOrdersByOrderStatus() {
+		return new ResponseEntity<>(orderManager.getAllOrdersByOrderStatus(), HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/user/{userId}", method = RequestMethod.GET)
-	public Collection<Order> getOrdersByUser(@PathVariable long userId) {
-		return orderManager.getOrdersByUser(userId);
+	@GetMapping("/user/{userId}")
+	public ResponseEntity<Collection<Order>> getOrdersByUser(@PathVariable long userId) {
+		Collection<Order> orders = orderManager.getOrdersByUser(userId);
+		if (orders != null)
+			return new ResponseEntity<>(orders, HttpStatus.OK);
+		else
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 
-	@RequestMapping(value = "/{id}/lines", method = RequestMethod.GET)
-	public Collection<OrderLine> getOrderLines(@PathVariable long id) throws OrderNotFoundException {
-		return orderManager.getOrderLines(id);
+	@GetMapping("/{id}/lines")
+	public ResponseEntity<Collection<OrderLine>> getOrderLines(@PathVariable long id) throws OrderNotFoundException {
+		Collection<OrderLine> orderLines = orderManager.getOrderLines(id);
+		if (orderLines != null)
+			return new ResponseEntity<>(orderLines, HttpStatus.OK);
+		else
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	@GetMapping("/{id}")
 	public ResponseEntity<Order> getOrder(@PathVariable long id) {
 		Order order = orderManager.getOrder(id);
-
 		if (order != null)
 			return new ResponseEntity<>(order, HttpStatus.OK);
 		else
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 
-	@RequestMapping(value = "/{id}/{idProduct}-{n}", method = RequestMethod.POST)
-	@ResponseStatus(HttpStatus.CREATED)
-	public OrderLine addOrderLine(@PathVariable long id, @PathVariable long idProduct, @PathVariable int n)
-			throws NoStockException, ProductNotFoundException, OrderNotFoundException {
-		return orderManager.addOrderLine(id, idProduct, n);
+	@PostMapping("/{id}/{idProduct}-{n}")
+	public ResponseEntity<OrderLine> addOrderLine(@PathVariable long id, @PathVariable long idProduct,
+			@PathVariable int n) throws NoStockException, ProductNotFoundException, OrderNotFoundException {
+		return new ResponseEntity<>(orderManager.addOrderLine(id, idProduct, n), HttpStatus.CREATED);
 	}
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	@DeleteMapping("/{id}")
 	public ResponseEntity<Order> deleteOrder(@PathVariable long id) {
 		Order order = orderManager.getOrder(id);
 
