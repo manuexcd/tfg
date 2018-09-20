@@ -9,7 +9,7 @@ node {
     git 'https://github.com/manuexcd/tfg'
 
 	stage 'Docker image'
-	sh './gradle clean build buildDocker'
+	sh './gradlew clean build buildDocker'
 	
 	stage 'Docker tag'
 	sh 'docker tag tfg manuexcd/tfg'
