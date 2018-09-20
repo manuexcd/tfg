@@ -1,7 +1,6 @@
 package com.uca.tfg.model;
 
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -20,7 +19,6 @@ import javax.persistence.Table;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -75,17 +73,13 @@ public class User implements Serializable {
 		this.setPassword(new BCryptPasswordEncoder().encode(password));
 	}
 
-	public User(String name, String surname, String address, String phone, String email, Collection<Order> orders, Image userImage, String password, String... roles) {
+	public User(String name, String surname, String address, String phone, String email) {
 		super();
 		this.setName(name);
 		this.setSurname(surname);
 		this.setAddress(address);
 		this.setPhone(phone);
 		this.setEmail(email);
-		this.setOrders(orders);
-		this.setUserImage(userImage);
-		this.setPassword(new BCryptPasswordEncoder().encode(password));
-		this.setRoles(Arrays.asList(roles));
 	}
 
 	public String getFullName() {

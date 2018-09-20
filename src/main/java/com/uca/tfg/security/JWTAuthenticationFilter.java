@@ -16,6 +16,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.uca.tfg.exception.AttemptAuthenticationException;
 import com.uca.tfg.model.User;
 
 import io.jsonwebtoken.Jwts;
@@ -36,7 +37,11 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
 			return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(credenciales.getEmail(), credenciales.getPassword(), new ArrayList<>()));
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			try {
+				throw new AttemptAuthenticationException();
+			} catch (AttemptAuthenticationException e1) {
+				return null;
+			}
 		}
 	}
 

@@ -6,7 +6,6 @@ import static org.junit.Assert.assertNull;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Optional;
 
