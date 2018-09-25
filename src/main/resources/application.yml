@@ -17,15 +17,15 @@ server:
     key-password: password
     key-store: classpath:keystore.jks
     key-store-password: password
-datasource:
-    url: jdbc:hsqldb:mem:dataSource
-    username: sa
-    password:
 ---
 spring:
   profiles: docker
+  jpa:
+    hibernate:
+      ddl-auto: update
+      dialect: org.hibernate.dialect.MySQL5Dialect
   datasource:
-    url: jdbc:mysql://mysql:3306/tfg?autoReconnect=true&useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://mysql:3306/tfg?autoReconnect=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
     username: manuexcd
     password: contrasena
 ---
