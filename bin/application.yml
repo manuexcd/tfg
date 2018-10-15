@@ -1,16 +1,37 @@
-datasource:
-    url: jdbc:hsqldb:mem:dataSource
-    username: sa
-    password:
----
 spring:
+  application:
+    name: tfg
   jersey.type: filter
-  profiles.active: local
   jpa:
     hibernate:
       ddl-auto: update
       dialect: org.hibernate.dialect.MySQL5Dialect
   datasource:
-    url: jdbc:mysql://localhost:3306/tfg?autoReconnect=true&useSSL=false
+    url: jdbc:mysql://localhost:3306/tfg?autoReconnect=true&useSSL=false&serverTimezone=UTC
+    username: manuexcd
+    password: contrasena
+server:
+  port: 8443
+  ssl:
+    enabled: true
+    key-password: password
+    key-store: classpath:keystore.jks
+    key-store-password: password
+---
+spring:
+  profiles: docker
+  jpa:
+    hibernate:
+      ddl-auto: update
+      dialect: org.hibernate.dialect.MySQL5Dialect
+  datasource:
+    url: jdbc:mysql://mysql:3306/tfg?autoReconnect=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    username: manuexcd
+    password: contrasena
+---
+spring:
+  profiles: kubernetes
+  datasource:
+    url: jdbc:mysql://mysql:3306/tfg?autoReconnect=true&useSSL=false&serverTimezone=UTC
     username: manuexcd
     password: contrasena

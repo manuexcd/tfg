@@ -1,9 +1,9 @@
 package com.uca.tfg;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @SpringBootApplication
 public class TfgApplication {
@@ -13,7 +13,7 @@ public class TfgApplication {
 	}
 	
 	@Bean
-	public ModelMapper modelMapper() {
-	    return new ModelMapper();
-	}
+    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 }

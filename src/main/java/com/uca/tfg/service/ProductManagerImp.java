@@ -1,12 +1,17 @@
 package com.uca.tfg.service;
 
 import java.util.Collection;
+import java.util.Optional;
+
+import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Service;
 
+import com.uca.tfg.dao.ImageDAO;
 import com.uca.tfg.dao.ProductDAO;
+import com.uca.tfg.model.Image;
 import com.uca.tfg.model.Product;
 
 @Service("productManager")
@@ -15,6 +20,24 @@ public class ProductManagerImp implements ProductManager {
 
 	@Autowired
 	private ProductDAO products;
+
+	@Autowired
+	private ImageDAO images;
+
+	@PostConstruct
+	public void init() {
+		if (products.findAll().isEmpty()) {
+			Optional<Image> image3 = images.findById((long) 3);
+			Optional<Image> image4 = images.findById((long) 4);
+			Optional<Image> image5 = images.findById((long) 5);
+			if (image3.isPresent())
+				products.save(new Product("PlayStation 4", "PlayStation 4", 300, 100, true, image3.get()));
+			if (image4.isPresent())
+				products.save(new Product("Xbox", "Xbox", 200, 100, true, image4.get()));
+			if (image5.isPresent())
+				products.save(new Product("Nintendo Switch", "Nintendo Switch", 300, 100, true, image5.get()));
+		}
+	}
 
 	@Override
 	public Collection<Product> getAllProducts() {

@@ -73,13 +73,25 @@ public class User implements Serializable {
 		this.setPassword(new BCryptPasswordEncoder().encode(password));
 	}
 
-	public User(String name, String surname, String address, String phone, String email) {
+	public User(String name, String surname, String address, String phone, String email, String password) {
 		super();
 		this.setName(name);
 		this.setSurname(surname);
 		this.setAddress(address);
 		this.setPhone(phone);
 		this.setEmail(email);
+		this.setPassword(new BCryptPasswordEncoder().encode(password));
+	}
+	
+	public User(String name, String surname, String address, String phone, String email, String password, Image image) {
+		super();
+		this.setName(name);
+		this.setSurname(surname);
+		this.setAddress(address);
+		this.setPhone(phone);
+		this.setEmail(email);
+		this.setPassword(new BCryptPasswordEncoder().encode(password));
+		this.setUserImage(image);
 	}
 
 	public String getFullName() {

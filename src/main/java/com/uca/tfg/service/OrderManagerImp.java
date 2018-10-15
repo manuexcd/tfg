@@ -1,7 +1,10 @@
 package com.uca.tfg.service;
 
+import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.Collection;
+
+import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.DependsOn;
@@ -35,25 +38,34 @@ public class OrderManagerImp implements OrderManager {
 	@Autowired
 	private UserDAO users;
 
+	@PostConstruct
+	public void init() {
+		if (orders.findAll().isEmpty()) {
+			orders.save(new Order(new Timestamp(System.currentTimeMillis()), users.findByEmail("manuexcd@gmail.com")));
+			orders.save(
+					new Order(new Timestamp(System.currentTimeMillis()), users.findByEmail("antoniaruiz@gmail.com")));
+		}
+	}
+
 	public Collection<Order> getAllOrders() {
 		return orders.findAll();
 	}
-	
+
 	public Collection<Order> getAllOrdersByOrderStatus() {
 		return orders.findAllByOrderByOrderStatus();
 	}
-	
+
 	public Collection<Order> getAllOrdersByDate() {
 		return orders.findAllByOrderByDate();
 	}
-	
+
 	public Order getOrder(long id) {
 		return orders.findById(id).orElse(null);
 	}
-	
+
 	public Collection<Order> getOrdersByUser(long userId) {
 		User user = users.findById(userId).orElse(null);
-		
+
 		return orders.findByUser(user);
 	}
 
@@ -66,7 +78,8 @@ public class OrderManagerImp implements OrderManager {
 			throw new OrderNotFoundException();
 	}
 
-	public OrderLine addOrderLine(long id, long idProduct, int n) throws NoStockException, ProductNotFoundException, OrderNotFoundException {
+	public OrderLine addOrderLine(long id, long idProduct, int n)
+			throws NoStockException, ProductNotFoundException, OrderNotFoundException {
 		Order order = orders.findById(id).orElse(null);
 		Product product = products.findById(idProduct).orElse(null);
 		if (order != null) {
@@ -74,7 +87,7 @@ public class OrderManagerImp implements OrderManager {
 				if (product.getStockAvailable() >= n) {
 					product.updateStock(n);
 					OrderLine line = new OrderLine(product, n, order);
-					if(order.getOrderLines() != null)
+					if (order.getOrderLines() != null)
 						order.getOrderLines().add(line);
 					else
 						order.setOrderLines(Arrays.asList(line));

@@ -18,7 +18,7 @@ public class UserTest {
 	@Test
 	public void getFullName() {
 		String string = "Prueba";
-		User user = new User(string, string, string, string, string);
+		User user = new User(string, string, string, string, string, string);
 		assertNotNull(user.getFullName());
 	}
 }

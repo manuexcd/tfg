@@ -48,10 +48,18 @@ public class Product implements Serializable {
 	@ToString.Exclude
 	@Column(name = "isVisible", unique = false, nullable = false)
 	private boolean isVisible = true;
-	@NonNull
 	@ToString.Exclude
 	@OneToOne(cascade = CascadeType.MERGE)
 	private Image productImage;
+	
+	public Product(String name, String description, double price, int stockAvailable, boolean isVisible, Image productImage) {
+		this.setName(name);
+		this.setDescription(description);
+		this.setPrice(price);
+		this.setStockAvailable(stockAvailable);
+		this.setVisible(isVisible);
+		this.setProductImage(productImage);
+	}
 
 	public void updateStock(int stock) {
 		this.stockAvailable += stock;

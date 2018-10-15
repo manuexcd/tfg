@@ -1,6 +1,7 @@
 package com.uca.tfg.dao;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -10,6 +11,8 @@ import com.uca.tfg.model.Product;
 
 @Repository("ProductDAO")
 public interface ProductDAO extends JpaRepository<Product, Long>{
+	
+	Optional<Product> findByName(String name);
 
 	List<Product> findAllByOrderByName();
 	

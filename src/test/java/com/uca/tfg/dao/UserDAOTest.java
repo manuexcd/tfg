@@ -26,7 +26,7 @@ public class UserDAOTest {
 	@Before
 	public void setUp() {
 		String string = "Prueba";
-		User user = new User(string, string, string, string, string);
+		User user = new User(string, string, string, string, string, string);
 		user.setPassword("pass");
 		entityManager.persist(user);
 		entityManager.flush();
