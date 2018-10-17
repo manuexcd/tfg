@@ -29,7 +29,7 @@ public class Product implements Serializable {
 
 	private static final long serialVersionUID = 4340552175235204140L;
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@ToString.Exclude
 	@Column(name = "productID", unique = true, nullable = false)
 	private long id;

@@ -3,6 +3,7 @@ package com.uca.tfg.service;
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Optional;
 
 import javax.annotation.PostConstruct;
 
@@ -41,9 +42,12 @@ public class OrderManagerImp implements OrderManager {
 	@PostConstruct
 	public void init() {
 		if (orders.findAll().isEmpty()) {
-			orders.save(new Order(new Timestamp(System.currentTimeMillis()), users.findByEmail("manuexcd@gmail.com")));
-			orders.save(
-					new Order(new Timestamp(System.currentTimeMillis()), users.findByEmail("antoniaruiz@gmail.com")));
+			Optional<User> user1 = users.findById((long) 1);
+			Optional<User> user2 = users.findById((long) 2);
+			if (user1.isPresent())
+				orders.save(new Order(new Timestamp(System.currentTimeMillis()), user1.get()));
+			if (user2.isPresent())
+				orders.save(new Order(new Timestamp(System.currentTimeMillis()), user2.get()));
 		}
 	}
 

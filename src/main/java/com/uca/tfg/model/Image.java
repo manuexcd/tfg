@@ -27,7 +27,7 @@ public class Image implements Serializable {
 
 	private static final long serialVersionUID = 2868430411020089105L;
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@ToString.Exclude
 	@Column(name = "imageID", unique = true, nullable = false)
 	private long id;

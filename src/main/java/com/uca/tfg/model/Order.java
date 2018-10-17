@@ -41,7 +41,7 @@ public class Order implements Serializable {
 
 	private static final long serialVersionUID = 6892693125355139371L;
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@ToString.Exclude
 	@Column(name = "orderID", unique = true, nullable = false)
 	private long id;

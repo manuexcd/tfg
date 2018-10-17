@@ -39,7 +39,7 @@ public class User implements Serializable {
 
 	private static final long serialVersionUID = 7110275440135292814L;
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@ToString.Exclude
 	@Column(name = "userID", unique = true, nullable = false)
 	private long id;
