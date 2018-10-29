@@ -9,20 +9,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Service;
 
-import com.uca.tfg.dao.ImageDAO;
-import com.uca.tfg.dao.ProductDAO;
 import com.uca.tfg.model.Image;
 import com.uca.tfg.model.Product;
+import com.uca.tfg.repository.ImageRepository;
+import com.uca.tfg.repository.ProductRepository;
 
 @Service("productManager")
 @DependsOn("imageManager")
 public class ProductManagerImp implements ProductManager {
 
 	@Autowired
-	private ProductDAO products;
+	private ProductRepository products;
 
 	@Autowired
-	private ImageDAO images;
+	private ImageRepository images;
 
 	@PostConstruct
 	public void init() {

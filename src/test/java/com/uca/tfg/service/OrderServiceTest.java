@@ -16,9 +16,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.uca.tfg.dao.OrderDAO;
-import com.uca.tfg.dao.ProductDAO;
-import com.uca.tfg.dao.UserDAO;
 import com.uca.tfg.exception.NoStockException;
 import com.uca.tfg.exception.OrderNotFoundException;
 import com.uca.tfg.exception.ProductNotFoundException;
@@ -26,19 +23,22 @@ import com.uca.tfg.model.Order;
 import com.uca.tfg.model.OrderLine;
 import com.uca.tfg.model.Product;
 import com.uca.tfg.model.User;
+import com.uca.tfg.repository.OrderRepository;
+import com.uca.tfg.repository.ProductRepository;
+import com.uca.tfg.repository.UserRepository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class OrderServiceTest {
 
 	@MockBean
-	private OrderDAO dao;
+	private OrderRepository dao;
 
 	@MockBean
-	private UserDAO users;
+	private UserRepository users;
 	
 	@MockBean
-	private ProductDAO products;
+	private ProductRepository products;
 
 	@Autowired
 	private OrderManager service;

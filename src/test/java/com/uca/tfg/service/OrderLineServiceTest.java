@@ -16,15 +16,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.uca.tfg.dao.OrderLineDAO;
 import com.uca.tfg.model.OrderLine;
+import com.uca.tfg.repository.OrderLineRepository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class OrderLineServiceTest {
 	
 	@MockBean
-	private OrderLineDAO dao;
+	private OrderLineRepository dao;
 	
 	@Autowired
 	private OrderLineManager service;

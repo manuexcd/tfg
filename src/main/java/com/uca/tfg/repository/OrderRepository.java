@@ -1,4 +1,4 @@
-package com.uca.tfg.dao;
+package com.uca.tfg.repository;
 
 import java.util.List;
 
@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.uca.tfg.model.Order;
 import com.uca.tfg.model.User;
 
-public interface OrderDAO extends JpaRepository<Order, Long>{
+public interface OrderRepository extends JpaRepository<Order, Long>{
 
 	List<Order> findAllByOrderByOrderStatus();
 	

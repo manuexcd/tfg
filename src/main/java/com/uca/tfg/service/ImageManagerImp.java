@@ -7,14 +7,14 @@ import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.uca.tfg.dao.ImageDAO;
 import com.uca.tfg.model.Image;
+import com.uca.tfg.repository.ImageRepository;
 
 @Service("imageManager")
 public class ImageManagerImp implements ImageManager {
 
 	@Autowired
-	private ImageDAO images;
+	private ImageRepository images;
 
 	@PostConstruct
 	public void init() {

@@ -10,26 +10,27 @@ import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.DependsOn;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import com.uca.tfg.dao.ImageDAO;
-import com.uca.tfg.dao.UserDAO;
 import com.uca.tfg.exception.DuplicateUserException;
 import com.uca.tfg.exception.EmailExistsException;
 import com.uca.tfg.exception.UserNotFoundException;
 import com.uca.tfg.model.Image;
 import com.uca.tfg.model.Order;
 import com.uca.tfg.model.User;
+import com.uca.tfg.repository.ImageRepository;
+import com.uca.tfg.repository.UserRepository;
 
 @Service("userManager")
 @DependsOn("imageManager")
 public class UserManagerImp implements UserManager {
 
 	@Autowired
-	private UserDAO users;
+	private UserRepository users;
 
 	@Autowired
-	private ImageDAO images;
+	private ImageRepository images;
 
 	@PostConstruct
 	public void init() {
@@ -61,8 +62,8 @@ public class UserManagerImp implements UserManager {
 		return users.existsById(user.getId());
 	}
 
-	public Collection<User> getAllUsers() {
-		return users.findByOrderByName();
+	public Collection<User> getAllUsers(int page, int pageSize) {
+		return users.findByOrderByName(PageRequest.of(page, pageSize)).getContent();
 	}
 
 	public Collection<Order> getOrders(long id) throws UserNotFoundException {

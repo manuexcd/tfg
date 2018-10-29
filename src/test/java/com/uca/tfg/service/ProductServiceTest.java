@@ -17,15 +17,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.uca.tfg.dao.ProductDAO;
 import com.uca.tfg.model.Product;
+import com.uca.tfg.repository.ProductRepository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class ProductServiceTest {
 	
 	@MockBean
-	private ProductDAO dao;
+	private ProductRepository dao;
 	
 	@Autowired
 	private ProductManager service;

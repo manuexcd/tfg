@@ -1,4 +1,4 @@
-package com.uca.tfg.dao;
+package com.uca.tfg.repository;
 
 import java.util.List;
 import java.util.Optional;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.uca.tfg.model.Product;
 
 @Repository("ProductDAO")
-public interface ProductDAO extends JpaRepository<Product, Long>{
+public interface ProductRepository extends JpaRepository<Product, Long>{
 	
 	Optional<Product> findByName(String name);
 

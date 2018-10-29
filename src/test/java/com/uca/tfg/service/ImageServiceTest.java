@@ -15,15 +15,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.uca.tfg.dao.ImageDAO;
 import com.uca.tfg.model.Image;
+import com.uca.tfg.repository.ImageRepository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class ImageServiceTest {
 	
 	@MockBean
-	private ImageDAO dao;
+	private ImageRepository dao;
 	
 	@Autowired
 	private ImageManager service;

@@ -51,7 +51,7 @@ public class UserControllerTest {
 		user.setAddress("prueba");
 		user.setName("name");
 		user.setSurname("surname");
-		given(service.getAllUsers()).willReturn(Arrays.asList(user));
+		given(service.getAllUsers(1, 1)).willReturn(Arrays.asList(user));
 		mvc.perform(get("/users").contentType(APPLICATION_JSON)).andExpect(status().isOk())
 				.andExpect(content().string(containsString("prueba")));
 	}

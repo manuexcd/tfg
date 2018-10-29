@@ -18,21 +18,23 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.uca.tfg.dao.UserDAO;
 import com.uca.tfg.exception.DuplicateUserException;
 import com.uca.tfg.exception.EmailExistsException;
 import com.uca.tfg.exception.UserNotFoundException;
 import com.uca.tfg.model.Order;
 import com.uca.tfg.model.User;
+import com.uca.tfg.repository.UserRepository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class UserServiceTest {
 
 	@MockBean
-	private UserDAO dao;
+	private UserRepository dao;
 
 	@Autowired
 	private UserManager service;
@@ -59,8 +61,8 @@ public class UserServiceTest {
 
 	@Test
 	public void testGetAllUsers() {
-		given(dao.findAll()).willReturn(Arrays.asList(new User()));
-		assertNotNull(service.getAllUsers());
+		given(dao.findByOrderByName(PageRequest.of(0, 1))).willReturn(Page.empty());
+		assertNotNull(service.getAllUsers(0, 1));
 	}
 
 	@Test
@@ -152,7 +154,7 @@ public class UserServiceTest {
 		given(dao.findById(anyLong())).willReturn(Optional.ofNullable(null));
 		assertNull(service.getUser(anyLong()));
 	}
-	
+
 	@Test
 	public void testDeleteUser() {
 		User user = new User();

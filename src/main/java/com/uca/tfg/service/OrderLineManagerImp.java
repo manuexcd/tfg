@@ -9,25 +9,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Service;
 
-import com.uca.tfg.dao.OrderDAO;
-import com.uca.tfg.dao.OrderLineDAO;
-import com.uca.tfg.dao.ProductDAO;
 import com.uca.tfg.model.Order;
 import com.uca.tfg.model.OrderLine;
 import com.uca.tfg.model.Product;
+import com.uca.tfg.repository.OrderRepository;
+import com.uca.tfg.repository.OrderLineRepository;
+import com.uca.tfg.repository.ProductRepository;
 
 @Service("orderLineManager")
 @DependsOn(value = { "orderManager", "productManager" })
 public class OrderLineManagerImp implements OrderLineManager {
 
 	@Autowired
-	private OrderLineDAO orderLines;
+	private OrderLineRepository orderLines;
 
 	@Autowired
-	private ProductDAO products;
+	private ProductRepository products;
 
 	@Autowired
-	private OrderDAO orders;
+	private OrderRepository orders;
 
 	@PostConstruct
 	public void init() {

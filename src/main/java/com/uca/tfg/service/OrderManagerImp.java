@@ -11,10 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Service;
 
-import com.uca.tfg.dao.OrderDAO;
-import com.uca.tfg.dao.OrderLineDAO;
-import com.uca.tfg.dao.ProductDAO;
-import com.uca.tfg.dao.UserDAO;
 import com.uca.tfg.exception.NoStockException;
 import com.uca.tfg.exception.OrderNotFoundException;
 import com.uca.tfg.exception.ProductNotFoundException;
@@ -22,22 +18,26 @@ import com.uca.tfg.model.Order;
 import com.uca.tfg.model.OrderLine;
 import com.uca.tfg.model.Product;
 import com.uca.tfg.model.User;
+import com.uca.tfg.repository.OrderRepository;
+import com.uca.tfg.repository.OrderLineRepository;
+import com.uca.tfg.repository.ProductRepository;
+import com.uca.tfg.repository.UserRepository;
 
 @Service("orderManager")
 @DependsOn("userManager")
 public class OrderManagerImp implements OrderManager {
 
 	@Autowired
-	private OrderDAO orders;
+	private OrderRepository orders;
 
 	@Autowired
-	private OrderLineDAO orderLines;
+	private OrderLineRepository orderLines;
 
 	@Autowired
-	private ProductDAO products;
+	private ProductRepository products;
 
 	@Autowired
-	private UserDAO users;
+	private UserRepository users;
 
 	@PostConstruct
 	public void init() {

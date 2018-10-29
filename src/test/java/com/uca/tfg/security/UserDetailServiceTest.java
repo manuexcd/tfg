@@ -13,15 +13,15 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.uca.tfg.dao.UserDAO;
 import com.uca.tfg.model.User;
+import com.uca.tfg.repository.UserRepository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class UserDetailServiceTest {
 
 	@MockBean
-	private UserDAO dao;
+	private UserRepository dao;
 
 	@Autowired
 	private UserDetailsService service;

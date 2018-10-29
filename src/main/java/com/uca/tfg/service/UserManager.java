@@ -12,7 +12,7 @@ import com.uca.tfg.model.User;
 public interface UserManager {
 	public User registerNewUserAccount(User user) throws EmailExistsException;
 
-	public Collection<User> getAllUsers();
+	public Collection<User> getAllUsers(int page, int pageSize);
 
 	public Collection<Order> getOrders(long id) throws UserNotFoundException;
 
