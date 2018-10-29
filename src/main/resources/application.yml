@@ -1,15 +1,15 @@
 spring:
   application:
     name: tfg
-  jersey.type: filter
   jpa:
+    database: mysql
     hibernate:
       ddl-auto: update
       dialect: org.hibernate.dialect.MySQL5Dialect
   datasource:
-    url: jdbc:mysql://localhost:3306/tfg?autoReconnect=true&useSSL=false&serverTimezone=UTC
-    username: manuexcd
-    password: contrasena
+    url: jdbc:mysql://localhost:3306/tfg?autoReconnect=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    username: docker
+    password: docker
 server:
   port: 8443
   ssl:
@@ -26,8 +26,8 @@ spring:
       dialect: org.hibernate.dialect.MySQL5Dialect
   datasource:
     url: jdbc:mysql://mysql:3306/tfg?autoReconnect=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
-    username: manuexcd
-    password: contrasena
+    username: docker
+    password: docker
 ---
 spring:
   profiles: kubernetes
