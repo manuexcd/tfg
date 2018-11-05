@@ -51,7 +51,7 @@ public class UserRepositoryTest {
 	
 	@Test
 	public void findByParam() {
-		assertNotNull(users.findByParam("Prueba"));
+		assertNotNull(users.findByParam("Prueba", PageRequest.of(1, 1)));
 	}
 	
 	@Test

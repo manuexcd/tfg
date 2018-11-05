@@ -5,11 +5,11 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,7 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.uca.tfg.exception.DuplicateUserException;
@@ -38,6 +38,8 @@ public class UserServiceTest {
 
 	@Autowired
 	private UserManager service;
+
+	private Pageable pageRequest;
 
 	@Test
 	public void testRegisterNewUserAccount() throws EmailExistsException {
@@ -61,8 +63,8 @@ public class UserServiceTest {
 
 	@Test
 	public void testGetAllUsers() {
-		given(dao.findByOrderByName(PageRequest.of(0, 1))).willReturn(Page.empty());
-		assertNotNull(service.getAllUsers(0, 1));
+		given(dao.findByOrderByName(pageRequest)).willReturn(Page.empty());
+		assertNotNull(service.getAllUsers(pageRequest));
 	}
 
 	@Test
@@ -79,14 +81,14 @@ public class UserServiceTest {
 
 	@Test
 	public void testGetUserByParam() {
-		given(dao.findByParam(anyString())).willReturn(Arrays.asList(new User()));
-		assertNotNull(service.getUsersByParam(anyString()));
+		given(dao.findByParam(anyString(), eq(pageRequest))).willReturn(Page.empty());
+		assertNotNull(service.getUsersByParam(anyString(), eq(pageRequest)));
 	}
 
 	@Test
 	public void testGetUserByParamNull() {
-		given(dao.findByParam(anyString())).willReturn(Arrays.asList(new User()));
-		assertNotNull(service.getUsersByParam(null));
+		given(dao.findByParam(anyString(), eq(pageRequest))).willReturn(Page.empty());
+		assertNull(service.getUsersByParam(null, eq(pageRequest)));
 	}
 
 	@Test

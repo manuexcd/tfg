@@ -1,8 +1,8 @@
 package com.uca.tfg.controller;
 
-import java.util.Collection;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -31,8 +31,9 @@ public class UserController {
 	private UserManager userManager;
 
 	@GetMapping
-	public ResponseEntity<Collection<User>> getAllUsers(@RequestParam int page, @RequestParam int pageSize) {
-		return new ResponseEntity<>(userManager.getAllUsers(page, pageSize), HttpStatus.OK);
+	public ResponseEntity<Page<User>> getAllUsers(@RequestParam(defaultValue = "0") int page,
+			@RequestParam(defaultValue = "3") int pageSize) {
+		return new ResponseEntity<>(userManager.getAllUsers(PageRequest.of(page, pageSize)), HttpStatus.OK);
 	}
 
 	@GetMapping(value = "/{id}")
@@ -54,8 +55,9 @@ public class UserController {
 	}
 
 	@GetMapping(value = "/search/{param}")
-	public ResponseEntity<Collection<User>> getUsersByParam(@PathVariable String param) {
-		return new ResponseEntity<>(userManager.getUsersByParam(param), HttpStatus.OK);
+	public ResponseEntity<Page<User>> getUsersByParam(@PathVariable String param, @RequestParam int page,
+			@RequestParam int pageSize) {
+		return new ResponseEntity<>(userManager.getUsersByParam(param, PageRequest.of(page, pageSize)), HttpStatus.OK);
 	}
 
 	@PostMapping
