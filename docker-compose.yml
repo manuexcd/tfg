@@ -19,7 +19,7 @@ services:
    tfg:
       container_name: tfg
       image: tfg
-      restart: always
+      #restart: always
       environment:
          SPRING_PROFILES_ACTIVE: docker
       ports:
