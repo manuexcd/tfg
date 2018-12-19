@@ -1,12 +1,13 @@
 package com.uca.tfg.service;
 
-import java.util.Collection;
 import java.util.Optional;
 
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.DependsOn;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.uca.tfg.model.Image;
@@ -40,33 +41,33 @@ public class ProductManagerImp implements ProductManager {
 	}
 
 	@Override
-	public Collection<Product> getAllProducts() {
-		return products.findAll();
+	public Page<Product> getAllProducts(Pageable page) {
+		return products.findAll(page);
 	}
 
 	@Override
-	public Collection<Product> getAllProductsOrderByName() {
-		return products.findAllByOrderByName();
+	public Page<Product> getAllProductsOrderByName(Pageable page) {
+		return products.findAllByOrderByName(page);
 	}
 
 	@Override
-	public Collection<Product> getAllProductsOrderByPrice() {
-		return products.findAllByOrderByPrice();
+	public Page<Product> getAllProductsOrderByPrice(Pageable page) {
+		return products.findAllByOrderByPrice(page);
 	}
 
 	@Override
-	public Collection<Product> getAllProductsOrderByPriceDesc() {
-		return products.findAllByOrderByPriceDesc();
+	public Page<Product> getAllProductsOrderByPriceDesc(Pageable page) {
+		return products.findAllByOrderByPriceDesc(page);
 	}
 
 	@Override
-	public Collection<Product> getAllProductsOrderByStockAvailable() {
-		return products.findAllByOrderByStockAvailable();
+	public Page<Product> getAllProductsOrderByStockAvailable(Pageable page) {
+		return products.findAllByOrderByStockAvailable(page);
 	}
 
 	@Override
-	public Collection<Product> getProductsByParam(String param) {
-		return products.findByParam(param);
+	public Page<Product> getProductsByParam(String param, Pageable page) {
+		return products.findByParam(param, page);
 	}
 
 	@Override

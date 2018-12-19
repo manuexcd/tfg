@@ -4,15 +4,17 @@ import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -20,6 +22,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -41,21 +45,25 @@ public class UserControllerTest {
 	@Autowired
 	private WebApplicationContext context;
 
+	private Pageable pageRequest;
+
 	@Before
 	public void setup() {
 		mvc = MockMvcBuilders.webAppContextSetup(context).build();
 	}
 
-	/*@Test
+	@Test
 	public void getAllUsers() throws Exception {
 		User user = new User("user", "pass");
 		user.setAddress("prueba");
 		user.setName("name");
 		user.setSurname("surname");
-		given(service.getAllUsers(1, 1)).willReturn(Arrays.asList(user));
+		List<User> users = new ArrayList<>();
+		users.add(user);
+		given(service.getAllUsers(eq(pageRequest))).willReturn(new PageImpl<>(users));
 		mvc.perform(get("/users").contentType(APPLICATION_JSON)).andExpect(status().isOk())
-				.andExpect(content().string(containsString("prueba")));
-	}*/
+				.andExpect(content().string(containsString("")));
+	}
 
 	@Test
 	public void getUserById() throws Exception {
@@ -91,16 +99,17 @@ public class UserControllerTest {
 		mvc.perform(get("/users/email/a").contentType(APPLICATION_JSON)).andExpect(status().isNotFound());
 	}
 
-	/*@Test
+	@Test
 	public void getUsersByParam() throws Exception {
 		User user = new User("user", "pass");
 		user.setAddress("prueba");
 		user.setName("name");
 		user.setSurname("surname");
-		given(service.getUsersByParam(anyString(), anyInt(), anyInt())).willReturn(Arrays.asList(user));
-		mvc.perform(get("/users/search/a").contentType(APPLICATION_JSON)).andExpect(status().isOk())
-				.andExpect(content().string(containsString("prueba")));
-	}*/
+		List<User> users = new ArrayList<>();
+		users.add(user);
+		given(service.getUsersByParam(anyString(), eq(pageRequest))).willReturn(new PageImpl<>(users));
+		mvc.perform(get("/users/search/a").contentType(APPLICATION_JSON)).andExpect(status().isOk());
+	}
 
 	@Test
 	public void testAddUser() throws Exception {

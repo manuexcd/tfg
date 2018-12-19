@@ -19,6 +19,7 @@ import org.springframework.web.context.request.WebRequest;
 import com.uca.tfg.exception.DuplicateUserException;
 import com.uca.tfg.exception.EmailExistsException;
 import com.uca.tfg.exception.UserNotFoundException;
+import com.uca.tfg.model.Constants;
 import com.uca.tfg.model.Order;
 import com.uca.tfg.model.User;
 import com.uca.tfg.service.UserManager;
@@ -31,8 +32,9 @@ public class UserController {
 	private UserManager userManager;
 
 	@GetMapping
-	public ResponseEntity<Page<User>> getAllUsers(@RequestParam(defaultValue = "0") int page,
-			@RequestParam(defaultValue = "3") int pageSize) {
+	public ResponseEntity<Page<User>> getAllUsers(
+			@RequestParam(defaultValue = Constants.PAGINATION_DEFAULT_PAGE) int page,
+			@RequestParam(defaultValue = Constants.PAGINATION_DEFAULT_SIZE) int pageSize) {
 		return new ResponseEntity<>(userManager.getAllUsers(PageRequest.of(page, pageSize)), HttpStatus.OK);
 	}
 

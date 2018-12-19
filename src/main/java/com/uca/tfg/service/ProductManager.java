@@ -1,21 +1,22 @@
 package com.uca.tfg.service;
 
-import java.util.Collection;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import com.uca.tfg.model.Product;
 
 public interface ProductManager {
-	public Collection<Product> getAllProducts();
+	public Page<Product> getAllProducts(Pageable page);
 	
-	public Collection<Product> getAllProductsOrderByName();
+	public Page<Product> getAllProductsOrderByName(Pageable page);
 	
-	public Collection<Product> getAllProductsOrderByPrice();
+	public Page<Product> getAllProductsOrderByPrice(Pageable page);
 	
-	public Collection<Product> getAllProductsOrderByPriceDesc();
+	public Page<Product> getAllProductsOrderByPriceDesc(Pageable page);
 	
-	public Collection<Product> getAllProductsOrderByStockAvailable();
+	public Page<Product> getAllProductsOrderByStockAvailable(Pageable page);
 	
-	public Collection<Product> getProductsByParam(String param);
+	public Page<Product> getProductsByParam(String param, Pageable page);
 
 	public Product getProduct(long id);
 	

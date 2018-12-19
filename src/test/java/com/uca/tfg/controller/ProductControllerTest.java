@@ -1,19 +1,19 @@
 package com.uca.tfg.controller;
 
-import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -21,6 +21,9 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -41,6 +44,8 @@ public class ProductControllerTest {
 	@Autowired
 	private WebApplicationContext context;
 
+	private Pageable pageRequest = PageRequest.of(0, 10);
+
 	@Before
 	public void setup() {
 		mvc = MockMvcBuilders.webAppContextSetup(context).build();
@@ -53,9 +58,10 @@ public class ProductControllerTest {
 		product.setDescription("prueba");
 		product.setPrice(10);
 		product.setStockAvailable(100);
-		given(service.getAllProducts()).willReturn(Arrays.asList(product));
-		mvc.perform(get("/products").contentType(APPLICATION_JSON)).andExpect(status().isOk())
-				.andExpect(content().string(containsString("prueba")));
+		List<Product> products = new ArrayList<>();
+		products.add(product);
+		given(service.getAllProducts(eq(pageRequest))).willReturn(new PageImpl<>(products));
+		mvc.perform(get("/products").contentType(APPLICATION_JSON)).andExpect(status().isOk());
 	}
 
 	@Test
@@ -65,9 +71,10 @@ public class ProductControllerTest {
 		product.setDescription("prueba");
 		product.setPrice(10);
 		product.setStockAvailable(100);
-		given(service.getAllProductsOrderByName()).willReturn(Arrays.asList(product));
-		mvc.perform(get("/products/name").contentType(APPLICATION_JSON)).andExpect(status().isOk())
-				.andExpect(content().string(containsString("prueba")));
+		List<Product> products = new ArrayList<>();
+		products.add(product);
+		given(service.getAllProductsOrderByName(eq(pageRequest))).willReturn(new PageImpl<>(products));
+		mvc.perform(get("/products/name").contentType(APPLICATION_JSON)).andExpect(status().isOk());
 	}
 
 	@Test
@@ -77,9 +84,10 @@ public class ProductControllerTest {
 		product.setDescription("prueba");
 		product.setPrice(10);
 		product.setStockAvailable(100);
-		given(service.getAllProductsOrderByPrice()).willReturn(Arrays.asList(product));
-		mvc.perform(get("/products/price").contentType(APPLICATION_JSON)).andExpect(status().isOk())
-				.andExpect(content().string(containsString("prueba")));
+		List<Product> products = new ArrayList<>();
+		products.add(product);
+		given(service.getAllProductsOrderByPrice(eq(pageRequest))).willReturn(new PageImpl<>(products));
+		mvc.perform(get("/products/price").contentType(APPLICATION_JSON)).andExpect(status().isOk());
 	}
 
 	@Test
@@ -89,9 +97,10 @@ public class ProductControllerTest {
 		product.setDescription("prueba");
 		product.setPrice(10);
 		product.setStockAvailable(100);
-		given(service.getAllProductsOrderByPriceDesc()).willReturn(Arrays.asList(product));
-		mvc.perform(get("/products/pricedesc").contentType(APPLICATION_JSON)).andExpect(status().isOk())
-				.andExpect(content().string(containsString("prueba")));
+		List<Product> products = new ArrayList<>();
+		products.add(product);
+		given(service.getAllProductsOrderByPriceDesc(eq(pageRequest))).willReturn(new PageImpl<>(products));
+		mvc.perform(get("/products/pricedesc").contentType(APPLICATION_JSON)).andExpect(status().isOk());
 	}
 
 	@Test
@@ -101,9 +110,10 @@ public class ProductControllerTest {
 		product.setDescription("prueba");
 		product.setPrice(10);
 		product.setStockAvailable(100);
-		given(service.getAllProductsOrderByStockAvailable()).willReturn(Arrays.asList(product));
-		mvc.perform(get("/products/stock").contentType(APPLICATION_JSON)).andExpect(status().isOk())
-				.andExpect(content().string(containsString("prueba")));
+		List<Product> products = new ArrayList<>();
+		products.add(product);
+		given(service.getAllProductsOrderByStockAvailable(eq(pageRequest))).willReturn(new PageImpl<>(products));
+		mvc.perform(get("/products/stock").contentType(APPLICATION_JSON)).andExpect(status().isOk());
 	}
 
 	@Test
@@ -113,9 +123,10 @@ public class ProductControllerTest {
 		product.setDescription("prueba");
 		product.setPrice(10);
 		product.setStockAvailable(100);
-		given(service.getProductsByParam(anyString())).willReturn(Arrays.asList(product));
-		mvc.perform(get("/products/search/a").contentType(APPLICATION_JSON)).andExpect(status().isOk())
-				.andExpect(content().string(containsString("prueba")));
+		List<Product> products = new ArrayList<>();
+		products.add(product);
+		given(service.getProductsByParam(anyString(), eq(pageRequest))).willReturn(new PageImpl<>(products));
+		mvc.perform(get("/products/search/a").contentType(APPLICATION_JSON)).andExpect(status().isOk());
 	}
 
 	@Test
@@ -126,8 +137,7 @@ public class ProductControllerTest {
 		product.setPrice(10);
 		product.setStockAvailable(100);
 		given(service.getProduct(anyLong())).willReturn(product);
-		mvc.perform(get("/products/1").contentType(APPLICATION_JSON)).andExpect(status().isOk())
-				.andExpect(content().string(containsString("prueba")));
+		mvc.perform(get("/products/1").contentType(APPLICATION_JSON)).andExpect(status().isOk());
 	}
 
 	@Test
@@ -146,7 +156,7 @@ public class ProductControllerTest {
 		String body = "{\n	\"name\":\"prueba\",\n	\"description\":\"prueba\"\n}";
 		given(service.addProduct(any())).willReturn(product);
 		mvc.perform(put("/products/1").content(body).contentType(APPLICATION_JSON))
-				.andExpect(status().is2xxSuccessful()).andExpect(content().string(containsString("prueba")));
+				.andExpect(status().is2xxSuccessful());
 	}
 
 	@Test
@@ -158,8 +168,8 @@ public class ProductControllerTest {
 		product.setStockAvailable(100);
 		String body = "{\n	\"name\":\"prueba\",\n	\"description\":\"prueba\"\n}";
 		given(service.addProduct(any())).willReturn(product);
-		mvc.perform(post("/products").content(body).contentType(APPLICATION_JSON)).andExpect(status().is2xxSuccessful())
-				.andExpect(content().string(containsString("prueba")));
+		mvc.perform(post("/products").content(body).contentType(APPLICATION_JSON))
+				.andExpect(status().is2xxSuccessful());
 	}
 
 	@Test
@@ -170,8 +180,7 @@ public class ProductControllerTest {
 		product.setPrice(10);
 		product.setStockAvailable(100);
 		given(service.getProduct(anyLong())).willReturn(product);
-		mvc.perform(delete("/products/1").contentType(APPLICATION_JSON)).andExpect(status().isOk())
-				.andExpect(content().string(containsString("prueba")));
+		mvc.perform(delete("/products/1").contentType(APPLICATION_JSON)).andExpect(status().isOk());
 	}
 
 	@Test
