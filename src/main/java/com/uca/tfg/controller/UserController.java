@@ -16,13 +16,14 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
 
+import com.uca.tfg.dto.OrderDTO;
 import com.uca.tfg.dto.UserDTO;
 import com.uca.tfg.exception.DuplicateUserException;
 import com.uca.tfg.exception.EmailExistsException;
 import com.uca.tfg.exception.UserNotFoundException;
+import com.uca.tfg.mapper.OrderMapper;
 import com.uca.tfg.mapper.UserMapper;
 import com.uca.tfg.model.Constants;
-import com.uca.tfg.model.Order;
 import com.uca.tfg.model.User;
 import com.uca.tfg.service.UserManager;
 
@@ -36,46 +37,53 @@ public class UserController {
 	@Autowired
 	private UserMapper mapper;
 
+	@Autowired
+	private OrderMapper orderMapper;
+
 	@GetMapping
-	public ResponseEntity<Page<User>> getAllUsers(
+	public ResponseEntity<Page<UserDTO>> getAllUsers(
 			@RequestParam(defaultValue = Constants.PAGINATION_DEFAULT_PAGE) int page,
 			@RequestParam(defaultValue = Constants.PAGINATION_DEFAULT_SIZE) int pageSize) {
-		return new ResponseEntity<>(userManager.getAllUsers(PageRequest.of(page, pageSize)), HttpStatus.OK);
+		return new ResponseEntity<>(
+				mapper.mapEntityPageToDtoPage(userManager.getAllUsers(PageRequest.of(page, pageSize))), HttpStatus.OK);
 	}
 
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<User> getUser(@PathVariable long id) throws UserNotFoundException {
+	public ResponseEntity<UserDTO> getUser(@PathVariable long id) throws UserNotFoundException {
 		User user = userManager.getUser(id);
 		if (user != null)
-			return new ResponseEntity<>(user, HttpStatus.OK);
+			return new ResponseEntity<>(mapper.mapEntitytoDto(user), HttpStatus.OK);
 		else
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 
 	@GetMapping(value = "/email/{email}")
-	public ResponseEntity<User> getUserByEmail(@PathVariable String email) {
+	public ResponseEntity<UserDTO> getUserByEmail(@PathVariable String email) {
 		User user = userManager.getUserByEmail(email);
 		if (user != null)
-			return new ResponseEntity<>(user, HttpStatus.OK);
+			return new ResponseEntity<>(mapper.mapEntitytoDto(user), HttpStatus.OK);
 		else
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 
 	@GetMapping(value = "/search/{param}")
-	public ResponseEntity<Page<User>> getUsersByParam(@PathVariable String param,
+	public ResponseEntity<Page<UserDTO>> getUsersByParam(@PathVariable String param,
 			@RequestParam(defaultValue = Constants.PAGINATION_DEFAULT_PAGE) int page,
 			@RequestParam(defaultValue = Constants.PAGINATION_DEFAULT_SIZE) int pageSize) {
-		return new ResponseEntity<>(userManager.getUsersByParam(param, PageRequest.of(page, pageSize)), HttpStatus.OK);
+		return new ResponseEntity<>(
+				mapper.mapEntityPageToDtoPage(userManager.getUsersByParam(param, PageRequest.of(page, pageSize))),
+				HttpStatus.OK);
 	}
 
 	@PostMapping
-	public ResponseEntity<User> addUser(@RequestBody UserDTO dto) throws DuplicateUserException {
-		return new ResponseEntity<>(userManager.addUser(mapper.mapDtoToEntity(dto)), HttpStatus.CREATED);
+	public ResponseEntity<UserDTO> addUser(@RequestBody UserDTO dto) throws DuplicateUserException {
+		return new ResponseEntity<>(mapper.mapEntitytoDto(userManager.addUser(mapper.mapDtoToEntity(dto))),
+				HttpStatus.CREATED);
 	}
 
 	@PostMapping(value = "/registration")
 	@ResponseStatus(HttpStatus.CREATED)
-	public ResponseEntity<User> registerUserAccount(@RequestBody UserDTO dto, WebRequest request) {
+	public ResponseEntity<UserDTO> registerUserAccount(@RequestBody UserDTO dto, WebRequest request) {
 		User registered = null;
 		try {
 			registered = userManager.registerNewUserAccount(mapper.mapDtoToEntity(dto));
@@ -83,21 +91,22 @@ public class UserController {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
-		return new ResponseEntity<>(registered, HttpStatus.CREATED);
+		return new ResponseEntity<>(mapper.mapEntitytoDto(registered), HttpStatus.CREATED);
 	}
 
 	@PostMapping(value = "/{id}")
-	public ResponseEntity<Order> addOrder(@PathVariable long id) throws UserNotFoundException {
-		return new ResponseEntity<>(userManager.addOrder(id), HttpStatus.CREATED);
+	public ResponseEntity<OrderDTO> addOrder(@PathVariable long id) throws UserNotFoundException {
+		return new ResponseEntity<>(orderMapper.mapEntitytoDto(userManager.addOrder(id)), HttpStatus.CREATED);
 	}
 
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<User> deleteUser(@PathVariable long id) throws UserNotFoundException {
+	public ResponseEntity<UserDTO> deleteUser(@PathVariable long id) throws UserNotFoundException {
 		User user = userManager.getUser(id);
 		if (user != null) {
 			userManager.deleteUser(id);
-			return new ResponseEntity<>(user, HttpStatus.OK);
-		} else
+			return new ResponseEntity<>(mapper.mapEntitytoDto(user), HttpStatus.OK);
+		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
 	}
 }

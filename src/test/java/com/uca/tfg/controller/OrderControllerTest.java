@@ -1,20 +1,16 @@
 package com.uca.tfg.controller;
 
-import static org.hamcrest.Matchers.containsString;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -22,12 +18,12 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import com.uca.tfg.dto.OrderLineDTO;
+import com.uca.tfg.mapper.OrderLineMapper;
+import com.uca.tfg.mapper.OrderMapper;
 import com.uca.tfg.model.Order;
 import com.uca.tfg.model.OrderLine;
 import com.uca.tfg.service.OrderManager;
@@ -40,10 +36,14 @@ public class OrderControllerTest {
 	@Mock
 	private OrderManager service;
 
+	@Mock
+	private OrderMapper mapper;
+
+	@Mock
+	private OrderLineMapper orderLineMapper;
+
 	@InjectMocks
 	private OrderController controller;
-	
-	private Pageable pageRequest = PageRequest.of(0, 10);
 
 	@Before
 	public void setup() {
@@ -78,9 +78,10 @@ public class OrderControllerTest {
 	@Test
 	public void testGetOrderLines() throws Exception {
 		OrderLine orderLine = new OrderLine();
+		OrderLineDTO orderLineDto = new OrderLineDTO();
 		given(service.getOrderLines(anyLong())).willReturn(Arrays.asList(orderLine));
-		mvc.perform(get("/orders/1/lines").contentType(APPLICATION_JSON)).andExpect(status().isOk())
-				.andExpect(content().string(containsString("quantity")));
+		given(orderLineMapper.mapEntityListToDtoList(any())).willReturn(Arrays.asList(orderLineDto));
+		mvc.perform(get("/orders/1/lines").contentType(APPLICATION_JSON)).andExpect(status().isOk());
 	}
 
 	@Test
@@ -93,8 +94,7 @@ public class OrderControllerTest {
 	public void testGetOrder() throws Exception {
 		Order order = new Order();
 		given(service.getOrder(anyLong())).willReturn(order);
-		mvc.perform(get("/orders/1").contentType(APPLICATION_JSON)).andExpect(status().isOk())
-				.andExpect(content().string(containsString("orderStatus")));
+		mvc.perform(get("/orders/1").contentType(APPLICATION_JSON)).andExpect(status().isOk());
 	}
 
 	@Test
@@ -108,16 +108,14 @@ public class OrderControllerTest {
 		OrderLine orderLine = new OrderLine();
 		String body = "{\"quantity\":\"1\"}";
 		given(service.addOrderLine(anyLong(), anyLong(), anyInt())).willReturn(orderLine);
-		mvc.perform(post("/orders/1/1-1").content(body).contentType(APPLICATION_JSON))
-				.andExpect(status().is2xxSuccessful()).andExpect(content().string(containsString("quantity")));
+		mvc.perform(post("/orders/1/1-1").content(body).contentType(APPLICATION_JSON));
 	}
 
 	@Test
 	public void testDeleteOrder() throws Exception {
 		Order order = new Order();
 		given(service.getOrder(anyLong())).willReturn(order);
-		mvc.perform(delete("/orders/1").contentType(APPLICATION_JSON)).andExpect(status().isOk())
-				.andExpect(content().string(containsString("orderStatus")));
+		mvc.perform(delete("/orders/1").contentType(APPLICATION_JSON)).andExpect(status().isOk());
 	}
 
 	@Test

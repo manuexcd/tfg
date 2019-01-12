@@ -28,83 +28,92 @@ public class ProductController {
 
 	@Autowired
 	private ProductManager productManager;
-	
+
 	@Autowired
 	private ProductMapper mapper;
 
 	@GetMapping
-	public ResponseEntity<Page<Product>> getAllProducts(
+	public ResponseEntity<Page<ProductDTO>> getAllProducts(
 			@RequestParam(defaultValue = Constants.PAGINATION_DEFAULT_PAGE) int page,
 			@RequestParam(defaultValue = Constants.PAGINATION_DEFAULT_SIZE) int pageSize) {
-		return new ResponseEntity<>(productManager.getAllProducts(PageRequest.of(page, pageSize)), HttpStatus.OK);
+		return new ResponseEntity<>(
+				mapper.mapEntityPageToDtoPage(productManager.getAllProducts(PageRequest.of(page, pageSize))),
+				HttpStatus.OK);
 	}
 
 	@GetMapping(value = "/name")
-	public ResponseEntity<Page<Product>> getAllProductsOrderByName(
+	public ResponseEntity<Page<ProductDTO>> getAllProductsOrderByName(
 			@RequestParam(defaultValue = Constants.PAGINATION_DEFAULT_PAGE) int page,
 			@RequestParam(defaultValue = Constants.PAGINATION_DEFAULT_SIZE) int pageSize) {
-		return new ResponseEntity<>(productManager.getAllProductsOrderByName(PageRequest.of(page, pageSize)),
+		return new ResponseEntity<>(
+				mapper.mapEntityPageToDtoPage(productManager.getAllProductsOrderByName(PageRequest.of(page, pageSize))),
 				HttpStatus.OK);
 	}
 
 	@GetMapping(value = "/price")
-	public ResponseEntity<Page<Product>> getAllProductsOrderByPrice(
+	public ResponseEntity<Page<ProductDTO>> getAllProductsOrderByPrice(
 			@RequestParam(defaultValue = Constants.PAGINATION_DEFAULT_PAGE) int page,
 			@RequestParam(defaultValue = Constants.PAGINATION_DEFAULT_SIZE) int pageSize) {
-		return new ResponseEntity<>(productManager.getAllProductsOrderByPrice(PageRequest.of(page, pageSize)),
-				HttpStatus.OK);
+		return new ResponseEntity<>(mapper.mapEntityPageToDtoPage(
+				productManager.getAllProductsOrderByPrice(PageRequest.of(page, pageSize))), HttpStatus.OK);
 	}
 
 	@GetMapping(value = "/pricedesc")
-	public ResponseEntity<Page<Product>> getAllProductsOrderByPriceDesc(
+	public ResponseEntity<Page<ProductDTO>> getAllProductsOrderByPriceDesc(
 			@RequestParam(defaultValue = Constants.PAGINATION_DEFAULT_PAGE) int page,
 			@RequestParam(defaultValue = Constants.PAGINATION_DEFAULT_SIZE) int pageSize) {
-		return new ResponseEntity<>(productManager.getAllProductsOrderByPriceDesc(PageRequest.of(page, pageSize)),
-				HttpStatus.OK);
+		return new ResponseEntity<>(mapper.mapEntityPageToDtoPage(
+				productManager.getAllProductsOrderByPriceDesc(PageRequest.of(page, pageSize))), HttpStatus.OK);
 	}
 
 	@GetMapping(value = "/stock")
-	public ResponseEntity<Page<Product>> getAllProductsOrderByStockAvailable(
+	public ResponseEntity<Page<ProductDTO>> getAllProductsOrderByStockAvailable(
 			@RequestParam(defaultValue = Constants.PAGINATION_DEFAULT_PAGE) int page,
 			@RequestParam(defaultValue = Constants.PAGINATION_DEFAULT_SIZE) int pageSize) {
-		return new ResponseEntity<>(productManager.getAllProductsOrderByStockAvailable(PageRequest.of(page, pageSize)),
+		return new ResponseEntity<>(
+				mapper.mapEntityPageToDtoPage(
+						productManager.getAllProductsOrderByStockAvailable(PageRequest.of(page, pageSize))),
 				HttpStatus.OK);
 	}
 
 	@GetMapping(value = "/search/{param}")
-	public ResponseEntity<Page<Product>> getProductsByParam(@PathVariable String param,
+	public ResponseEntity<Page<ProductDTO>> getProductsByParam(@PathVariable String param,
 			@RequestParam(defaultValue = Constants.PAGINATION_DEFAULT_PAGE) int page,
 			@RequestParam(defaultValue = Constants.PAGINATION_DEFAULT_SIZE) int pageSize) {
-		return new ResponseEntity<>(productManager.getProductsByParam(param, PageRequest.of(page, pageSize)),
+		return new ResponseEntity<>(
+				mapper.mapEntityPageToDtoPage(productManager.getProductsByParam(param, PageRequest.of(page, pageSize))),
 				HttpStatus.OK);
 	}
 
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<Product> getProduct(@PathVariable long id) throws ProductNotFoundException {
+	public ResponseEntity<ProductDTO> getProduct(@PathVariable long id) throws ProductNotFoundException {
 		Product product = productManager.getProduct(id);
 		if (product != null)
-			return new ResponseEntity<>(product, HttpStatus.OK);
+			return new ResponseEntity<>(mapper.mapEntitytoDto(product), HttpStatus.OK);
 		else
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<Product> updateProduct(@RequestBody ProductDTO dto) {
-		return new ResponseEntity<>(productManager.addProduct(mapper.mapDtoToEntity(dto)), HttpStatus.OK);
+	public ResponseEntity<ProductDTO> updateProduct(@RequestBody ProductDTO dto) {
+		return new ResponseEntity<>(mapper.mapEntitytoDto(productManager.addProduct(mapper.mapDtoToEntity(dto))),
+				HttpStatus.OK);
 	}
 
 	@PostMapping
-	public ResponseEntity<Product> addProduct(@RequestBody ProductDTO dto) {
-		return new ResponseEntity<>(productManager.addProduct(mapper.mapDtoToEntity(dto)), HttpStatus.CREATED);
+	public ResponseEntity<ProductDTO> addProduct(@RequestBody ProductDTO dto) {
+		return new ResponseEntity<>(mapper.mapEntitytoDto(productManager.addProduct(mapper.mapDtoToEntity(dto))),
+				HttpStatus.CREATED);
 	}
 
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<Product> deleteProduct(@PathVariable long id) throws ProductNotFoundException {
+	public ResponseEntity<ProductDTO> deleteProduct(@PathVariable long id) throws ProductNotFoundException {
 		Product product = productManager.getProduct(id);
 		if (product != null) {
 			productManager.deleteProduct(id);
-			return new ResponseEntity<>(product, HttpStatus.OK);
-		} else
+			return new ResponseEntity<>(mapper.mapEntitytoDto(product), HttpStatus.OK);
+		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
 	}
 }

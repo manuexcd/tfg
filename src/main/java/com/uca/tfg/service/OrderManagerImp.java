@@ -60,12 +60,7 @@ public class OrderManagerImp implements OrderManager {
 	}
 
 	public Collection<OrderLine> getOrderLines(long id) throws OrderNotFoundException {
-		Order order = orders.findById(id).orElse(null);
-
-		if (order != null)
-			return order.getOrderLines();
-		else
-			throw new OrderNotFoundException();
+		return orders.findById(id).map(Order::getOrderLines).orElseThrow(OrderNotFoundException::new);
 	}
 
 	public OrderLine addOrderLine(long id, long idProduct, int n)
