@@ -18,7 +18,7 @@ services:
          - mysql-volume:/var/lib/mysql
    tfg:
       container_name: tfg
-      image: tfg
+      image: manuexcd/tfg
       #restart: always
       environment:
          SPRING_PROFILES_ACTIVE: docker
