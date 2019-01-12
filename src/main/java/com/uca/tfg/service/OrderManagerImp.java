@@ -82,12 +82,15 @@ public class OrderManagerImp implements OrderManager {
 					orders.save(order);
 
 					return line;
-				} else
+				} else {
 					throw new NoStockException();
-			} else
+				}
+			} else {
 				throw new ProductNotFoundException();
-		} else
+			}
+		} else {
 			throw new OrderNotFoundException();
+		}
 	}
 
 	public void deleteOrder(long id) {

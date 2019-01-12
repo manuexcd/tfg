@@ -31,8 +31,4 @@ public class ProductDTO implements Serializable {
 	private boolean isVisible = true;
 	@ToString.Exclude
 	private Image productImage;
-
-	public void updateStock(int stock) {
-		this.stockAvailable += stock;
-	}
 }

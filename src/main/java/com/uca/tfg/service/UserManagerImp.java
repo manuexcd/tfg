@@ -59,8 +59,9 @@ public class UserManagerImp implements UserManager {
 	}
 
 	public Page<User> getUsersByParam(String param, Pageable pagination) {
-		if (param != null)
+		if (param != null) {
 			return users.findByParam(param, pagination);
+		}
 		return users.findAll(pagination);
 	}
 
@@ -79,8 +80,9 @@ public class UserManagerImp implements UserManager {
 			user.getOrders().add(order);
 			users.save(user);
 			return order;
-		} else
+		} else {
 			throw new UserNotFoundException();
+		}
 
 //		return users.findById(id)
 //				.map(user -> user.getOrders().add(new Order(new Timestamp(System.currentTimeMillis()), user)));

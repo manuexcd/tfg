@@ -32,8 +32,9 @@ public class OrderLineController {
 		OrderLine orderLine = orderLineManager.getOrderLine(id);
 		if (orderLine != null)
 			return new ResponseEntity<>(orderLine, HttpStatus.OK);
-		else
+		else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
 	}
 
 	@DeleteMapping(value = "/{id}")
@@ -42,7 +43,8 @@ public class OrderLineController {
 		if (orderLine != null) {
 			orderLineManager.deleteOrderLine(id);
 			return new ResponseEntity<>(orderLine, HttpStatus.OK);
-		} else
+		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
 	}
 }
