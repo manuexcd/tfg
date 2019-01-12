@@ -2,48 +2,29 @@ package com.uca.tfg.service;
 
 import java.sql.Timestamp;
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 
-import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.DependsOn;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.uca.tfg.dao.ImageDAO;
-import com.uca.tfg.dao.UserDAO;
 import com.uca.tfg.exception.DuplicateUserException;
 import com.uca.tfg.exception.EmailExistsException;
 import com.uca.tfg.exception.UserNotFoundException;
-import com.uca.tfg.model.Image;
 import com.uca.tfg.model.Order;
 import com.uca.tfg.model.User;
+import com.uca.tfg.repository.UserRepository;
 
 @Service("userManager")
 @DependsOn("imageManager")
 public class UserManagerImp implements UserManager {
 
 	@Autowired
-	private UserDAO users;
-
-	@Autowired
-	private ImageDAO images;
-
-	@PostConstruct
-	public void init() {
-		if (users.findAll().isEmpty()) {
-			Optional<Image> image1 = images.findById((long) 1);
-			Optional<Image> image2 = images.findById((long) 2);
-			if (image1.isPresent())
-				users.save(new User("Manuel", "Lara", "Plaza Algodonales 2", "638489260", "manuexcd@gmail.com",
-						"password", image1.get()));
-			if (image2.isPresent())
-				users.save(new User("Antonia", "Ruiz", "Santiago Bernabeu", "638489261", "antoniaruiz@gmail.com",
-						"password", image2.get()));
-		}
-	}
+	private UserRepository users;
 
 	@Transactional
 	@Override
@@ -61,37 +42,31 @@ public class UserManagerImp implements UserManager {
 		return users.existsById(user.getId());
 	}
 
-	public Collection<User> getAllUsers() {
-		return users.findByOrderByName();
+	public Page<User> getAllUsers(Pageable pagination) {
+		return users.findByOrderByName(pagination);
 	}
 
 	public Collection<Order> getOrders(long id) throws UserNotFoundException {
-		Optional<User> optional = users.findById(id);
-		if (optional.isPresent())
-			return optional.get().getOrders();
-		else
-			throw new UserNotFoundException();
+		return users.findById(id).map(User::getOrders).orElseThrow(UserNotFoundException::new);
 	}
 
-	public User getUser(long id) {
-		return users.findById(id).orElse(null);
+	public User getUser(long id) throws UserNotFoundException {
+		return users.findById(id).orElseThrow(UserNotFoundException::new);
 	}
 
 	public User getUserByEmail(String email) {
 		return users.findByEmail(email);
 	}
 
-	public List<User> getUsersByParam(String param) {
+	public Page<User> getUsersByParam(String param, Pageable pagination) {
 		if (param != null)
-			return users.findByParam(param);
-		return users.findAll();
+			return users.findByParam(param, pagination);
+		return users.findAll(pagination);
 	}
 
 	public User addUser(User user) throws DuplicateUserException {
-		if (!users.existsById(user.getId())) {
-			return users.save(user);
-		} else
-			throw new DuplicateUserException();
+		return Optional.ofNullable(user).filter(newUser -> users.existsById(newUser.getId()))
+				.map(newUser -> users.save(newUser)).orElseThrow(DuplicateUserException::new);
 	}
 
 	public Order addOrder(long id) throws UserNotFoundException {
@@ -106,6 +81,9 @@ public class UserManagerImp implements UserManager {
 			return order;
 		} else
 			throw new UserNotFoundException();
+
+//		return users.findById(id)
+//				.map(user -> user.getOrders().add(new Order(new Timestamp(System.currentTimeMillis()), user)));
 	}
 
 	public void deleteUser(long id) {

@@ -1,4 +1,4 @@
-package com.uca.tfg.dao;
+package com.uca.tfg.repository;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -9,19 +9,20 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.uca.tfg.model.User;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
-public class UserDAOTest {
+public class UserRepositoryTest {
 
 	@Autowired
 	private TestEntityManager entityManager;
 
 	@Autowired
-	private UserDAO users;
+	private UserRepository users;
 
 	@Before
 	public void setUp() {
@@ -50,11 +51,11 @@ public class UserDAOTest {
 	
 	@Test
 	public void findByParam() {
-		assertNotNull(users.findByParam("Prueba"));
+		assertNotNull(users.findByParam("Prueba", PageRequest.of(1, 1)));
 	}
 	
 	@Test
 	public void findByOrderByName() {
-		assertNotNull(users.findByOrderByName());
+		assertNotNull(users.findByOrderByName(PageRequest.of(1, 1)));
 	}
 }

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.uca.tfg.exception.OrderLineNotFoundException;
 import com.uca.tfg.model.OrderLine;
 import com.uca.tfg.service.OrderLineManager;
 
@@ -27,7 +28,7 @@ public class OrderLineController {
 	}
 
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<OrderLine> getOneOrderLine(@PathVariable long id) {
+	public ResponseEntity<OrderLine> getOneOrderLine(@PathVariable long id) throws OrderLineNotFoundException {
 		OrderLine orderLine = orderLineManager.getOrderLine(id);
 		if (orderLine != null)
 			return new ResponseEntity<>(orderLine, HttpStatus.OK);
@@ -36,7 +37,7 @@ public class OrderLineController {
 	}
 
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<OrderLine> deleteOrderLine(@PathVariable long id) {
+	public ResponseEntity<OrderLine> deleteOrderLine(@PathVariable long id) throws OrderLineNotFoundException {
 		OrderLine orderLine = orderLineManager.getOrderLine(id);
 		if (orderLine != null) {
 			orderLineManager.deleteOrderLine(id);

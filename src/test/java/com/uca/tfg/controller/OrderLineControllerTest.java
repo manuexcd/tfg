@@ -14,34 +14,31 @@ import java.util.Arrays;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 
 import com.uca.tfg.model.Order;
 import com.uca.tfg.model.OrderLine;
 import com.uca.tfg.model.Product;
 import com.uca.tfg.service.OrderLineManager;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
+@RunWith(MockitoJUnitRunner.class)
 public class OrderLineControllerTest {
 
 	private MockMvc mvc;
 
-	@MockBean
+	@Mock
 	private OrderLineManager service;
-
-	@Autowired
-	private WebApplicationContext context;
+	
+	@InjectMocks
+	private OrderLineController controller;
 
 	@Before
 	public void setup() {
-		mvc = MockMvcBuilders.webAppContextSetup(context).build();
+		mvc = MockMvcBuilders.standaloneSetup(controller).build();
 	}
 	
 	@Test

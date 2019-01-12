@@ -1,7 +1,9 @@
 package com.uca.tfg.service;
 
 import java.util.Collection;
-import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import com.uca.tfg.exception.DuplicateUserException;
 import com.uca.tfg.exception.EmailExistsException;
@@ -12,15 +14,15 @@ import com.uca.tfg.model.User;
 public interface UserManager {
 	public User registerNewUserAccount(User user) throws EmailExistsException;
 
-	public Collection<User> getAllUsers();
+	public Page<User> getAllUsers(Pageable pagination);
 
 	public Collection<Order> getOrders(long id) throws UserNotFoundException;
 
-	public User getUser(long id);
+	public User getUser(long id) throws UserNotFoundException;
 
 	public User getUserByEmail(String email);
 
-	public List<User> getUsersByParam(String param);
+	public Page<User> getUsersByParam(String param, Pageable pagination);
 
 	public User addUser(User user) throws DuplicateUserException;
 

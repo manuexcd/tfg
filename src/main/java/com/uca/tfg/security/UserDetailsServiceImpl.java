@@ -5,15 +5,15 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.uca.tfg.dao.UserDAO;
+import com.uca.tfg.repository.UserRepository;
 
 import static java.util.Collections.emptyList;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
-    private UserDAO users;
+    private UserRepository users;
 
-    public UserDetailsServiceImpl(UserDAO applicationUserRepository) {
+    public UserDetailsServiceImpl(UserRepository applicationUserRepository) {
         this.users = applicationUserRepository;
     }
 

@@ -10,23 +10,22 @@ import java.util.Optional;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
-import com.uca.tfg.dao.ImageDAO;
+import com.uca.tfg.exception.ImageNotFoundException;
 import com.uca.tfg.model.Image;
+import com.uca.tfg.repository.ImageRepository;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
+@RunWith(MockitoJUnitRunner.class)
 public class ImageServiceTest {
 	
-	@MockBean
-	private ImageDAO dao;
+	@Mock
+	private ImageRepository dao;
 	
-	@Autowired
-	private ImageManager service;
+	@InjectMocks
+	private ImageManagerImp service;
 	
 	@Test
 	public void testGetAllImages() {
@@ -35,7 +34,7 @@ public class ImageServiceTest {
 	}
 
 	@Test
-	public void testGetImageById() {
+	public void testGetImageById() throws ImageNotFoundException {
 		given(dao.findById(anyLong())).willReturn(Optional.of(new Image()));
 		assertNotNull(service.getImage(anyLong()));
 	}
