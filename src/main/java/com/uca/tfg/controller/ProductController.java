@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.uca.tfg.dto.ProductDTO;
+import com.uca.tfg.exception.ProductNotFoundException;
+import com.uca.tfg.mapper.ProductMapper;
 import com.uca.tfg.model.Constants;
 import com.uca.tfg.model.Product;
 import com.uca.tfg.service.ProductManager;
@@ -25,6 +28,9 @@ public class ProductController {
 
 	@Autowired
 	private ProductManager productManager;
+	
+	@Autowired
+	private ProductMapper mapper;
 
 	@GetMapping
 	public ResponseEntity<Page<Product>> getAllProducts(
@@ -74,7 +80,7 @@ public class ProductController {
 	}
 
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<Product> getProduct(@PathVariable long id) {
+	public ResponseEntity<Product> getProduct(@PathVariable long id) throws ProductNotFoundException {
 		Product product = productManager.getProduct(id);
 		if (product != null)
 			return new ResponseEntity<>(product, HttpStatus.OK);
@@ -83,17 +89,17 @@ public class ProductController {
 	}
 
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<Product> updateProduct(@RequestBody Product product) {
-		return new ResponseEntity<>(productManager.addProduct(product), HttpStatus.OK);
+	public ResponseEntity<Product> updateProduct(@RequestBody ProductDTO dto) {
+		return new ResponseEntity<>(productManager.addProduct(mapper.mapDtoToEntity(dto)), HttpStatus.OK);
 	}
 
 	@PostMapping
-	public ResponseEntity<Product> addProduct(@RequestBody Product product) {
-		return new ResponseEntity<>(productManager.addProduct(product), HttpStatus.CREATED);
+	public ResponseEntity<Product> addProduct(@RequestBody ProductDTO dto) {
+		return new ResponseEntity<>(productManager.addProduct(mapper.mapDtoToEntity(dto)), HttpStatus.CREATED);
 	}
 
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<Product> deleteProduct(@PathVariable long id) {
+	public ResponseEntity<Product> deleteProduct(@PathVariable long id) throws ProductNotFoundException {
 		Product product = productManager.getProduct(id);
 		if (product != null) {
 			productManager.deleteProduct(id);

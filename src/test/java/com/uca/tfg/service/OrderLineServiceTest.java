@@ -2,7 +2,6 @@ package com.uca.tfg.service;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 
@@ -11,23 +10,24 @@ import java.util.Optional;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringRunner;
 
+import com.uca.tfg.exception.OrderLineNotFoundException;
 import com.uca.tfg.model.OrderLine;
 import com.uca.tfg.repository.OrderLineRepository;
 
-@RunWith(SpringRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 @SpringBootTest
 public class OrderLineServiceTest {
 	
-	@MockBean
+	@Mock
 	private OrderLineRepository dao;
 	
-	@Autowired
-	private OrderLineManager service;
+	@InjectMocks
+	private OrderLineManagerImp service;
 	
 	@Test
 	public void testGetAllOrderLines() {
@@ -36,15 +36,15 @@ public class OrderLineServiceTest {
 	}
 
 	@Test
-	public void testGetOrderLineById() {
+	public void testGetOrderLineById() throws OrderLineNotFoundException {
 		given(dao.findById(anyLong())).willReturn(Optional.of(new OrderLine()));
 		assertNotNull(service.getOrderLine(anyLong()));
 	}
 
-	@Test
-	public void testOrderLineNotFound() {
+	@Test(expected = OrderLineNotFoundException.class)
+	public void testOrderLineNotFound() throws OrderLineNotFoundException {
 		given(dao.findById(anyLong())).willReturn(Optional.ofNullable(null));
-		assertNull(service.getOrderLine(anyLong()));
+		assertNotNull(service.getOrderLine(anyLong()));
 	}
 	
 	@Test

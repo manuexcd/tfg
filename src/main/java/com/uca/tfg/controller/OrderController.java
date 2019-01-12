@@ -3,6 +3,8 @@ package com.uca.tfg.controller;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -10,11 +12,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.uca.tfg.exception.NoStockException;
 import com.uca.tfg.exception.OrderNotFoundException;
 import com.uca.tfg.exception.ProductNotFoundException;
+import com.uca.tfg.model.Constants;
 import com.uca.tfg.model.Order;
 import com.uca.tfg.model.OrderLine;
 import com.uca.tfg.service.OrderManager;
@@ -27,18 +31,25 @@ public class OrderController {
 	private OrderManager orderManager;
 
 	@GetMapping
-	public ResponseEntity<Collection<Order>> getAllOrders() {
-		return new ResponseEntity<>(orderManager.getAllOrdersByDate(), HttpStatus.OK);
+	public ResponseEntity<Page<Order>> getAllOrders(
+			@RequestParam(defaultValue = Constants.PAGINATION_DEFAULT_PAGE) int page,
+			@RequestParam(defaultValue = Constants.PAGINATION_DEFAULT_SIZE) int pageSize) {
+		return new ResponseEntity<>(orderManager.getAllOrdersByDate(PageRequest.of(page, pageSize)), HttpStatus.OK);
 	}
 
 	@GetMapping("/status")
-	public ResponseEntity<Collection<Order>> getAllOrdersByOrderStatus() {
-		return new ResponseEntity<>(orderManager.getAllOrdersByOrderStatus(), HttpStatus.OK);
+	public ResponseEntity<Page<Order>> getAllOrdersByOrderStatus(
+			@RequestParam(defaultValue = Constants.PAGINATION_DEFAULT_PAGE) int page,
+			@RequestParam(defaultValue = Constants.PAGINATION_DEFAULT_SIZE) int pageSize) {
+		return new ResponseEntity<>(orderManager.getAllOrdersByOrderStatus(PageRequest.of(page, pageSize)),
+				HttpStatus.OK);
 	}
 
 	@GetMapping("/user/{userId}")
-	public ResponseEntity<Collection<Order>> getOrdersByUser(@PathVariable long userId) {
-		Collection<Order> orders = orderManager.getOrdersByUser(userId);
+	public ResponseEntity<Page<Order>> getOrdersByUser(@PathVariable long userId,
+			@RequestParam(defaultValue = Constants.PAGINATION_DEFAULT_PAGE) int page,
+			@RequestParam(defaultValue = Constants.PAGINATION_DEFAULT_SIZE) int pageSize) {
+		Page<Order> orders = orderManager.getOrdersByUser(userId, PageRequest.of(page, pageSize));
 		if (orders != null)
 			return new ResponseEntity<>(orders, HttpStatus.OK);
 		else
@@ -76,7 +87,8 @@ public class OrderController {
 		if (order != null) {
 			orderManager.deleteOrder(id);
 			return new ResponseEntity<>(order, HttpStatus.OK);
-		} else
+		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
 	}
 }

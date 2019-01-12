@@ -1,7 +1,7 @@
 package com.uca.tfg.repository;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.uca.tfg.model.Order;
@@ -9,9 +9,9 @@ import com.uca.tfg.model.User;
 
 public interface OrderRepository extends JpaRepository<Order, Long>{
 
-	List<Order> findAllByOrderByOrderStatus();
+	public Page<Order> findAllByOrderByOrderStatus(Pageable page);
 	
-	List<Order> findAllByOrderByDate();
+	public Page<Order> findAllByOrderByDate(Pageable page);
 	
-	public List<Order> findByUser(User user);
+	public Page<Order> findByUser(User user, Pageable page);
 }

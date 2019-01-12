@@ -12,25 +12,24 @@ import java.util.Optional;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.test.context.junit4.SpringRunner;
 
+import com.uca.tfg.exception.ProductNotFoundException;
 import com.uca.tfg.model.Product;
 import com.uca.tfg.repository.ProductRepository;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
+@RunWith(MockitoJUnitRunner.class)
 public class ProductServiceTest {
 	
-	@MockBean
+	@Mock
 	private ProductRepository dao;
 	
-	@Autowired
-	private ProductManager service;
+	@InjectMocks
+	private ProductManagerImp service;
 	
 	private Pageable pageRequest;
 	
@@ -71,13 +70,13 @@ public class ProductServiceTest {
 	}
 	
 	@Test
-	public void testGetProductById() {
+	public void testGetProductById() throws ProductNotFoundException {
 		given(dao.findById(anyLong())).willReturn(Optional.of(new Product()));
 		assertNotNull(service.getProduct(anyLong()));
 	}
-	
-	@Test
-	public void testProductNotFound() {
+
+	@Test(expected = ProductNotFoundException.class)
+	public void testProductNotFound() throws ProductNotFoundException {
 		given(dao.findById(anyLong())).willReturn(Optional.ofNullable(null));
 		assertNull(service.getProduct(anyLong()));
 	}

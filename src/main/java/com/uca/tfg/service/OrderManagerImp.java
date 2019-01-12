@@ -1,14 +1,12 @@
 package com.uca.tfg.service;
 
-import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Optional;
-
-import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.DependsOn;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.uca.tfg.exception.NoStockException;
@@ -18,8 +16,8 @@ import com.uca.tfg.model.Order;
 import com.uca.tfg.model.OrderLine;
 import com.uca.tfg.model.Product;
 import com.uca.tfg.model.User;
-import com.uca.tfg.repository.OrderRepository;
 import com.uca.tfg.repository.OrderLineRepository;
+import com.uca.tfg.repository.OrderRepository;
 import com.uca.tfg.repository.ProductRepository;
 import com.uca.tfg.repository.UserRepository;
 
@@ -39,38 +37,26 @@ public class OrderManagerImp implements OrderManager {
 	@Autowired
 	private UserRepository users;
 
-	@PostConstruct
-	public void init() {
-		if (orders.findAll().isEmpty()) {
-			Optional<User> user1 = users.findById((long) 1);
-			Optional<User> user2 = users.findById((long) 2);
-			if (user1.isPresent())
-				orders.save(new Order(new Timestamp(System.currentTimeMillis()), user1.get()));
-			if (user2.isPresent())
-				orders.save(new Order(new Timestamp(System.currentTimeMillis()), user2.get()));
-		}
+	public Page<Order> getAllOrders(Pageable page) {
+		return orders.findAll(page);
 	}
 
-	public Collection<Order> getAllOrders() {
-		return orders.findAll();
+	public Page<Order> getAllOrdersByOrderStatus(Pageable page) {
+		return orders.findAllByOrderByOrderStatus(page);
 	}
 
-	public Collection<Order> getAllOrdersByOrderStatus() {
-		return orders.findAllByOrderByOrderStatus();
-	}
-
-	public Collection<Order> getAllOrdersByDate() {
-		return orders.findAllByOrderByDate();
+	public Page<Order> getAllOrdersByDate(Pageable page) {
+		return orders.findAllByOrderByDate(page);
 	}
 
 	public Order getOrder(long id) {
 		return orders.findById(id).orElse(null);
 	}
 
-	public Collection<Order> getOrdersByUser(long userId) {
+	public Page<Order> getOrdersByUser(long userId, Pageable page) {
 		User user = users.findById(userId).orElse(null);
 
-		return orders.findByUser(user);
+		return orders.findByUser(user, page);
 	}
 
 	public Collection<OrderLine> getOrderLines(long id) throws OrderNotFoundException {

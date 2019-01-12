@@ -4,9 +4,10 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 
 import java.util.ArrayList;
@@ -15,12 +16,11 @@ import java.util.Optional;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import com.uca.tfg.exception.DuplicateUserException;
 import com.uca.tfg.exception.EmailExistsException;
@@ -29,35 +29,33 @@ import com.uca.tfg.model.Order;
 import com.uca.tfg.model.User;
 import com.uca.tfg.repository.UserRepository;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
+@RunWith(MockitoJUnitRunner.class)
 public class UserServiceTest {
 
-	@MockBean
+	@Mock
 	private UserRepository dao;
 
-	@Autowired
-	private UserManager service;
+	@InjectMocks
+	private UserManagerImp service;
 
 	private Pageable pageRequest;
 
 	@Test
 	public void testRegisterNewUserAccount() throws EmailExistsException {
 		User user = new User();
-		user.setEmail("prueba");
+		user.setEmail("aaa");
 		given(dao.findByEmail(anyString())).willReturn(user);
 		given(dao.existsById(anyLong())).willReturn(false);
-		given(dao.save(user)).willReturn(user);
+		given (dao.save(any())).willReturn(user);
 		assertNotNull(service.registerNewUserAccount(user));
 	}
 
 	@Test(expected = EmailExistsException.class)
 	public void testRegisterNewUserAccountException() throws EmailExistsException {
 		User user = new User();
-		user.setEmail("prueba");
+		user.setEmail("aaa");
 		given(dao.findByEmail(anyString())).willReturn(user);
 		given(dao.existsById(anyLong())).willReturn(true);
-		given(dao.save(user)).willReturn(user);
 		assertNotNull(service.registerNewUserAccount(user));
 	}
 
@@ -68,7 +66,7 @@ public class UserServiceTest {
 	}
 
 	@Test
-	public void testGetUserById() {
+	public void testGetUserById() throws UserNotFoundException {
 		given(dao.findById(anyLong())).willReturn(Optional.of(new User()));
 		assertNotNull(service.getUser(anyLong()));
 	}
@@ -87,15 +85,13 @@ public class UserServiceTest {
 
 	@Test
 	public void testGetUserByParamNull() {
-		given(dao.findByParam(anyString(), eq(pageRequest))).willReturn(Page.empty());
-		assertNull(service.getUsersByParam(null, eq(pageRequest)));
+		assertNull(service.getUsersByParam(any(), pageRequest));
 	}
 
-	@Test
+	@Test(expected = DuplicateUserException.class)
 	public void testAddUser() throws DuplicateUserException {
 		User user = new User();
 		given(dao.existsById(anyLong())).willReturn(false);
-		given(dao.save(user)).willReturn(user);
 		assertNotNull(service.addUser(user));
 	}
 
@@ -103,7 +99,6 @@ public class UserServiceTest {
 	public void testAddUserException() throws DuplicateUserException {
 		User user = new User();
 		given(dao.existsById(anyLong())).willReturn(true);
-		given(dao.save(user)).willReturn(user);
 		assertNotNull(service.addUser(user));
 	}
 
@@ -151,8 +146,8 @@ public class UserServiceTest {
 		assertFalse(service.emailExist("Prueba"));
 	}
 
-	@Test
-	public void testUserNotFound() {
+	@Test(expected = UserNotFoundException.class)
+	public void testUserNotFound() throws UserNotFoundException {
 		given(dao.findById(anyLong())).willReturn(Optional.ofNullable(null));
 		assertNull(service.getUser(anyLong()));
 	}

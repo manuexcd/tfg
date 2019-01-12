@@ -18,7 +18,7 @@ public interface UserManager {
 
 	public Collection<Order> getOrders(long id) throws UserNotFoundException;
 
-	public User getUser(long id);
+	public User getUser(long id) throws UserNotFoundException;
 
 	public User getUserByEmail(String email);
 
