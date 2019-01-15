@@ -12,11 +12,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.uca.tfg.exception.OrderLineNotFoundException;
+import com.uca.tfg.model.Constants;
 import com.uca.tfg.model.OrderLine;
 import com.uca.tfg.service.OrderLineManager;
 
 @RestController
-@RequestMapping(value = "/orderLines")
+@RequestMapping(value = Constants.PATH_ORDERLINES)
 public class OrderLineController {
 
 	@Autowired

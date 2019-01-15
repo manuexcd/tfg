@@ -23,7 +23,7 @@ import com.uca.tfg.model.Product;
 import com.uca.tfg.service.ProductManager;
 
 @RestController
-@RequestMapping(value = "/products")
+@RequestMapping(value = Constants.PATH_PRODUCTS)
 public class ProductController {
 
 	@Autowired

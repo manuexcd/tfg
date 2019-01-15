@@ -28,7 +28,7 @@ import com.uca.tfg.model.OrderLine;
 import com.uca.tfg.service.OrderManager;
 
 @RestController
-@RequestMapping(value = "/orders")
+@RequestMapping(value = Constants.PATH_ORDERS)
 public class OrderController {
 
 	@Autowired

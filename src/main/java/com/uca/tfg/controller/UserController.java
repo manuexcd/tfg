@@ -28,7 +28,7 @@ import com.uca.tfg.model.User;
 import com.uca.tfg.service.UserManager;
 
 @RestController
-@RequestMapping(value = "/users")
+@RequestMapping(value = Constants.PATH_USERS)
 public class UserController {
 
 	@Autowired
