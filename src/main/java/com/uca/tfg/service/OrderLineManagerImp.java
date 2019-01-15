@@ -3,7 +3,6 @@ package com.uca.tfg.service;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Service;
 
 import com.uca.tfg.exception.OrderLineNotFoundException;
@@ -11,7 +10,6 @@ import com.uca.tfg.model.OrderLine;
 import com.uca.tfg.repository.OrderLineRepository;
 
 @Service("orderLineManager")
-@DependsOn(value = { "orderManager", "productManager" })
 public class OrderLineManagerImp implements OrderLineManager {
 
 	@Autowired

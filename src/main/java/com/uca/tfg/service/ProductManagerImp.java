@@ -3,7 +3,6 @@ package com.uca.tfg.service;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.DependsOn;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -13,7 +12,6 @@ import com.uca.tfg.model.Product;
 import com.uca.tfg.repository.ProductRepository;
 
 @Service("productManager")
-@DependsOn("imageManager")
 public class ProductManagerImp implements ProductManager {
 
 	@Autowired

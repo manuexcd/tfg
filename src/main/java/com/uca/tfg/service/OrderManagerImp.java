@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.DependsOn;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -22,7 +21,6 @@ import com.uca.tfg.repository.ProductRepository;
 import com.uca.tfg.repository.UserRepository;
 
 @Service("orderManager")
-@DependsOn("userManager")
 public class OrderManagerImp implements OrderManager {
 
 	@Autowired
