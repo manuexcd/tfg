@@ -4,12 +4,6 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 
-import javax.persistence.ElementCollection;
-import javax.persistence.FetchType;
-
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.uca.tfg.model.Image;
@@ -39,7 +33,5 @@ public class UserDTO implements Serializable {
 	@ToString.Exclude
 	private Image userImage;
 	@ToString.Exclude
-	@ElementCollection(fetch = FetchType.LAZY)
-	@LazyCollection(LazyCollectionOption.FALSE)
 	private List<String> roles;
 }

@@ -10,14 +10,9 @@ import com.uca.tfg.model.OrderLine;
 import com.uca.tfg.model.User;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
 @Data
-@NoArgsConstructor
-@RequiredArgsConstructor
 public class OrderDTO implements Serializable {
 
 	private enum OrderStatus {
@@ -28,7 +23,6 @@ public class OrderDTO implements Serializable {
 	@ToString.Exclude
 	private long id;
 	private double totalPrice = 0;
-	@NonNull
 	@JsonSerialize(using = CustomDateSerializer.class)
 	private Timestamp date;
 	private OrderStatus orderStatus = OrderStatus.RECEIVED;
