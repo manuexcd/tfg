@@ -33,7 +33,7 @@ public abstract class GenericMapperImpl<E, D> implements GenericMapper<E, D> {
 		dtoPage.stream().forEach(dtoList::add);
 		List<E> entityList = new ArrayList<>();
 		dtoList.stream().forEach(entity -> entityList.add(mapper.map(entity, getClazz())));
-		return new PageImpl<>(entityList);
+		return new PageImpl<>(entityList, dtoPage.getPageable(), dtoPage.getTotalElements());
 	}
 
 	@Override
@@ -42,7 +42,7 @@ public abstract class GenericMapperImpl<E, D> implements GenericMapper<E, D> {
 		entityPage.stream().forEach(entityList::add);
 		List<D> dtoList = new ArrayList<>();
 		entityList.stream().forEach(dto -> dtoList.add(mapper.map(dto, getDtoClazz())));
-		return new PageImpl<>(dtoList);
+		return new PageImpl<>(dtoList, entityPage.getPageable(), entityPage.getTotalElements());
 	}
 
 	@Override
