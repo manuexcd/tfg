@@ -21,6 +21,7 @@ server:
 spring:
   profiles: docker
   jpa:
+    database: mysql
     hibernate:
       ddl-auto: update
       dialect: org.hibernate.dialect.MySQL5Dialect
@@ -31,7 +32,12 @@ spring:
 ---
 spring:
   profiles: kubernetes
+  jpa:
+    database: mysql
+    hibernate:
+      ddl-auto: update
+      dialect: org.hibernate.dialect.MySQL5Dialect
   datasource:
-    url: jdbc:mysql://mysql:3306/tfg?autoReconnect=true&useSSL=false&serverTimezone=UTC
-    username: manuexcd
-    password: contrasena
+    url: jdbc:mysql://mysql:3306/tfg?autoReconnect=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    username: docker
+    password: docker
