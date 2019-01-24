@@ -28,7 +28,7 @@ spec:
           value: root
         - name: MYSQL_USER
           value: docker
-        image: mysql
+        image: mariadb
         name: mysql
         args:
            - "--ignore-db-dir=lost+found"
