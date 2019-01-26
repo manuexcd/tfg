@@ -30,14 +30,12 @@ spec:
           value: docker
         image: mariadb
         name: mysql
-        args:
-           - "--ignore-db-dir=lost+found"
         ports:
         - containerPort: 3306
           name: mysql
         resources: {}
         volumeMounts:
-        - mountPath: /var/lib/mysql/data/data
+        - mountPath: /var/lib/mysql
           name: mysql-volume
       restartPolicy: Always
       volumes:
