@@ -37,7 +37,10 @@ public class UserManagerImp implements UserManager {
 
 	public boolean emailExist(String email) {
 		User user = users.findByEmail(email);
-		return users.existsById(user.getId());
+		if(users != null)
+			return users.existsById(user.getId());
+		else
+			return false;
 	}
 
 	public Page<User> getAllUsers(Pageable pagination) {
