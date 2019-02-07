@@ -2,7 +2,6 @@ package com.uca.tfg.model;
 
 import java.io.Serializable;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -49,7 +48,7 @@ public class Product implements Serializable {
 	@Column(name = "isVisible", unique = false, nullable = false)
 	private boolean isVisible = true;
 	@ToString.Exclude
-	@OneToOne(cascade = CascadeType.MERGE)
+	@OneToOne
 	private Image productImage;
 	
 	public Product(String name, String description, double price, int stockAvailable, boolean isVisible, Image productImage) {

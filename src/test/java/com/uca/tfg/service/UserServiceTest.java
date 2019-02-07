@@ -21,6 +21,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.uca.tfg.exception.DuplicateUserException;
 import com.uca.tfg.exception.EmailExistsException;
@@ -34,6 +35,9 @@ public class UserServiceTest {
 
 	@Mock
 	private UserRepository dao;
+	
+	@Mock
+	private BCryptPasswordEncoder encoder;
 
 	@InjectMocks
 	private UserManagerImp service;
@@ -47,6 +51,7 @@ public class UserServiceTest {
 		given(dao.findByEmail(anyString())).willReturn(user);
 		given(dao.existsById(anyLong())).willReturn(false);
 		given (dao.save(any())).willReturn(user);
+		given(encoder.encode(any())).willReturn("uw9fhew");
 		assertNotNull(service.registerNewUserAccount(user));
 	}
 

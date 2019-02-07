@@ -9,6 +9,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.uca.tfg.exception.DuplicateUserException;
@@ -23,6 +24,9 @@ public class UserManagerImp implements UserManager {
 
 	@Autowired
 	private UserRepository users;
+	
+	@Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
 	@Transactional
 	@Override
@@ -32,12 +36,13 @@ public class UserManagerImp implements UserManager {
 			throw new EmailExistsException("There is an account with that email adress: " + user.getEmail());
 		}
 
+		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 		return users.save(user);
 	}
 
 	public boolean emailExist(String email) {
 		User user = users.findByEmail(email);
-		if(users != null)
+		if(user != null)
 			return users.existsById(user.getId());
 		else
 			return false;

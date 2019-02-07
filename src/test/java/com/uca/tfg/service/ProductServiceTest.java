@@ -35,7 +35,7 @@ public class ProductServiceTest {
 	
 	@Test
 	public void testGetAllProducts() {
-		given(dao.findAll(pageRequest)).willReturn(Page.empty());
+		given(dao.findByIsVisibleTrue(pageRequest)).willReturn(Page.empty());
 		assertNotNull(service.getAllProducts(pageRequest));
 	}
 	

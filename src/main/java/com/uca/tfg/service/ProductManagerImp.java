@@ -19,7 +19,7 @@ public class ProductManagerImp implements ProductManager {
 
 	@Override
 	public Page<Product> getAllProducts(Pageable page) {
-		return products.findAll(page);
+		return products.findByIsVisibleTrue(page);
 	}
 
 	@Override

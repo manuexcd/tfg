@@ -25,4 +25,6 @@ public interface ProductRepository extends JpaRepository<Product, Long>{
 	
 	@Query("SELECT p FROM Product p WHERE p.name LIKE %?1% OR p.description LIKE %?1%")
 	Page<Product> findByParam(String param, Pageable page);
+	
+	Page<Product> findByIsVisibleTrue(Pageable page);
 }
