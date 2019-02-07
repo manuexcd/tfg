@@ -65,13 +65,15 @@ spec:
       - name: mysql
         image: mariadb
         env:
+        - name: MYSQL_ALLOW_EMPTY_PASSWORD
+          value: "1"
         - name: MYSQL_DATABASE
           value: tfg
-        - name: MYSQL_PASSWORD
-          value: docker
         - name: MYSQL_ROOT_PASSWORD
           value: root
         - name: MYSQL_USER
+          value: docker
+        - name: MYSQL_PASSWORD
           value: docker
         ports:
         - name: mysql
@@ -138,7 +140,7 @@ spec:
           $(<change_master_to.sql.orig),
             MASTER_HOST='mysql-0.mysql',
             MASTER_USER='root',
-            MASTER_PASSWORD='root',
+            MASTER_PASSWORD='',
             MASTER_CONNECT_RETRY=10;
           START SLAVE;
           EOF
