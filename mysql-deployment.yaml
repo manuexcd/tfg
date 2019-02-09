@@ -1,3 +1,4 @@
+
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -15,7 +16,7 @@ spec:
     spec:
       initContainers:
       - name: init-mysql
-        image: mariadb
+        image: mysql:5.7
         command:
         - bash
         - "-c"
@@ -56,14 +57,14 @@ spec:
           # Prepare the backup.
           xtrabackup --prepare --target-dir=/var/lib/mysql
         volumeMounts:
-        - name: mysql-volume
+        - name: data
           mountPath: /var/lib/mysql
           subPath: mysql
         - name: conf
           mountPath: /etc/mysql/conf.d
       containers:
       - name: mysql
-        image: mariadb
+        image: mysql:5.7
         env:
         - name: MYSQL_ALLOW_EMPTY_PASSWORD
           value: "1"
@@ -79,7 +80,7 @@ spec:
         - name: mysql
           containerPort: 3306
         volumeMounts:
-        - name: mysql-volume
+        - name: data
           mountPath: /var/lib/mysql
           subPath: mysql
         - name: conf
@@ -150,7 +151,7 @@ spec:
           exec ncat --listen --keep-open --send-only --max-conns=1 3307 -c \
             "xtrabackup --backup --slave-info --stream=xbstream --host=127.0.0.1 --user=root"
         volumeMounts:
-        - name: mysql-volume
+        - name: data
           mountPath: /var/lib/mysql
           subPath: mysql
         - name: conf
@@ -167,10 +168,9 @@ spec:
           name: mysql
   volumeClaimTemplates:
   - metadata:
-      name: mysql-volume
+      name: data
     spec:
       accessModes: ["ReadWriteOnce"]
       resources:
         requests:
           storage: 10Gi
-
