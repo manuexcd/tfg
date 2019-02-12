@@ -1,4 +1,3 @@
-
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -141,7 +140,7 @@ spec:
           $(<change_master_to.sql.orig),
             MASTER_HOST='mysql-0.mysql',
             MASTER_USER='root',
-            MASTER_PASSWORD='',
+            MASTER_PASSWORD='root',
             MASTER_CONNECT_RETRY=10;
           START SLAVE;
           EOF
