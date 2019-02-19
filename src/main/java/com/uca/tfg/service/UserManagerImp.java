@@ -24,9 +24,9 @@ public class UserManagerImp implements UserManager {
 
 	@Autowired
 	private UserRepository users;
-	
+
 	@Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
 	@Transactional
 	@Override
@@ -42,7 +42,7 @@ public class UserManagerImp implements UserManager {
 
 	public boolean emailExist(String email) {
 		User user = users.findByEmail(email);
-		if(user != null)
+		if (user != null)
 			return users.existsById(user.getId());
 		else
 			return false;
@@ -65,10 +65,8 @@ public class UserManagerImp implements UserManager {
 	}
 
 	public Page<User> getUsersByParam(String param, Pageable pagination) {
-		if (param != null) {
-			return users.findByParam(param, pagination);
-		}
-		return users.findAll(pagination);
+		return Optional.ofNullable(param).map(parameter -> users.findByParam(parameter, pagination))
+				.orElse(users.findAll(pagination));
 	}
 
 	public User addUser(User user) throws DuplicateUserException {

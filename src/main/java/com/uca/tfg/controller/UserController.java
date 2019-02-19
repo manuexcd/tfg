@@ -48,7 +48,7 @@ public class UserController {
 				mapper.mapEntityPageToDtoPage(userManager.getAllUsers(PageRequest.of(page, pageSize))), HttpStatus.OK);
 	}
 
-	@GetMapping(value = "/{id}")
+	@GetMapping(value = Constants.PARAM_ID)
 	public ResponseEntity<UserDTO> getUser(@PathVariable long id) throws UserNotFoundException {
 		User user = userManager.getUser(id);
 		if (user != null)
@@ -57,7 +57,7 @@ public class UserController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 
-	@GetMapping(value = "/email/{email}")
+	@GetMapping(value = Constants.PATH_EMAIL + Constants.PARAM_EMAIL)
 	public ResponseEntity<UserDTO> getUserByEmail(@PathVariable String email) {
 		User user = userManager.getUserByEmail(email);
 		if (user != null)
@@ -66,7 +66,7 @@ public class UserController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 
-	@GetMapping(value = "/search/{param}")
+	@GetMapping(value = Constants.PATH_SEARCH + Constants.PARAM)
 	public ResponseEntity<Page<UserDTO>> getUsersByParam(@PathVariable String param,
 			@RequestParam(defaultValue = Constants.PAGINATION_DEFAULT_PAGE) int page,
 			@RequestParam(defaultValue = Constants.PAGINATION_DEFAULT_SIZE) int pageSize) {
@@ -81,7 +81,7 @@ public class UserController {
 				HttpStatus.CREATED);
 	}
 
-	@PostMapping(value = "/registration")
+	@PostMapping(value = Constants.PATH_SIGN_IN)
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<UserDTO> registerUserAccount(@RequestBody UserDTO dto, WebRequest request) {
 		User registered = null;
@@ -94,12 +94,12 @@ public class UserController {
 		return new ResponseEntity<>(mapper.mapEntitytoDto(registered), HttpStatus.CREATED);
 	}
 
-	@PostMapping(value = "/{id}")
+	@PostMapping(value = Constants.PARAM_ID)
 	public ResponseEntity<OrderDTO> addOrder(@PathVariable long id) throws UserNotFoundException {
 		return new ResponseEntity<>(orderMapper.mapEntitytoDto(userManager.addOrder(id)), HttpStatus.CREATED);
 	}
 
-	@DeleteMapping(value = "/{id}")
+	@DeleteMapping(value = Constants.PARAM_ID)
 	public ResponseEntity<UserDTO> deleteUser(@PathVariable long id) throws UserNotFoundException {
 		User user = userManager.getUser(id);
 		if (user != null) {
