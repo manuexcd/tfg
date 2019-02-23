@@ -1,4 +1,4 @@
-version: '3.1'
+version: '3.3'
 
 services:
    mysql:
@@ -19,13 +19,15 @@ services:
    tfg:
       container_name: tfg
       image: manuexcd/tfg
-      #restart: always
+      restart: always
       environment:
          SPRING_PROFILES_ACTIVE: docker
       ports:
          - 8443:8443
       networks:
          - tfg-network
+      labels: 
+         kompose.service.type: loadbalancer
 networks:
    tfg-network:
 volumes:
