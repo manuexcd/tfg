@@ -39,3 +39,6 @@ INSERT INTO user_table VALUES(27, 'Canónigo Valiño, 92 46530 Puçol', 'LukasCo
 INSERT INTO user_table VALUES(28, 'C/ Manuel Iradier, 49 03790 Orba', 'ArianaNegreteArchuleta@superrito.com', 'Ariana', '$2a$10$DnNfDI4BXm464Tid9ZNCq.sY.XGHoCmuJtZO1RdmxKOhpxasT9eVG', '680 487 277', 'Negrete', 2);
 INSERT INTO user_table VALUES(29, 'Enxertos, 42 37514 El Sahugo', 'JordanaCortesMesa@superrito.com', 'Jordana', '$2a$10$DnNfDI4BXm464Tid9ZNCq.sY.XGHoCmuJtZO1RdmxKOhpxasT9eVG', '711 505 796', 'Cortés', 2);
 INSERT INTO user_table VALUES(30, 'Rio Segura, 14 31262 Allo', 'VeronicaCovarrubiasMadera@superrito.com', 'Verónica', '$2a$10$DnNfDI4BXm464Tid9ZNCq.sY.XGHoCmuJtZO1RdmxKOhpxasT9eVG', '715 518 590', 'Covarrubias', 2);
+
+INSERT INTO user_roles VALUES(1, 1, 'USER');
+INSERT INTO user_roles VALUES(1, 1, 'ADMIN');

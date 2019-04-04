@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,6 +22,7 @@ import com.uca.tfg.dto.OrderLineDTO;
 import com.uca.tfg.exception.NoStockException;
 import com.uca.tfg.exception.OrderNotFoundException;
 import com.uca.tfg.exception.ProductNotFoundException;
+import com.uca.tfg.exception.UserNotFoundException;
 import com.uca.tfg.mapper.OrderLineMapper;
 import com.uca.tfg.mapper.OrderMapper;
 import com.uca.tfg.model.Constants;
@@ -33,10 +36,10 @@ public class OrderController {
 
 	@Autowired
 	private OrderManager orderManager;
-	
+
 	@Autowired
 	private OrderMapper mapper;
-	
+
 	@Autowired
 	private OrderLineMapper orderLineMapper;
 
@@ -44,14 +47,17 @@ public class OrderController {
 	public ResponseEntity<Page<OrderDTO>> getAllOrders(
 			@RequestParam(defaultValue = Constants.PAGINATION_DEFAULT_PAGE) int page,
 			@RequestParam(defaultValue = Constants.PAGINATION_DEFAULT_SIZE) int pageSize) {
-		return new ResponseEntity<>(mapper.mapEntityPageToDtoPage(orderManager.getAllOrdersByDate(PageRequest.of(page, pageSize))), HttpStatus.OK);
+		return new ResponseEntity<>(
+				mapper.mapEntityPageToDtoPage(orderManager.getAllOrdersByDate(PageRequest.of(page, pageSize))),
+				HttpStatus.OK);
 	}
 
 	@GetMapping("/status")
 	public ResponseEntity<Page<OrderDTO>> getAllOrdersByOrderStatus(
 			@RequestParam(defaultValue = Constants.PAGINATION_DEFAULT_PAGE) int page,
 			@RequestParam(defaultValue = Constants.PAGINATION_DEFAULT_SIZE) int pageSize) {
-		return new ResponseEntity<>(mapper.mapEntityPageToDtoPage(orderManager.getAllOrdersByOrderStatus(PageRequest.of(page, pageSize))),
+		return new ResponseEntity<>(
+				mapper.mapEntityPageToDtoPage(orderManager.getAllOrdersByOrderStatus(PageRequest.of(page, pageSize))),
 				HttpStatus.OK);
 	}
 
@@ -59,11 +65,15 @@ public class OrderController {
 	public ResponseEntity<Page<OrderDTO>> getOrdersByUser(@PathVariable long userId,
 			@RequestParam(defaultValue = Constants.PAGINATION_DEFAULT_PAGE) int page,
 			@RequestParam(defaultValue = Constants.PAGINATION_DEFAULT_SIZE) int pageSize) {
-		Page<Order> orders = orderManager.getOrdersByUser(userId, PageRequest.of(page, pageSize));
-		if (orders != null)
-			return new ResponseEntity<>(mapper.mapEntityPageToDtoPage(orders), HttpStatus.OK);
-		else
+		try {
+			Page<Order> orders = orderManager.getOrdersByUser(userId, PageRequest.of(page, pageSize));
+			if (orders != null)
+				return new ResponseEntity<>(mapper.mapEntityPageToDtoPage(orders), HttpStatus.OK);
+			else
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		} catch (UserNotFoundException e) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
 	}
 
 	@GetMapping("/{id}/lines")
@@ -77,11 +87,25 @@ public class OrderController {
 
 	@GetMapping("/{id}")
 	public ResponseEntity<OrderDTO> getOrder(@PathVariable long id) {
-		Order order = orderManager.getOrder(id);
-		if (order != null)
-			return new ResponseEntity<>(mapper.mapEntitytoDto(order), HttpStatus.OK);
-		else
+		try {
+			return new ResponseEntity<>(mapper.mapEntitytoDto(orderManager.getOrder(id)), HttpStatus.OK);
+		} catch (OrderNotFoundException e) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
+
+	@GetMapping("/temporal")
+	public ResponseEntity<OrderDTO> getTemporalOrder() {
+		try {
+			return new ResponseEntity<>(mapper.mapEntitytoDto(orderManager.getTemporalOrder()), HttpStatus.OK);
+		} catch (OrderNotFoundException e) {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
+	}
+
+	@PostMapping
+	public ResponseEntity<OrderDTO> createOrder(@RequestBody Order order) {
+		return new ResponseEntity<>(mapper.mapEntitytoDto(orderManager.createOrder(order)), HttpStatus.CREATED);
 	}
 
 	@PostMapping("/{id}/{idProduct}-{n}")
@@ -90,14 +114,17 @@ public class OrderController {
 		return new ResponseEntity<>(orderManager.addOrderLine(id, idProduct, n), HttpStatus.CREATED);
 	}
 
+	@PutMapping
+	public ResponseEntity<OrderDTO> updateOrder(@RequestBody Order order) {
+		return new ResponseEntity<>(mapper.mapEntitytoDto(orderManager.createOrder(order)), HttpStatus.CREATED);
+	}
+
 	@DeleteMapping("/{id}")
 	public ResponseEntity<OrderDTO> deleteOrder(@PathVariable long id) {
-		Order order = orderManager.getOrder(id);
-
-		if (order != null) {
+		try {
 			orderManager.deleteOrder(id);
-			return new ResponseEntity<>(mapper.mapEntitytoDto(order), HttpStatus.OK);
-		} else {
+			return new ResponseEntity<>(mapper.mapEntitytoDto(orderManager.getOrder(id)), HttpStatus.OK);
+		} catch (OrderNotFoundException e) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}

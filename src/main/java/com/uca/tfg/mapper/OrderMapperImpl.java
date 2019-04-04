@@ -1,5 +1,6 @@
 package com.uca.tfg.mapper;
 
+import org.modelmapper.PropertyMap;
 import org.springframework.stereotype.Component;
 
 import com.uca.tfg.dto.OrderDTO;
@@ -16,5 +17,14 @@ public class OrderMapperImpl extends GenericMapperImpl<Order, OrderDTO> implemen
 	@Override
 	public Class<OrderDTO> getDtoClazz() {
 		return OrderDTO.class;
+	}
+
+	public void addMapping() {
+		super.mapper.addMappings(new PropertyMap<Order, OrderDTO>() {
+			@Override
+			protected void configure() {
+				map().setOrderStatus(source.getOrderStatus());
+			}
+		});
 	}
 }

@@ -15,6 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -35,10 +36,6 @@ import lombok.ToString;
 @RequiredArgsConstructor
 public class Order implements Serializable {
 
-	private enum OrderStatus {
-		RECEIVED, IN_PROGRESS, IN_DELIVERY, DELIVERED
-	}
-
 	private static final long serialVersionUID = 6892693125355139371L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -51,9 +48,10 @@ public class Order implements Serializable {
 	// @Temporal(TemporalType.TIMESTAMP)
 	@NonNull
 	@JsonSerialize(using = CustomDateSerializer.class)
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Timestamp date;
 	@Column(name = "orderStatus", unique = false, nullable = false)
-	private OrderStatus orderStatus = OrderStatus.RECEIVED;
+	private OrderStatus orderStatus = OrderStatus.TEMPORAL;
 	@ToString.Exclude
 	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Collection<OrderLine> orderLines;

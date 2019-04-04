@@ -11,7 +11,7 @@ import org.springframework.data.domain.PageImpl;
 public abstract class GenericMapperImpl<E, D> implements GenericMapper<E, D> {
 
 	@Autowired
-	private ModelMapper mapper;
+	protected ModelMapper mapper;
 
 	public abstract Class<E> getClazz();
 

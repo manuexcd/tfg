@@ -21,6 +21,7 @@ import org.springframework.data.domain.Pageable;
 import com.uca.tfg.exception.NoStockException;
 import com.uca.tfg.exception.OrderNotFoundException;
 import com.uca.tfg.exception.ProductNotFoundException;
+import com.uca.tfg.exception.UserNotFoundException;
 import com.uca.tfg.model.Order;
 import com.uca.tfg.model.OrderLine;
 import com.uca.tfg.model.Product;
@@ -37,13 +38,13 @@ public class OrderServiceTest {
 
 	@Mock
 	private UserRepository users;
-	
+
 	@Mock
 	private ProductRepository products;
 
 	@InjectMocks
 	private OrderManagerImp service;
-	
+
 	private Pageable pageRequest;
 
 	@Test
@@ -65,13 +66,13 @@ public class OrderServiceTest {
 	}
 
 	@Test
-	public void testGetOrderById() {
+	public void testGetOrderById() throws OrderNotFoundException {
 		given(dao.findById(anyLong())).willReturn(Optional.of(new Order()));
 		assertNotNull(service.getOrder(anyLong()));
 	}
 
 	@Test
-	public void testGetOrdersByUser() {
+	public void testGetOrdersByUser() throws UserNotFoundException {
 		User user = new User();
 		given(users.findById(anyLong())).willReturn(Optional.of(user));
 		given(dao.findByUser(user, pageRequest)).willReturn(Page.empty());
@@ -91,7 +92,7 @@ public class OrderServiceTest {
 		given(dao.findById(anyLong())).willReturn(Optional.ofNullable(null));
 		assertNull(service.getOrderLines(anyLong()));
 	}
-	
+
 //	@Test
 //	public void testAddOrderLine() throws NoStockException, ProductNotFoundException, OrderNotFoundException {
 //		Product product = new Product();
@@ -102,22 +103,25 @@ public class OrderServiceTest {
 //		given(products.findById(anyLong())).willReturn(Optional.of(product));
 //		assertNotNull(service.addOrderLine(1, product.getId(), 10));
 //	}
-	
+
 	@Test(expected = OrderNotFoundException.class)
-	public void testAddOrderLineOrderException() throws NoStockException, ProductNotFoundException, OrderNotFoundException {
+	public void testAddOrderLineOrderException()
+			throws NoStockException, ProductNotFoundException, OrderNotFoundException {
 		given(dao.findById(anyLong())).willReturn(Optional.ofNullable(null));
 		assertNotNull(service.addOrderLine(1, 1, 10));
 	}
-	
+
 	@Test(expected = ProductNotFoundException.class)
-	public void testAddOrderLineProductException() throws NoStockException, ProductNotFoundException, OrderNotFoundException {
+	public void testAddOrderLineProductException()
+			throws NoStockException, ProductNotFoundException, OrderNotFoundException {
 		given(dao.findById(anyLong())).willReturn(Optional.of(new Order()));
 		given(products.findById(anyLong())).willReturn(Optional.ofNullable(null));
 		assertNotNull(service.addOrderLine(1, 1, 10));
 	}
-	
+
 	@Test(expected = NoStockException.class)
-	public void testAddOrderLineNoStockException() throws NoStockException, ProductNotFoundException, OrderNotFoundException {
+	public void testAddOrderLineNoStockException()
+			throws NoStockException, ProductNotFoundException, OrderNotFoundException {
 		Product product = new Product();
 		product.setStockAvailable(10);
 		product.setPrice(100);
@@ -126,7 +130,7 @@ public class OrderServiceTest {
 		given(products.findById(anyLong())).willReturn(Optional.of(product));
 		assertNotNull(service.addOrderLine(1, product.getId(), 100));
 	}
-	
+
 	@Test
 	public void testDeleteOrder() {
 		Order order = new Order();
