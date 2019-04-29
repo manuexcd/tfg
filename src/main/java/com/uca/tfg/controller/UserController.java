@@ -1,5 +1,7 @@
 package com.uca.tfg.controller;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,6 +20,7 @@ import org.springframework.web.context.request.WebRequest;
 
 import com.uca.tfg.dto.OrderDTO;
 import com.uca.tfg.dto.UserDTO;
+import com.uca.tfg.dto.UserLoginDTO;
 import com.uca.tfg.exception.DuplicateUserException;
 import com.uca.tfg.exception.EmailExistsException;
 import com.uca.tfg.exception.UserNotFoundException;
@@ -50,20 +53,23 @@ public class UserController {
 
 	@GetMapping(value = Constants.PARAM_ID)
 	public ResponseEntity<UserDTO> getUser(@PathVariable long id) throws UserNotFoundException {
-		User user = userManager.getUser(id);
-		if (user != null)
-			return new ResponseEntity<>(mapper.mapEntitytoDto(user), HttpStatus.OK);
-		else
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		return Optional.ofNullable(userManager.getUser(id))
+				.map(user -> new ResponseEntity<>(mapper.mapEntitytoDto(user), HttpStatus.OK))
+				.orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
 	}
 
 	@GetMapping(value = Constants.PATH_EMAIL + Constants.PARAM_EMAIL)
 	public ResponseEntity<UserDTO> getUserByEmail(@PathVariable String email) {
-		User user = userManager.getUserByEmail(email);
-		if (user != null)
-			return new ResponseEntity<>(mapper.mapEntitytoDto(user), HttpStatus.OK);
-		else
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		return Optional.ofNullable(userManager.getUserByEmail(email))
+				.map(user -> new ResponseEntity<>(mapper.mapEntitytoDto(user), HttpStatus.OK))
+				.orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+	}
+
+	@GetMapping(value = Constants.PATH_EMAIL + Constants.PARAM_EMAIL + Constants.PATH_LOGIN_DETAILS)
+	public ResponseEntity<UserLoginDTO> getUserLoginDetails(@PathVariable String email) {
+		return Optional.ofNullable(userManager.getUserByEmail(email))
+				.map(user -> new ResponseEntity<>(mapper.mapUserToUserLoginDTO(user), HttpStatus.OK))
+				.orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
 	}
 
 	@GetMapping(value = Constants.PATH_SEARCH + Constants.PARAM)

@@ -45,13 +45,12 @@ public class Order implements Serializable {
 	@Column(name = "orderTotalPrice", unique = false, nullable = false)
 	private double totalPrice = 0;
 	@Column(name = "orderDate", unique = false, nullable = false)
-	// @Temporal(TemporalType.TIMESTAMP)
 	@NonNull
 	@JsonSerialize(using = CustomDateSerializer.class)
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Timestamp date;
 	@Column(name = "orderStatus", unique = false, nullable = false)
-	private OrderStatus orderStatus = OrderStatus.TEMPORAL;
+	private String orderStatus = Constants.ORDER_STATUS_TEMPORAL;
 	@ToString.Exclude
 	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Collection<OrderLine> orderLines;

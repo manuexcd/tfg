@@ -19,7 +19,7 @@ INSERT INTO user_table VALUES(7, 'Plaza Algodonales 222', 'email5@gmail.com', 'M
 INSERT INTO user_table VALUES(8, 'Santiago Bernabeu 222', 'email6@gmail.com', 'Antonia', '$2a$10$5IHzZ6gSOmHafOEMKNOKjubrEYq1skzyh.BBc0HTplNLeSbyq0tjq', '638489267', 'González', 2);
 INSERT INTO user_table VALUES(9, 'Plaza Algodonales 2222', 'email7@gmail.com', 'Gonzalo', '$2a$10$WUIZ8U4MhWyJABeywOX5YejKv./Selz.NHZHF1veX8tZDM.Pjs4He', '638489268', 'Soto', 1);
 INSERT INTO user_table VALUES(10, 'Santiago Bernabeu 2222', 'email8@gmail.com', 'Pepa', '$2a$10$DnNfDI4BXm464Tid9ZNCq.sY.XGHoCmuJtZO1RdmxKOhpxasT9eVG', '638489269', 'Fuentes', 2);
-INSERT INTO user_table VALUES(11, '3350 Hiddenview Drive Philadelphia, PA 19103', 'RobinJLevasseur@superrito.com', 'Robin', '$2a$10$DnNfDI4BXm464Tid9ZNCq.sY.XGHoCmuJtZO1RdmxKOhpxasT9eVG', '215-972-1698Pelegrino', 'Levasseur', 2);
+INSERT INTO user_table VALUES(11, '3350 Hiddenview Drive Philadelphia, PA 19103', 'RobinJLevasseur@superrito.com', 'Robin', '$2a$10$DnNfDI4BXm464Tid9ZNCq.sY.XGHoCmuJtZO1RdmxKOhpxasT9eVG', '215-972-1698', 'Levasseur', 2);
 INSERT INTO user_table VALUES(12, 'Eusebio Dávila, 69 41460 Las Navas de la Concepción', 'PelegrinoGaitanMelgar@superrito.com', 'Pelegrino', '$2a$10$DnNfDI4BXm464Tid9ZNCq.sY.XGHoCmuJtZO1RdmxKOhpxasT9eVG', '649 844 486', 'Gaitán', 1);
 INSERT INTO user_table VALUES(13, 'Camiño Real, 5748700 Ondarroa', 'AngustiasVargasSaldivar@superrito.com', 'Angustias', '$2a$10$DnNfDI4BXm464Tid9ZNCq.sY.XGHoCmuJtZO1RdmxKOhpxasT9eVG', '687 045 213', 'Vargas', 2);
 INSERT INTO user_table VALUES(14, 'Calle Proc. San Sebastián, 712570 Alcalà de Xivert', 'MariolaCorralesMendoza@gustr.com', 'Mariola', '$2a$10$DnNfDI4BXm464Tid9ZNCq.sY.XGHoCmuJtZO1RdmxKOhpxasT9eVG', '755 048 776', 'Corrales', 2);
@@ -40,5 +40,5 @@ INSERT INTO user_table VALUES(28, 'C/ Manuel Iradier, 49 03790 Orba', 'ArianaNeg
 INSERT INTO user_table VALUES(29, 'Enxertos, 42 37514 El Sahugo', 'JordanaCortesMesa@superrito.com', 'Jordana', '$2a$10$DnNfDI4BXm464Tid9ZNCq.sY.XGHoCmuJtZO1RdmxKOhpxasT9eVG', '711 505 796', 'Cortés', 2);
 INSERT INTO user_table VALUES(30, 'Rio Segura, 14 31262 Allo', 'VeronicaCovarrubiasMadera@superrito.com', 'Verónica', '$2a$10$DnNfDI4BXm464Tid9ZNCq.sY.XGHoCmuJtZO1RdmxKOhpxasT9eVG', '715 518 590', 'Covarrubias', 2);
 
-INSERT INTO user_roles VALUES(1, 1, 'USER');
-INSERT INTO user_roles VALUES(1, 1, 'ADMIN');
+INSERT INTO user_roles VALUES(1, 'USER');
+INSERT INTO user_roles VALUES(1, 'ADMIN');

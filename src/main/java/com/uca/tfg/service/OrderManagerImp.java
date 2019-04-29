@@ -13,9 +13,9 @@ import com.uca.tfg.exception.NoStockException;
 import com.uca.tfg.exception.OrderNotFoundException;
 import com.uca.tfg.exception.ProductNotFoundException;
 import com.uca.tfg.exception.UserNotFoundException;
+import com.uca.tfg.model.Constants;
 import com.uca.tfg.model.Order;
 import com.uca.tfg.model.OrderLine;
-import com.uca.tfg.model.OrderStatus;
 import com.uca.tfg.model.Product;
 import com.uca.tfg.repository.OrderRepository;
 import com.uca.tfg.repository.ProductRepository;
@@ -32,7 +32,7 @@ public class OrderManagerImp implements OrderManager {
 
 	@Autowired
 	private UserRepository users;
-	
+
 	@Override
 	public Page<Order> getAllOrders(Pageable page) {
 		return orders.findAll(page);
@@ -65,7 +65,7 @@ public class OrderManagerImp implements OrderManager {
 
 	@Override
 	public Order getTemporalOrder() throws OrderNotFoundException {
-		return Optional.ofNullable(orders.findByOrderStatus(OrderStatus.TEMPORAL))
+		return Optional.ofNullable(orders.findByOrderStatus(Constants.ORDER_STATUS_TEMPORAL))
 				.filter(orders -> !orders.isEmpty()).map(orders -> orders.get(0))
 				.orElseThrow(OrderNotFoundException::new);
 	}
@@ -79,8 +79,7 @@ public class OrderManagerImp implements OrderManager {
 						.orElseThrow(ProductNotFoundException::new);
 				if (product.getStockAvailable() >= line.getQuantity()) {
 					product.updateStock(line.getQuantity());
-				}
-				else {
+				} else {
 					throw new NoStockException();
 				}
 				line.setOrder(order);
