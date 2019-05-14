@@ -48,7 +48,7 @@ public class OrderLineServiceTest {
 	}
 	
 	@Test
-	public void testDeleteOrderLine() {
+	public void testDeleteOrderLine() throws OrderLineNotFoundException {
 		OrderLine orderLine = new OrderLine();
 		dao.save(orderLine);
 		long id = orderLine.getId();
