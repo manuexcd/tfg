@@ -7,7 +7,7 @@ import org.springframework.data.domain.Page;
 public interface GenericMapper<E, D> {
 	public E mapDtoToEntity(D dto);
 
-	public D mapEntitytoDto(E entity);
+	public D mapEntityToDto(E entity);
 
 	public Page<E> mapDtoPageToEntityPage(Page<D> dtoPage);
 

@@ -23,7 +23,7 @@ public abstract class GenericMapperImpl<E, D> implements GenericMapper<E, D> {
 	}
 
 	@Override
-	public D mapEntitytoDto(E entity) {
+	public D mapEntityToDto(E entity) {
 		return mapper.map(entity, getDtoClazz());
 	}
 
@@ -32,7 +32,7 @@ public abstract class GenericMapperImpl<E, D> implements GenericMapper<E, D> {
 		List<D> dtoList = new ArrayList<>();
 		dtoPage.stream().forEach(dtoList::add);
 		List<E> entityList = new ArrayList<>();
-		dtoList.stream().forEach(entity -> entityList.add(mapper.map(entity, getClazz())));
+		dtoList.stream().forEach(dto -> entityList.add(mapDtoToEntity(dto)));
 		return new PageImpl<>(entityList, dtoPage.getPageable(), dtoPage.getTotalElements());
 	}
 
@@ -41,21 +41,21 @@ public abstract class GenericMapperImpl<E, D> implements GenericMapper<E, D> {
 		List<E> entityList = new ArrayList<>();
 		entityPage.getContent().stream().forEach(entityList::add);
 		List<D> dtoList = new ArrayList<>();
-		entityList.stream().forEach(dto -> dtoList.add(mapper.map(dto, getDtoClazz())));
+		entityList.stream().forEach(entity -> dtoList.add(mapEntityToDto(entity)));
 		return new PageImpl<>(dtoList, entityPage.getPageable(), entityPage.getTotalElements());
 	}
 
 	@Override
 	public List<E> mapDtoListToEntityList(List<D> dtoList) {
 		List<E> entityList = new ArrayList<>();
-		dtoList.stream().forEach(entity -> entityList.add(mapper.map(entity, getClazz())));
+		dtoList.stream().forEach(dto -> entityList.add(mapDtoToEntity(dto)));
 		return entityList;
 	}
 
 	@Override
 	public List<D> mapEntityListToDtoList(List<E> entityList) {
 		List<D> dtoList = new ArrayList<>();
-		entityList.stream().forEach(dto -> dtoList.add(mapper.map(dto, getDtoClazz())));
+		entityList.stream().forEach(entity -> dtoList.add(mapEntityToDto(entity)));
 		return dtoList;
 	}
 }

@@ -20,7 +20,6 @@ import org.springframework.web.context.request.WebRequest;
 
 import com.uca.tfg.dto.OrderDTO;
 import com.uca.tfg.dto.UserDTO;
-import com.uca.tfg.dto.UserLoginDTO;
 import com.uca.tfg.exception.DuplicateUserException;
 import com.uca.tfg.exception.EmailExistsException;
 import com.uca.tfg.exception.UserNotFoundException;
@@ -54,21 +53,14 @@ public class UserController {
 	@GetMapping(value = Constants.PARAM_ID)
 	public ResponseEntity<UserDTO> getUser(@PathVariable long id) throws UserNotFoundException {
 		return Optional.ofNullable(userManager.getUser(id))
-				.map(user -> new ResponseEntity<>(mapper.mapEntitytoDto(user), HttpStatus.OK))
+				.map(user -> new ResponseEntity<>(mapper.mapEntityToDto(user), HttpStatus.OK))
 				.orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
 	}
 
 	@GetMapping(value = Constants.PATH_EMAIL + Constants.PARAM_EMAIL)
 	public ResponseEntity<UserDTO> getUserByEmail(@PathVariable String email) {
 		return Optional.ofNullable(userManager.getUserByEmail(email))
-				.map(user -> new ResponseEntity<>(mapper.mapEntitytoDto(user), HttpStatus.OK))
-				.orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
-	}
-
-	@GetMapping(value = Constants.PATH_EMAIL + Constants.PARAM_EMAIL + Constants.PATH_LOGIN_DETAILS)
-	public ResponseEntity<UserLoginDTO> getUserLoginDetails(@PathVariable String email) {
-		return Optional.ofNullable(userManager.getUserByEmail(email))
-				.map(user -> new ResponseEntity<>(mapper.mapUserToUserLoginDTO(user), HttpStatus.OK))
+				.map(user -> new ResponseEntity<>(mapper.mapEntityToDto(user), HttpStatus.OK))
 				.orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
 	}
 
@@ -83,7 +75,7 @@ public class UserController {
 
 	@PostMapping
 	public ResponseEntity<UserDTO> addUser(@RequestBody UserDTO dto) throws DuplicateUserException {
-		return new ResponseEntity<>(mapper.mapEntitytoDto(userManager.addUser(mapper.mapDtoToEntity(dto))),
+		return new ResponseEntity<>(mapper.mapEntityToDto(userManager.addUser(mapper.mapDtoToEntity(dto))),
 				HttpStatus.CREATED);
 	}
 
@@ -97,22 +89,17 @@ public class UserController {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
-		return new ResponseEntity<>(mapper.mapEntitytoDto(registered), HttpStatus.CREATED);
+		return new ResponseEntity<>(mapper.mapEntityToDto(registered), HttpStatus.CREATED);
 	}
 
 	@PostMapping(value = Constants.PARAM_ID)
 	public ResponseEntity<OrderDTO> addOrder(@PathVariable long id) throws UserNotFoundException {
-		return new ResponseEntity<>(orderMapper.mapEntitytoDto(userManager.addOrder(id)), HttpStatus.CREATED);
+		return new ResponseEntity<>(orderMapper.mapEntityToDto(userManager.addOrder(id)), HttpStatus.CREATED);
 	}
 
 	@DeleteMapping(value = Constants.PARAM_ID)
-	public ResponseEntity<UserDTO> deleteUser(@PathVariable long id) throws UserNotFoundException {
-		User user = userManager.getUser(id);
-		if (user != null) {
-			userManager.deleteUser(id);
-			return new ResponseEntity<>(mapper.mapEntitytoDto(user), HttpStatus.OK);
-		} else {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
+	public ResponseEntity<UserDTO> deleteUser(@PathVariable long id) {
+		userManager.deleteUser(id);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }

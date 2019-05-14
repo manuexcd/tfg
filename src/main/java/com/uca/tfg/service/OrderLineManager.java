@@ -11,5 +11,5 @@ public interface OrderLineManager {
 
 	public OrderLine getOrderLine(long id) throws OrderLineNotFoundException;
 
-	public void deleteOrderLine(long id);
+	public void deleteOrderLine(long id) throws OrderLineNotFoundException;
 }

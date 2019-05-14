@@ -1,13 +1,10 @@
 package com.uca.tfg.dto;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
-import com.uca.tfg.model.Image;
-import com.uca.tfg.model.Order;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,10 +25,6 @@ public class UserDTO implements Serializable {
 	@ToString.Exclude
 	@JsonProperty(access = Access.WRITE_ONLY)
 	private String password;
-	@ToString.Exclude
-	private Collection<Order> orders;
-	@ToString.Exclude
-	private Image userImage;
-	@ToString.Exclude
+	private Long userImage;
 	private List<String> roles;
 }

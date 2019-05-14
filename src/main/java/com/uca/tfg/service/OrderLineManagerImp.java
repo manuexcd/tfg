@@ -23,7 +23,10 @@ public class OrderLineManagerImp implements OrderLineManager {
 		return orderLines.findById(id).orElseThrow(OrderLineNotFoundException::new);
 	}
 
-	public void deleteOrderLine(long id) {
-		orderLines.deleteById(id);
+	public void deleteOrderLine(long id) throws OrderLineNotFoundException {
+		if (orderLines.findById(id) != null)
+			orderLines.deleteById(id);
+		else
+			throw new OrderLineNotFoundException();
 	}
 }

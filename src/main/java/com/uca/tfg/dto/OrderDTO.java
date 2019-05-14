@@ -6,8 +6,6 @@ import java.util.Collection;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.uca.tfg.model.CustomDateSerializer;
-import com.uca.tfg.model.OrderLine;
-import com.uca.tfg.model.User;
 
 import lombok.Data;
 import lombok.ToString;
@@ -23,7 +21,5 @@ public class OrderDTO implements Serializable {
 	private Timestamp date;
 	private String orderStatus;
 	@ToString.Exclude
-	private Collection<OrderLine> orderLines;
-	@ToString.Exclude
-	private User user;
+	private Collection<OrderLineDTO> orderLines;
 }

@@ -3,7 +3,6 @@ package com.uca.tfg.dto;
 import java.io.Serializable;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.uca.tfg.model.Image;
 
 import lombok.Data;
 import lombok.ToString;
@@ -21,5 +20,5 @@ public class ProductDTO implements Serializable {
 	@ToString.Exclude
 	private boolean isVisible = true;
 	@ToString.Exclude
-	private Image productImage;
+	private ImageDTO productImage;
 }

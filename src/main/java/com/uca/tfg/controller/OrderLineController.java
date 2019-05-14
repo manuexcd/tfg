@@ -29,22 +29,20 @@ public class OrderLineController {
 	}
 
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<OrderLine> getOneOrderLine(@PathVariable long id) throws OrderLineNotFoundException {
-		OrderLine orderLine = orderLineManager.getOrderLine(id);
-		if (orderLine != null)
-			return new ResponseEntity<>(orderLine, HttpStatus.OK);
-		else {
+	public ResponseEntity<OrderLine> getOneOrderLine(@PathVariable long id) {
+		try {
+			return new ResponseEntity<>(orderLineManager.getOrderLine(id), HttpStatus.OK);
+		} catch (OrderLineNotFoundException e) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
 
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<OrderLine> deleteOrderLine(@PathVariable long id) throws OrderLineNotFoundException {
-		OrderLine orderLine = orderLineManager.getOrderLine(id);
-		if (orderLine != null) {
+	public ResponseEntity<OrderLine> deleteOrderLine(@PathVariable long id) {
+		try {
 			orderLineManager.deleteOrderLine(id);
-			return new ResponseEntity<>(orderLine, HttpStatus.OK);
-		} else {
+			return new ResponseEntity<>(HttpStatus.OK);
+		} catch (OrderLineNotFoundException e) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}

@@ -127,7 +127,7 @@ public class UserControllerTest {
 	@Test
 	public void testAddOrder() throws Exception {
 		given(service.addOrder(anyLong())).willReturn(new Order());
-		given(orderMapper.mapEntitytoDto(any())).willReturn(new OrderDTO());
+		given(orderMapper.mapEntityToDto(any())).willReturn(new OrderDTO());
 		mvc.perform(post("/users/1").contentType(APPLICATION_JSON)).andExpect(status().is2xxSuccessful());
 	}
 

@@ -19,7 +19,6 @@ import com.uca.tfg.dto.ProductDTO;
 import com.uca.tfg.exception.ProductNotFoundException;
 import com.uca.tfg.mapper.ProductMapper;
 import com.uca.tfg.model.Constants;
-import com.uca.tfg.model.Product;
 import com.uca.tfg.service.ProductManager;
 
 @RestController
@@ -87,33 +86,28 @@ public class ProductController {
 
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<ProductDTO> getProduct(@PathVariable long id) throws ProductNotFoundException {
-		Product product = productManager.getProduct(id);
-		if (product != null)
-			return new ResponseEntity<>(mapper.mapEntitytoDto(product), HttpStatus.OK);
-		else
+		try {
+			return new ResponseEntity<>(mapper.mapEntityToDto(productManager.getProduct(id)), HttpStatus.OK);
+		} catch (ProductNotFoundException e) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
 	}
 
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<ProductDTO> updateProduct(@RequestBody ProductDTO dto) {
-		return new ResponseEntity<>(mapper.mapEntitytoDto(productManager.addProduct(mapper.mapDtoToEntity(dto))),
+		return new ResponseEntity<>(mapper.mapEntityToDto(productManager.addProduct(mapper.mapDtoToEntity(dto))),
 				HttpStatus.OK);
 	}
 
 	@PostMapping
 	public ResponseEntity<ProductDTO> addProduct(@RequestBody ProductDTO dto) {
-		return new ResponseEntity<>(mapper.mapEntitytoDto(productManager.addProduct(mapper.mapDtoToEntity(dto))),
+		return new ResponseEntity<>(mapper.mapEntityToDto(productManager.addProduct(mapper.mapDtoToEntity(dto))),
 				HttpStatus.CREATED);
 	}
 
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<ProductDTO> deleteProduct(@PathVariable long id) throws ProductNotFoundException {
-		Product product = productManager.getProduct(id);
-		if (product != null) {
-			productManager.deleteProduct(id);
-			return new ResponseEntity<>(mapper.mapEntitytoDto(product), HttpStatus.OK);
-		} else {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
+	public ResponseEntity<ProductDTO> deleteProduct(@PathVariable long id) {
+		productManager.deleteProduct(id);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }
