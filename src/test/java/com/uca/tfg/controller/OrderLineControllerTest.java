@@ -9,8 +9,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.util.Arrays;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,7 +21,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import com.uca.tfg.model.Order;
 import com.uca.tfg.model.OrderLine;
 import com.uca.tfg.model.Product;
-import com.uca.tfg.service.OrderLineManager;
+import com.uca.tfg.service.OrderLineService;
 
 @RunWith(MockitoJUnitRunner.class)
 public class OrderLineControllerTest {
@@ -31,7 +29,7 @@ public class OrderLineControllerTest {
 	private MockMvc mvc;
 
 	@Mock
-	private OrderLineManager service;
+	private OrderLineService service;
 	
 	@InjectMocks
 	private OrderLineController controller;
@@ -39,13 +37,6 @@ public class OrderLineControllerTest {
 	@Before
 	public void setup() {
 		mvc = MockMvcBuilders.standaloneSetup(controller).build();
-	}
-	
-	@Test
-	public void testGetAllOrderLines() throws Exception {
-		OrderLine orderLine = new OrderLine();
-		given(service.getAllOrderLines()).willReturn(Arrays.asList(orderLine));
-		mvc.perform(get("/orderLines").contentType(APPLICATION_JSON)).andExpect(status().isOk()).andExpect(content().string(containsString("id")));
 	}
 	
 	@Test

@@ -17,12 +17,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import lombok.ToString;
 
 @Entity
 @Table(name = "image")
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @Data
 @NoArgsConstructor
 @RequiredArgsConstructor
@@ -31,10 +30,9 @@ public class Image implements Serializable {
 	private static final long serialVersionUID = 2868430411020089105L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@ToString.Exclude
-	@Column(name = "imageID", unique = true, nullable = false)
+	@Column(unique = true, nullable = false)
 	private long id;
 	@NonNull
-	@Column(name = "imageUrl", unique = true, nullable = true)
+	@Column(unique = true, nullable = true)
 	private String url;
 }

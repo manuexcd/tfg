@@ -11,7 +11,7 @@ import com.uca.tfg.model.Image;
 import com.uca.tfg.repository.ImageRepository;
 
 @Service("imageManager")
-public class ImageManagerImp implements ImageManager {
+public class ImageServiceImpl implements ImageService {
 
 	@Autowired
 	private ImageRepository images;

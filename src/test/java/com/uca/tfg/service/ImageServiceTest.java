@@ -25,7 +25,7 @@ public class ImageServiceTest {
 	private ImageRepository dao;
 	
 	@InjectMocks
-	private ImageManagerImp service;
+	private ImageServiceImpl service;
 	
 	@Test
 	public void testGetAllImages() {

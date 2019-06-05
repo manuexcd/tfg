@@ -18,13 +18,10 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import com.uca.tfg.exception.NoStockException;
 import com.uca.tfg.exception.OrderNotFoundException;
-import com.uca.tfg.exception.ProductNotFoundException;
 import com.uca.tfg.exception.UserNotFoundException;
 import com.uca.tfg.model.Order;
 import com.uca.tfg.model.OrderLine;
-import com.uca.tfg.model.Product;
 import com.uca.tfg.model.User;
 import com.uca.tfg.repository.OrderRepository;
 import com.uca.tfg.repository.ProductRepository;
@@ -43,7 +40,7 @@ public class OrderServiceTest {
 	private ProductRepository products;
 
 	@InjectMocks
-	private OrderManagerImp service;
+	private OrderServiceImpl service;
 
 	private Pageable pageRequest;
 
@@ -103,33 +100,6 @@ public class OrderServiceTest {
 //		given(products.findById(anyLong())).willReturn(Optional.of(product));
 //		assertNotNull(service.addOrderLine(1, product.getId(), 10));
 //	}
-
-	@Test(expected = OrderNotFoundException.class)
-	public void testAddOrderLineOrderException()
-			throws NoStockException, ProductNotFoundException, OrderNotFoundException {
-		given(dao.findById(anyLong())).willReturn(Optional.ofNullable(null));
-		assertNotNull(service.addOrderLine(1, 1, 10));
-	}
-
-	@Test(expected = ProductNotFoundException.class)
-	public void testAddOrderLineProductException()
-			throws NoStockException, ProductNotFoundException, OrderNotFoundException {
-		given(dao.findById(anyLong())).willReturn(Optional.of(new Order()));
-		given(products.findById(anyLong())).willReturn(Optional.ofNullable(null));
-		assertNotNull(service.addOrderLine(1, 1, 10));
-	}
-
-	@Test(expected = NoStockException.class)
-	public void testAddOrderLineNoStockException()
-			throws NoStockException, ProductNotFoundException, OrderNotFoundException {
-		Product product = new Product();
-		product.setStockAvailable(10);
-		product.setPrice(100);
-		products.save(product);
-		given(dao.findById(anyLong())).willReturn(Optional.of(new Order()));
-		given(products.findById(anyLong())).willReturn(Optional.of(product));
-		assertNotNull(service.addOrderLine(1, product.getId(), 100));
-	}
 
 	@Test
 	public void testDeleteOrder() {

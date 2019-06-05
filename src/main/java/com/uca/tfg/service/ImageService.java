@@ -5,7 +5,7 @@ import java.util.Collection;
 import com.uca.tfg.exception.ImageNotFoundException;
 import com.uca.tfg.model.Image;
 
-public interface ImageManager {
+public interface ImageService {
 	public Collection<Image> getAllImages();
 
 	public Image getImage(long id) throws ImageNotFoundException;

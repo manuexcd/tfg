@@ -19,14 +19,14 @@ import com.uca.tfg.dto.ProductDTO;
 import com.uca.tfg.exception.ProductNotFoundException;
 import com.uca.tfg.mapper.ProductMapper;
 import com.uca.tfg.model.Constants;
-import com.uca.tfg.service.ProductManager;
+import com.uca.tfg.service.ProductService;
 
 @RestController
 @RequestMapping(value = Constants.PATH_PRODUCTS)
 public class ProductController {
 
 	@Autowired
-	private ProductManager productManager;
+	private ProductService productManager;
 
 	@Autowired
 	private ProductMapper mapper;

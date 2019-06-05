@@ -20,7 +20,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import lombok.ToString;
 
 @Entity
 @Table(name = "order_line")
@@ -34,17 +33,15 @@ public class OrderLine implements Serializable {
 	private static final long serialVersionUID = 4745195410724554377L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@ToString.Exclude
-	@Column(name = "orderLineID", unique = true, nullable = false)
+	@Column(unique = true, nullable = false)
 	private long id;
 	@NonNull
 	@OneToOne
 	private Product product;
 	@NonNull
-	@Column(name = "orderLineQuantity", unique = false, nullable = false)
+	@Column(unique = false, nullable = false)
 	private int quantity;
 	@NonNull
-	@ToString.Exclude
 	@ManyToOne
 	@JsonIgnore
 	private Order order;

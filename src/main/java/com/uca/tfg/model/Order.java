@@ -25,7 +25,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import lombok.ToString;
 
 @Entity
 @Table(name = "order_table")
@@ -39,23 +38,20 @@ public class Order implements Serializable {
 	private static final long serialVersionUID = 6892693125355139371L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@ToString.Exclude
-	@Column(name = "orderID", unique = true, nullable = false)
+	@Column(unique = true, nullable = false)
 	private long id;
-	@Column(name = "orderTotalPrice", unique = false, nullable = false)
+	@Column(unique = false, nullable = false)
 	private double totalPrice = 0;
-	@Column(name = "orderDate", unique = false, nullable = false)
-	@NonNull
+	@Column(unique = false, nullable = false)
 	@JsonSerialize(using = CustomDateSerializer.class)
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Timestamp date;
-	@Column(name = "orderStatus", unique = false, nullable = false)
+	@Column(unique = false, nullable = false)
 	private String orderStatus = Constants.ORDER_STATUS_TEMPORAL;
-	@ToString.Exclude
+//	@ToString.Exclude
 	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Collection<OrderLine> orderLines;
 	@NonNull
-	@ToString.Exclude
 	@ManyToOne
 	private User user;
 

@@ -12,7 +12,7 @@ import com.uca.tfg.model.Product;
 import com.uca.tfg.repository.ProductRepository;
 
 @Service("productManager")
-public class ProductManagerImp implements ProductManager {
+public class ProductServiceImpl implements ProductService {
 
 	@Autowired
 	private ProductRepository products;

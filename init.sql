@@ -2,7 +2,7 @@ INSERT INTO image VALUES(1, 'https://images.vexels.com/media/users/3/145908/prev
 INSERT INTO image VALUES(2, 'https://images.vexels.com/media/users/3/145922/preview2/eb6591b54b2b6462b4c22ec1fc4c36ea-fabricante-de-avatar-femenino.jpg');
 INSERT INTO image VALUES(3, 'https://psmedia.playstation.com/is/image/psmedia/ps4-listing-thumb-01-ps4-eu-06sep16?$Icon$');
 INSERT INTO image VALUES(4, 'https://e00-elmundo.uecdn.es/assets/multimedia/imagenes/2018/08/27/15353813396346.jpg');
-INSERT INTO image VALUES(5, 'https://www.nintendo.com/switch/assets/images/switch/buy-now/bundle_color_console.jpg');
+INSERT INTO image VALUES(5, 'https://www.nintendo.com/content/dam/noa/en_US/hardware/switch/nintendo-switch-neon/gallery/bundle_color_box.jpg');
 
 
 INSERT INTO product VALUES(1, 'Playstation 4', true, 'Sony Playstation 4', 300, 100, 3);
@@ -40,5 +40,4 @@ INSERT INTO user_table VALUES(28, 'C/ Manuel Iradier, 49 03790 Orba', 'ArianaNeg
 INSERT INTO user_table VALUES(29, 'Enxertos, 42 37514 El Sahugo', 'JordanaCortesMesa@superrito.com', 'Jordana', '$2a$10$DnNfDI4BXm464Tid9ZNCq.sY.XGHoCmuJtZO1RdmxKOhpxasT9eVG', '711 505 796', 'Cortés', 2);
 INSERT INTO user_table VALUES(30, 'Rio Segura, 14 31262 Allo', 'VeronicaCovarrubiasMadera@superrito.com', 'Verónica', '$2a$10$DnNfDI4BXm464Tid9ZNCq.sY.XGHoCmuJtZO1RdmxKOhpxasT9eVG', '715 518 590', 'Covarrubias', 2);
 
-INSERT INTO user_roles VALUES(1, 'USER');
 INSERT INTO user_roles VALUES(1, 'ADMIN');

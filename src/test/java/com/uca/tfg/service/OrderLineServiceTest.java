@@ -5,7 +5,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 
-import java.util.Arrays;
 import java.util.Optional;
 
 import org.junit.Test;
@@ -22,18 +21,12 @@ import com.uca.tfg.repository.OrderLineRepository;
 @RunWith(MockitoJUnitRunner.class)
 @SpringBootTest
 public class OrderLineServiceTest {
-	
+
 	@Mock
 	private OrderLineRepository dao;
-	
+
 	@InjectMocks
-	private OrderLineManagerImp service;
-	
-	@Test
-	public void testGetAllOrderLines() {
-		given(dao.findAll()).willReturn(Arrays.asList(new OrderLine()));
-		assertNotNull(service.getAllOrderLines());
-	}
+	private OrderLineServiceImpl service;
 
 	@Test
 	public void testGetOrderLineById() throws OrderLineNotFoundException {
@@ -46,7 +39,7 @@ public class OrderLineServiceTest {
 		given(dao.findById(anyLong())).willReturn(Optional.ofNullable(null));
 		assertNotNull(service.getOrderLine(anyLong()));
 	}
-	
+
 	@Test
 	public void testDeleteOrderLine() throws OrderLineNotFoundException {
 		OrderLine orderLine = new OrderLine();

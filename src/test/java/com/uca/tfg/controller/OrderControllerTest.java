@@ -1,13 +1,11 @@
 package com.uca.tfg.controller;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.Arrays;
@@ -26,7 +24,7 @@ import com.uca.tfg.mapper.OrderLineMapper;
 import com.uca.tfg.mapper.OrderMapper;
 import com.uca.tfg.model.Order;
 import com.uca.tfg.model.OrderLine;
-import com.uca.tfg.service.OrderManager;
+import com.uca.tfg.service.OrderService;
 
 @RunWith(MockitoJUnitRunner.class)
 public class OrderControllerTest {
@@ -34,7 +32,7 @@ public class OrderControllerTest {
 	private MockMvc mvc;
 
 	@Mock
-	private OrderManager service;
+	private OrderService service;
 
 	@Mock
 	private OrderMapper mapper;
@@ -101,14 +99,6 @@ public class OrderControllerTest {
 	public void testGetOrderNotFound() throws Exception {
 		given(service.getOrder(anyLong())).willReturn(null);
 		mvc.perform(get("/orders/1").contentType(APPLICATION_JSON)).andExpect(status().isNotFound());
-	}
-
-	@Test
-	public void testAddOrderLine() throws Exception {
-		OrderLine orderLine = new OrderLine();
-		String body = "{\"quantity\":\"1\"}";
-		given(service.addOrderLine(anyLong(), anyLong(), anyInt())).willReturn(orderLine);
-		mvc.perform(post("/orders/1/1-1").content(body).contentType(APPLICATION_JSON));
 	}
 
 	@Test

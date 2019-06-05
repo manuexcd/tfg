@@ -1,7 +1,5 @@
 package com.uca.tfg.service;
 
-import java.util.Collection;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,22 +8,18 @@ import com.uca.tfg.model.OrderLine;
 import com.uca.tfg.repository.OrderLineRepository;
 
 @Service("orderLineManager")
-public class OrderLineManagerImp implements OrderLineManager {
+public class OrderLineServiceImpl implements OrderLineService {
 
 	@Autowired
-	private OrderLineRepository orderLines;
-
-	public Collection<OrderLine> getAllOrderLines() {
-		return orderLines.findAll();
-	}
+	private OrderLineRepository repository;
 
 	public OrderLine getOrderLine(long id) throws OrderLineNotFoundException {
-		return orderLines.findById(id).orElseThrow(OrderLineNotFoundException::new);
+		return repository.findById(id).orElseThrow(OrderLineNotFoundException::new);
 	}
 
 	public void deleteOrderLine(long id) throws OrderLineNotFoundException {
-		if (orderLines.findById(id) != null)
-			orderLines.deleteById(id);
+		if (repository.findById(id) != null)
+			repository.deleteById(id);
 		else
 			throw new OrderLineNotFoundException();
 	}

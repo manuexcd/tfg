@@ -11,7 +11,7 @@ import com.uca.tfg.exception.UserNotFoundException;
 import com.uca.tfg.model.Order;
 import com.uca.tfg.model.User;
 
-public interface UserManager {
+public interface UserService {
 	public User registerNewUserAccount(User user) throws EmailExistsException;
 
 	public Page<User> getAllUsers(Pageable pagination);
@@ -26,7 +26,11 @@ public interface UserManager {
 
 	public User addUser(User user) throws DuplicateUserException;
 
-	public Order addOrder(long id) throws UserNotFoundException;
+	public Order createTemporalOrder(long id, Order order) throws UserNotFoundException;
+	
+	public Order updateOrder(long id, Order order) throws UserNotFoundException;
+	
+	public Order updateTemporalOrder(long id, Order order) throws UserNotFoundException;
 
 	public void deleteUser(long id);
 	

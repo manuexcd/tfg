@@ -22,4 +22,5 @@ public class Constants {
 	public static final String ORDER_STATUS_IN_PROGRESS = "IN_PROGRESS";
 	public static final String ORDER_STATUS_IN_DELIVERY = "IN_DELIVERY";
 	public static final String ORDER_STATUS_DELIVERED = "DELIVERED";
+	public static final String ORDER_STATUS_CANCELLED = "CANCELLED";
 }

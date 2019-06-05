@@ -21,7 +21,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.uca.tfg.mapper.ProductMapper;
 import com.uca.tfg.model.Product;
-import com.uca.tfg.service.ProductManager;
+import com.uca.tfg.service.ProductService;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ProductControllerTest {
@@ -29,7 +29,7 @@ public class ProductControllerTest {
 	private MockMvc mvc;
 
 	@Mock
-	private ProductManager service;
+	private ProductService service;
 	
 	@Mock
 	private ProductMapper mapper;

@@ -2,8 +2,6 @@ package com.uca.tfg.dto;
 
 import java.io.Serializable;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import lombok.Data;
 import lombok.ToString;
 
@@ -14,7 +12,4 @@ public class OrderLineDTO implements Serializable {
 	private long id;
 	private ProductDTO product;
 	private int quantity;
-	@ToString.Exclude
-	@JsonIgnore
-	private OrderDTO order;
 }

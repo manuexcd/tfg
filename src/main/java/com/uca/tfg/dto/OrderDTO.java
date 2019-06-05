@@ -2,24 +2,21 @@ package com.uca.tfg.dto;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.Collection;
+import java.util.List;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.uca.tfg.model.CustomDateSerializer;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.Data;
-import lombok.ToString;
 
 @Data
 public class OrderDTO implements Serializable {
 
 	private static final long serialVersionUID = 6892693125355139371L;
-	@ToString.Exclude
 	private long id;
 	private double totalPrice = 0;
-	@JsonSerialize(using = CustomDateSerializer.class)
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	private Timestamp date;
 	private String orderStatus;
-	@ToString.Exclude
-	private Collection<OrderLineDTO> orderLines;
+	private List<OrderLineDTO> orderLines;
+	private UserDTO user;
 }

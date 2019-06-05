@@ -29,7 +29,7 @@ public class ProductServiceTest {
 	private ProductRepository dao;
 	
 	@InjectMocks
-	private ProductManagerImp service;
+	private ProductServiceImpl service;
 	
 	private Pageable pageRequest;
 	

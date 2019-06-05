@@ -15,7 +15,6 @@ import lombok.ToString;
 public class UserDTO implements Serializable {
 
 	private static final long serialVersionUID = 7110275440135292814L;
-	@ToString.Exclude
 	private long id;
 	private String name;
 	private String surname;
@@ -25,6 +24,6 @@ public class UserDTO implements Serializable {
 	@ToString.Exclude
 	@JsonProperty(access = Access.WRITE_ONLY)
 	private String password;
-	private Long userImage;
+	private ImageDTO userImage;
 	private List<String> roles;
 }

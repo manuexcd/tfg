@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable;
 import com.uca.tfg.exception.ProductNotFoundException;
 import com.uca.tfg.model.Product;
 
-public interface ProductManager {
+public interface ProductService {
 	public Page<Product> getAllProducts(Pageable page);
 	
 	public Page<Product> getAllProductsOrderByName(Pageable page);

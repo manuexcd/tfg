@@ -12,14 +12,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.uca.tfg.exception.ImageNotFoundException;
 import com.uca.tfg.model.Image;
-import com.uca.tfg.service.ImageManager;
+import com.uca.tfg.service.ImageService;
 
 @RestController
 @RequestMapping("/images")
 public class ImageController {
 
 	@Autowired
-	private ImageManager imageManager;
+	private ImageService imageManager;
 
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<Image> getImageById(@PathVariable String id)

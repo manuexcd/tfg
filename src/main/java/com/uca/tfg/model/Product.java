@@ -29,29 +29,28 @@ public class Product implements Serializable {
 	private static final long serialVersionUID = 4340552175235204140L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@ToString.Exclude
-	@Column(name = "productID", unique = true, nullable = false)
+	@Column(unique = true, nullable = false)
 	private long id;
 	@NonNull
-	@Column(name = "productName", unique = true, nullable = false, length = 30)
+	@Column(unique = true, nullable = false, length = 30)
 	private String name;
 	@NonNull
-	@Column(name = "productDescription", unique = false, nullable = false, length = 200)
+	@Column(unique = false, nullable = false, length = 200)
 	private String description;
 	@NonNull
-	@Column(name = "productPrice", unique = false, nullable = false)
+	@Column(unique = false, nullable = false)
 	private double price;
 	@NonNull
-	@Column(name = "productStock", unique = false, nullable = true)
+	@Column(unique = false, nullable = true)
 	private int stockAvailable;
-	@ToString.Exclude
-	@Column(name = "isVisible", unique = false, nullable = false)
+	@Column(unique = false, nullable = false)
 	private boolean isVisible = true;
 	@ToString.Exclude
 	@OneToOne
 	private Image productImage;
-	
-	public Product(String name, String description, double price, int stockAvailable, boolean isVisible, Image productImage) {
+
+	public Product(String name, String description, double price, int stockAvailable, boolean isVisible,
+			Image productImage) {
 		this.setName(name);
 		this.setDescription(description);
 		this.setPrice(price);

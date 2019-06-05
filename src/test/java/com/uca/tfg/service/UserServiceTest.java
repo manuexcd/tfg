@@ -40,7 +40,7 @@ public class UserServiceTest {
 	private BCryptPasswordEncoder encoder;
 
 	@InjectMocks
-	private UserManagerImp service;
+	private UserServiceImpl service;
 
 	private Pageable pageRequest;
 
@@ -107,20 +107,20 @@ public class UserServiceTest {
 		assertNotNull(service.addUser(user));
 	}
 
-	@Test
-	public void testAddOrder() throws UserNotFoundException {
-		User user = new User();
-		List<Order> orders = new ArrayList<>();
-		user.setOrders(orders);
-		given(dao.findById(anyLong())).willReturn(Optional.of(user));
-		assertNotNull(service.addOrder(anyLong()));
-	}
-
-	@Test(expected = UserNotFoundException.class)
-	public void testAddOrderException() throws UserNotFoundException {
-		given(dao.findById(anyLong())).willReturn(Optional.ofNullable(null));
-		assertNotNull(service.addOrder(anyLong()));
-	}
+//	@Test
+//	public void testAddOrder() throws UserNotFoundException {
+//		User user = new User();
+//		List<Order> orders = new ArrayList<>();
+//		user.setOrders(orders);
+//		given(dao.findById(anyLong())).willReturn(Optional.of(user));
+//		assertNotNull(service.addOrder(anyLong()));
+//	}
+//
+//	@Test(expected = UserNotFoundException.class)
+//	public void testAddOrderException() throws UserNotFoundException {
+//		given(dao.findById(anyLong())).willReturn(Optional.ofNullable(null));
+//		assertNotNull(service.addOrder(anyLong()));
+//	}
 
 	@Test
 	public void testGetUserOrders() throws UserNotFoundException {

@@ -22,7 +22,7 @@ import com.uca.tfg.repository.ProductRepository;
 import com.uca.tfg.repository.UserRepository;
 
 @Service("orderManager")
-public class OrderManagerImp implements OrderManager {
+public class OrderServiceImpl implements OrderService {
 
 	@Autowired
 	private OrderRepository orders;
@@ -71,8 +71,18 @@ public class OrderManagerImp implements OrderManager {
 	}
 
 	@Override
-	public Order createOrder(Order order) {
+	public Order createTemporalOrder(Order order) {
 		order.setDate(new Timestamp(System.currentTimeMillis()));
+		order.setOrderStatus(Constants.ORDER_STATUS_TEMPORAL);
+		order.getOrderLines().stream().forEach(line -> line.setOrder(order));
+		order.updatePrice();
+		return orders.save(order);
+	}
+
+	@Override
+	public Order confirmTemporalOrder(Order order) {
+		order.setDate(new Timestamp(System.currentTimeMillis()));
+		order.setOrderStatus(Constants.ORDER_STATUS_RECEIVED);
 		order.getOrderLines().stream().forEach(line -> {
 			try {
 				Product product = products.findById(line.getProduct().getId())
@@ -91,10 +101,8 @@ public class OrderManagerImp implements OrderManager {
 		return orders.save(order);
 	}
 
-	@Override
-	public OrderLine addOrderLine(long id, long idProduct, int n)
-			throws NoStockException, ProductNotFoundException, OrderNotFoundException {
-		return null;
+	public Order updateOrder(Order order) {
+		return orders.save(order);
 	}
 
 	@Override
