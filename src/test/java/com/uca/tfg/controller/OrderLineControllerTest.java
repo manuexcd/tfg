@@ -14,10 +14,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import com.uca.tfg.exception.OrderLineNotFoundException;
 import com.uca.tfg.model.Order;
 import com.uca.tfg.model.OrderLine;
 import com.uca.tfg.model.Product;
@@ -51,23 +53,18 @@ public class OrderLineControllerTest {
 	
 	@Test
 	public void testGetOrderLineNotFound() throws Exception {
-		given(service.getOrderLine(anyLong())).willReturn(null);
+		given(service.getOrderLine(anyLong())).willThrow(new OrderLineNotFoundException());
 		mvc.perform(get("/orderLines/1").contentType(APPLICATION_JSON)).andExpect(status().isNotFound());
 	}
 	
 	@Test
 	public void testDeleteOrderLine() throws Exception {
-		OrderLine orderLine = new OrderLine();
-		orderLine.setProduct(new Product());
-		orderLine.setOrder(new Order());
-		orderLine.setQuantity(1);
-		given(service.getOrderLine(anyLong())).willReturn(orderLine);
-		mvc.perform(delete("/orderLines/1").contentType(APPLICATION_JSON)).andExpect(status().isOk()).andExpect(content().string(containsString("quantity")));
+		mvc.perform(delete("/orderLines/1").contentType(APPLICATION_JSON)).andExpect(status().isOk());
 	}
 	
 	@Test
 	public void testDeleteOrderLineNotFound() throws Exception {
-		given(service.getOrderLine(anyLong())).willReturn(null);
+		Mockito.doThrow(new OrderLineNotFoundException()).when(service).deleteOrderLine(anyLong());
 		mvc.perform(delete("/orderLines/1").contentType(APPLICATION_JSON)).andExpect(status().isNotFound());
 	}
 }

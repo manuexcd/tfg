@@ -15,11 +15,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.uca.tfg.dto.OrderLineDTO;
+import com.uca.tfg.exception.OrderNotFoundException;
 import com.uca.tfg.mapper.OrderLineMapper;
 import com.uca.tfg.mapper.OrderMapper;
 import com.uca.tfg.model.Order;
@@ -84,7 +86,7 @@ public class OrderControllerTest {
 
 	@Test
 	public void testGetOrderLinesNotFound() throws Exception {
-		given(service.getOrderLines(anyLong())).willReturn(null);
+		given(service.getOrderLines(anyLong())).willThrow(new OrderNotFoundException());
 		mvc.perform(get("/orders/1/lines").contentType(APPLICATION_JSON)).andExpect(status().isNotFound());
 	}
 
@@ -97,7 +99,7 @@ public class OrderControllerTest {
 
 	@Test
 	public void testGetOrderNotFound() throws Exception {
-		given(service.getOrder(anyLong())).willReturn(null);
+		given(service.getOrder(anyLong())).willThrow(new OrderNotFoundException());
 		mvc.perform(get("/orders/1").contentType(APPLICATION_JSON)).andExpect(status().isNotFound());
 	}
 
@@ -110,7 +112,7 @@ public class OrderControllerTest {
 
 	@Test
 	public void testDeleteOrderNotFound() throws Exception {
-		given(service.getOrder(anyLong())).willReturn(null);
+		Mockito.doThrow(new OrderNotFoundException()).when(service).getOrder(anyLong());
 		mvc.perform(delete("/orders/1").contentType(APPLICATION_JSON)).andExpect(status().isNotFound());
 	}
 }

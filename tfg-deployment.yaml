@@ -1,11 +1,6 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  annotations:
-    kompose.cmd: kompose convert
-    kompose.service.type: loadbalancer
-    kompose.version: 1.17.0 (a74acad)
-  creationTimestamp: null
   labels:
     io.kompose.service: tfg
   name: tfg
@@ -14,7 +9,6 @@ spec:
   strategy: {}
   template:
     metadata:
-      creationTimestamp: null
       labels:
         io.kompose.service: tfg
     spec:

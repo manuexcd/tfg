@@ -26,6 +26,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import com.uca.tfg.exception.DuplicateUserException;
 import com.uca.tfg.exception.EmailExistsException;
 import com.uca.tfg.exception.UserNotFoundException;
+import com.uca.tfg.mail.MailSender;
 import com.uca.tfg.model.Order;
 import com.uca.tfg.model.User;
 import com.uca.tfg.repository.UserRepository;
@@ -38,6 +39,9 @@ public class UserServiceTest {
 	
 	@Mock
 	private BCryptPasswordEncoder encoder;
+	
+	@Mock
+	private MailSender mailSender;
 
 	@InjectMocks
 	private UserServiceImpl service;
@@ -47,6 +51,8 @@ public class UserServiceTest {
 	@Test
 	public void testRegisterNewUserAccount() throws EmailExistsException {
 		User user = new User();
+		user.setName("Nombre");
+		user.setSurname("Apellidos");
 		user.setEmail("aaa");
 		given(dao.findByEmail(anyString())).willReturn(user);
 		given(dao.existsById(anyLong())).willReturn(false);
@@ -91,20 +97,6 @@ public class UserServiceTest {
 	@Test
 	public void testGetUserByParamNull() {
 		assertNull(service.getUsersByParam(any(), pageRequest));
-	}
-
-	@Test(expected = DuplicateUserException.class)
-	public void testAddUser() throws DuplicateUserException {
-		User user = new User();
-		given(dao.existsById(anyLong())).willReturn(false);
-		assertNotNull(service.addUser(user));
-	}
-
-	@Test(expected = DuplicateUserException.class)
-	public void testAddUserException() throws DuplicateUserException {
-		User user = new User();
-		given(dao.existsById(anyLong())).willReturn(true);
-		assertNotNull(service.addUser(user));
 	}
 
 //	@Test

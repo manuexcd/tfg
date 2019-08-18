@@ -13,24 +13,26 @@ import com.uca.tfg.model.OrderLine;
 public interface OrderService {
 
 	public Page<Order> getAllOrders(Pageable page);
-	
+
 	public Page<Order> getAllOrdersByOrderStatus(Pageable page);
-	
+
 	public Page<Order> getAllOrdersByDate(Pageable page);
-	
+
 	public Page<Order> getOrdersByUser(long userId, Pageable page) throws UserNotFoundException;
-	
+
 	public Collection<OrderLine> getOrderLines(long id) throws OrderNotFoundException;
 
 	public Order getOrder(long id) throws OrderNotFoundException;
-	
+
 	public Order createTemporalOrder(Order order);
-	
+
 	public Order getTemporalOrder() throws OrderNotFoundException;
-	
-	public Order confirmTemporalOrder(Order order);
-	
+
+	public Order confirmTemporalOrder(Order order) throws OrderNotFoundException;
+
 	public Order updateOrder(Order order);
-	
+
+	public Order cancelOrder(long id) throws OrderNotFoundException;
+
 	public void deleteOrder(long id);
 }

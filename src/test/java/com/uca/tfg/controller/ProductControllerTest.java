@@ -19,6 +19,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import com.uca.tfg.exception.ProductNotFoundException;
 import com.uca.tfg.mapper.ProductMapper;
 import com.uca.tfg.model.Product;
 import com.uca.tfg.service.ProductService;
@@ -85,7 +86,7 @@ public class ProductControllerTest {
 
 	@Test
 	public void testGetProductByIdNotFound() throws Exception {
-		given(service.getProduct(anyLong())).willReturn(null);
+		given(service.getProduct(anyLong())).willThrow(new ProductNotFoundException());
 		mvc.perform(get("/products/1").contentType(APPLICATION_JSON)).andExpect(status().isNotFound());
 	}
 
@@ -119,18 +120,6 @@ public class ProductControllerTest {
 
 	@Test
 	public void testDeleteProductById() throws Exception {
-		Product product = new Product();
-		product.setName("prueba");
-		product.setDescription("prueba");
-		product.setPrice(10);
-		product.setStockAvailable(100);
-		given(service.getProduct(anyLong())).willReturn(product);
 		mvc.perform(delete("/products/1").contentType(APPLICATION_JSON)).andExpect(status().isOk());
-	}
-
-	@Test
-	public void testDeleteProductByIdNotFound() throws Exception {
-		given(service.getProduct(anyLong())).willReturn(null);
-		mvc.perform(delete("/products/1").contentType(APPLICATION_JSON)).andExpect(status().isNotFound());
 	}
 }

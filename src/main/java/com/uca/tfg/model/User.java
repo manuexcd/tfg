@@ -60,6 +60,8 @@ public class User implements Serializable {
 	@ElementCollection(fetch = FetchType.LAZY)
 	@LazyCollection(LazyCollectionOption.FALSE)
 	private List<String> roles = Arrays.asList("USER");
+	@Column(unique = false, nullable = false)
+	private Boolean confirmed = Boolean.FALSE;
 
 	public User(String email, String password) {
 		this.setEmail(email);

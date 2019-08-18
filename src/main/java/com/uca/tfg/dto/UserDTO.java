@@ -26,4 +26,5 @@ public class UserDTO implements Serializable {
 	private String password;
 	private ImageDTO userImage;
 	private List<String> roles;
+	private Boolean confirmed;
 }

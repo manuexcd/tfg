@@ -1,6 +1,8 @@
 package com.uca.tfg.service;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -11,9 +13,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.uca.tfg.exception.DuplicateUserException;
 import com.uca.tfg.exception.EmailExistsException;
+import com.uca.tfg.exception.OrderNotFoundException;
 import com.uca.tfg.exception.UserNotFoundException;
+import com.uca.tfg.mail.MailSender;
 import com.uca.tfg.model.Constants;
 import com.uca.tfg.model.Order;
 import com.uca.tfg.model.User;
@@ -31,6 +34,9 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+	@Autowired
+	private MailSender mailSender;
+
 	@Transactional
 	@Override
 	public User registerNewUserAccount(User user) throws EmailExistsException {
@@ -40,6 +46,11 @@ public class UserServiceImpl implements UserService {
 		}
 
 		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+		user.setConfirmed(Boolean.FALSE);
+		Map<Object, Object> params = new HashMap<Object, Object>();
+		params.put(Constants.TEMPLATE_PARAM_FULLNAME, user.getFullName());
+		mailSender.sendEmail(user.getEmail(), Constants.SUBJECT_USER_REGISTERED, Constants.TEMPLATE_USER_REGISTERED,
+				params);
 		return repository.save(user);
 	}
 
@@ -71,23 +82,33 @@ public class UserServiceImpl implements UserService {
 		} else
 			throw new UserNotFoundException();
 	}
-	
+
 	@Override
 	public Order updateOrder(long id, Order order) throws UserNotFoundException {
 		Optional<User> user = repository.findById(id);
 		if (user.isPresent()) {
-			order.setUser(user.get());
+			if(order.getUser() == null)
+				order.setUser(user.get());
 			return orderService.updateOrder(order);
 		} else
 			throw new UserNotFoundException();
 	}
-	
+
 	@Override
-	public Order updateTemporalOrder(long id, Order order) throws UserNotFoundException {
+	public Order updateTemporalOrder(long id, Order order) throws UserNotFoundException, OrderNotFoundException {
 		Optional<User> user = repository.findById(id);
 		if (user.isPresent()) {
 			order.setUser(user.get());
 			return orderService.confirmTemporalOrder(order);
+		} else
+			throw new UserNotFoundException();
+	}
+
+	@Override
+	public Order cancelOrder(long id, long orderId) throws UserNotFoundException, OrderNotFoundException {
+		Optional<User> user = repository.findById(id);
+		if (user.isPresent()) {
+			return orderService.cancelOrder(orderId);
 		} else
 			throw new UserNotFoundException();
 	}
@@ -109,9 +130,15 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public User addUser(User user) throws DuplicateUserException {
-		return Optional.ofNullable(user).filter(newUser -> repository.existsById(newUser.getId()))
-				.map(newUser -> repository.save(newUser)).orElseThrow(DuplicateUserException::new);
+	public User confirmUser(long id) throws UserNotFoundException {
+		Optional<User> optional = repository.findById(id);
+		if (optional.isPresent()) {
+			User user = optional.get();
+			user.setConfirmed(Boolean.TRUE);
+			return repository.save(user);
+		} else {
+			throw new UserNotFoundException();
+		}
 	}
 
 	@Override
