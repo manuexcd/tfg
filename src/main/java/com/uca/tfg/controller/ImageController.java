@@ -22,8 +22,7 @@ public class ImageController {
 	private ImageService imageManager;
 
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<Image> getImageById(@PathVariable String id)
-			throws NumberFormatException, ImageNotFoundException {
+	public ResponseEntity<Image> getImageById(@PathVariable String id) throws ImageNotFoundException {
 		return Optional.ofNullable(imageManager.getImage(Long.valueOf(id)))
 				.map(image -> new ResponseEntity<>(image, HttpStatus.OK))
 				.orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));

@@ -12,6 +12,7 @@ spring:
               auth: true
               starttls:
                  enable: true
+                 required: true
   jpa:
     database: mysql
     hibernate:

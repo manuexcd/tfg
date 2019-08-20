@@ -12,14 +12,12 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import com.uca.tfg.exception.OrderLineNotFoundException;
 import com.uca.tfg.model.OrderLine;
 import com.uca.tfg.repository.OrderLineRepository;
 
 @RunWith(MockitoJUnitRunner.class)
-@SpringBootTest
 public class OrderLineServiceTest {
 
 	@Mock
@@ -36,7 +34,6 @@ public class OrderLineServiceTest {
 
 	@Test(expected = OrderLineNotFoundException.class)
 	public void testOrderLineNotFound() throws OrderLineNotFoundException {
-		given(dao.findById(anyLong())).willReturn(Optional.ofNullable(null));
 		assertNotNull(service.getOrderLine(anyLong()));
 	}
 
@@ -45,7 +42,15 @@ public class OrderLineServiceTest {
 		OrderLine orderLine = new OrderLine();
 		dao.save(orderLine);
 		long id = orderLine.getId();
+		given(dao.existsById(id)).willReturn(true);
 		service.deleteOrderLine(id);
+		given(dao.existsById(id)).willReturn(false);
 		assertFalse(dao.existsById(id));
+	}
+	
+	@Test(expected = OrderLineNotFoundException.class)
+	public void testDeleteOrderLineNotFound() throws OrderLineNotFoundException {
+		given(dao.existsById(anyLong())).willReturn(false);
+		service.deleteOrderLine((long) 1);
 	}
 }

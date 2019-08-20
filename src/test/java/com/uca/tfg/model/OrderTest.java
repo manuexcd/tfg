@@ -1,5 +1,6 @@
 package com.uca.tfg.model;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;

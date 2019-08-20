@@ -72,8 +72,7 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public Order getTemporalOrder() throws OrderNotFoundException {
 		return Optional.ofNullable(orders.findByOrderStatus(Constants.ORDER_STATUS_TEMPORAL))
-				.filter(orders -> !orders.isEmpty()).map(orders -> orders.get(0))
-				.orElseThrow(OrderNotFoundException::new);
+				.filter(list -> !list.isEmpty()).map(list -> list.get(0)).orElseThrow(OrderNotFoundException::new);
 	}
 
 	@Override
@@ -86,38 +85,36 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public Order confirmTemporalOrder(Order entity) throws OrderNotFoundException {
-		return Optional.ofNullable(entity).map(order -> {
-			order.setDate(new Timestamp(System.currentTimeMillis()));
-			order.setOrderStatus(Constants.ORDER_STATUS_RECEIVED);
-			order.getOrderLines().stream().forEach(line -> {
-				try {
-					Product product = products.findById(line.getProduct().getId())
-							.orElseThrow(ProductNotFoundException::new);
-					if (product.getStockAvailable() >= line.getQuantity()) {
-						product.updateStock(line.getQuantity());
-					} else {
-						throw new NoStockException();
-					}
-					line.setOrder(order);
-				} catch (ProductNotFoundException | NoStockException e) {
-					order.getOrderLines().remove(line);
+	public Order confirmTemporalOrder(Order order) throws OrderNotFoundException {
+		order.setDate(new Timestamp(System.currentTimeMillis()));
+		order.setOrderStatus(Constants.ORDER_STATUS_RECEIVED);
+		order.getOrderLines().stream().forEach(line -> {
+			try {
+				Product product = products.findById(line.getProduct().getId())
+						.orElseThrow(ProductNotFoundException::new);
+				if (product.getStockAvailable() >= line.getQuantity()) {
+					product.updateStock(line.getQuantity());
+				} else {
+					throw new NoStockException();
 				}
-			});
-			order.updatePrice();
-			Map<Object, Object> params = new HashMap<Object, Object>();
-			params.put(Constants.TEMPLATE_PARAM_ORDER_ID, order.getId());
-			params.put(Constants.TEMPLATE_PARAM_ORDER_PRICE, order.getTotalPrice());
-			params.put(Constants.TEMPLATE_PARAM_ORDER_LINES, order.getOrderLines());
-			mailSender.sendEmail(order.getUser().getEmail(), Constants.SUBJECT_ORDER_CONFIRMED,
-					Constants.TEMPLATE_ORDER_CONFIRMED, params);
-			return orders.save(order);
-		}).orElseThrow(OrderNotFoundException::new);
+				line.setOrder(order);
+			} catch (ProductNotFoundException | NoStockException e) {
+				line.setQuantity(0);
+			}
+		});
+		order.updatePrice();
+		Map<Object, Object> params = new HashMap<>();
+		params.put(Constants.TEMPLATE_PARAM_ORDER_ID, order.getId());
+		params.put(Constants.TEMPLATE_PARAM_ORDER_PRICE, order.getTotalPrice());
+		params.put(Constants.TEMPLATE_PARAM_ORDER_LINES, order.getOrderLines());
+		mailSender.sendEmail(order.getUser().getEmail(), Constants.SUBJECT_ORDER_CONFIRMED,
+				Constants.TEMPLATE_ORDER_CONFIRMED, params);
+		return orders.save(order);
 	}
 
 	@Override
 	public Order updateOrder(Order order) {
-		Map<Object, Object> params = new HashMap<Object, Object>();
+		Map<Object, Object> params = new HashMap<>();
 		params.put(Constants.TEMPLATE_PARAM_ORDER_ID, order.getId());
 		params.put(Constants.TEMPLATE_PARAM_ORDER_STATUS, order.getOrderStatus());
 		mailSender.sendEmail(order.getUser().getEmail(), Constants.SUBJECT_ORDER_UPDATED,
@@ -132,7 +129,7 @@ public class OrderServiceImpl implements OrderService {
 			Order order = optional.get();
 			if (order.getOrderStatus().equals(Constants.ORDER_STATUS_RECEIVED)) {
 				order.setOrderStatus(Constants.ORDER_STATUS_CANCELLED);
-				Map<Object, Object> params = new HashMap<Object, Object>();
+				Map<Object, Object> params = new HashMap<>();
 				params.put(Constants.TEMPLATE_PARAM_ORDER_ID, order.getId());
 				mailSender.sendEmail(order.getUser().getEmail(), Constants.SUBJECT_ORDER_CANCELLED,
 						Constants.TEMPLATE_ORDER_CANCELLED, params);

@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
 
 		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 		user.setConfirmed(Boolean.FALSE);
-		Map<Object, Object> params = new HashMap<Object, Object>();
+		Map<Object, Object> params = new HashMap<>();
 		params.put(Constants.TEMPLATE_PARAM_FULLNAME, user.getFullName());
 		mailSender.sendEmail(user.getEmail(), Constants.SUBJECT_USER_REGISTERED, Constants.TEMPLATE_USER_REGISTERED,
 				params);
@@ -79,19 +79,20 @@ public class UserServiceImpl implements UserService {
 			order.setOrderStatus(Constants.ORDER_STATUS_TEMPORAL);
 			order.setUser(user.get());
 			return orderService.createTemporalOrder(order);
-		} else
+		} else {
 			throw new UserNotFoundException();
+		}
 	}
 
 	@Override
 	public Order updateOrder(long id, Order order) throws UserNotFoundException {
 		Optional<User> user = repository.findById(id);
 		if (user.isPresent()) {
-			if(order.getUser() == null)
-				order.setUser(user.get());
+			order.setUser(user.get());
 			return orderService.updateOrder(order);
-		} else
+		} else {
 			throw new UserNotFoundException();
+		}
 	}
 
 	@Override
@@ -100,8 +101,9 @@ public class UserServiceImpl implements UserService {
 		if (user.isPresent()) {
 			order.setUser(user.get());
 			return orderService.confirmTemporalOrder(order);
-		} else
+		} else {
 			throw new UserNotFoundException();
+		}
 	}
 
 	@Override
@@ -109,8 +111,9 @@ public class UserServiceImpl implements UserService {
 		Optional<User> user = repository.findById(id);
 		if (user.isPresent()) {
 			return orderService.cancelOrder(orderId);
-		} else
+		} else {
 			throw new UserNotFoundException();
+		}
 	}
 
 	@Override

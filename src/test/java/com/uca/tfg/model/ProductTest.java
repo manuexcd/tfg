@@ -1,5 +1,7 @@
 package com.uca.tfg.model;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
@@ -8,6 +10,12 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ProductTest {
+	
+	@Test
+	public void testConstructor() {
+		Product product = new Product("nombre", "descripcion", 100, 100, true, new Image());
+		assertNotNull(product);
+	}
 
 	@Test
 	public void updateMoreStock() {

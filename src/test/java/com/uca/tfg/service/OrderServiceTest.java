@@ -20,9 +20,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import com.uca.tfg.exception.NoStockException;
 import com.uca.tfg.exception.OrderNotFoundException;
-import com.uca.tfg.exception.ProductNotFoundException;
 import com.uca.tfg.exception.UserNotFoundException;
 import com.uca.tfg.mail.MailSender;
 import com.uca.tfg.model.Constants;
@@ -188,31 +186,20 @@ public class OrderServiceTest {
 		assertNotNull(service.confirmTemporalOrder(order));
 	}
 
-	@Test(expected = NoStockException.class)
+	@Test
 	public void testConfirmTemporalOrderNoStock() throws OrderNotFoundException {
 		Order order = new Order();
 		Product product = new Product();
 		OrderLine orderLine = new OrderLine();
+		User user = new User();
+		user.setEmail("AA");
 		product.setStockAvailable(0);
 		orderLine.setOrder(order);
 		orderLine.setProduct(product);
 		orderLine.setQuantity(2);
 		order.setOrderLines(Arrays.asList(orderLine));
+		order.setUser(user);
 		given(products.findById(anyLong())).willReturn(Optional.ofNullable(product));
-		assertNull(service.confirmTemporalOrder(order));
-	}
-
-	@Test(expected = ProductNotFoundException.class)
-	public void testConfirmTemporalOrderProductNotfound() throws OrderNotFoundException {
-		Order order = new Order();
-		Product product = new Product();
-		OrderLine orderLine = new OrderLine();
-		product.setStockAvailable(0);
-		orderLine.setOrder(order);
-		orderLine.setProduct(product);
-		orderLine.setQuantity(2);
-		given(products.findById(anyLong())).willThrow(new ProductNotFoundException());
-		given(dao.save(order)).willReturn(order);
 		assertNull(service.confirmTemporalOrder(order));
 	}
 

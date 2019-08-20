@@ -60,16 +60,6 @@ public class OrderControllerTest {
 		mvc.perform(get("/orders/status").contentType(APPLICATION_JSON)).andExpect(status().isOk());
 	}
 
-//	@Test
-//	public void testGetAllOrdersByUser() throws Exception {
-//		Order order = new Order();
-//		List<Order> orders = new ArrayList<>();
-//		orders.add(order);
-//		given(service.getOrdersByUser(anyLong(), eq(pageRequest))).willReturn(new PageImpl<>(orders));
-//		mvc.perform(get("/orders/user/2").contentType(APPLICATION_JSON)).andExpect(status().isOk())
-//				.andExpect(content().string(containsString("orderStatus")));
-//	}
-
 	@Test
 	public void testGetAllOrdersByUserNotFound() throws Exception {
 		mvc.perform(get("/orders/user/1").contentType(APPLICATION_JSON)).andExpect(status().isNotFound());
@@ -101,6 +91,17 @@ public class OrderControllerTest {
 	public void testGetOrderNotFound() throws Exception {
 		given(service.getOrder(anyLong())).willThrow(new OrderNotFoundException());
 		mvc.perform(get("/orders/1").contentType(APPLICATION_JSON)).andExpect(status().isNotFound());
+	}
+
+	@Test
+	public void testGetTemporalOrder() throws Exception {
+		mvc.perform(get("/orders/temporal").contentType(APPLICATION_JSON)).andExpect(status().isOk());
+	}
+
+	@Test
+	public void testGetTemporalOrderException() throws Exception {
+		given(service.getTemporalOrder()).willThrow(OrderNotFoundException.class);
+		mvc.perform(get("/orders/temporal").contentType(APPLICATION_JSON)).andExpect(status().isNoContent());
 	}
 
 	@Test

@@ -18,7 +18,7 @@ public class OrderLineServiceImpl implements OrderLineService {
 	}
 
 	public void deleteOrderLine(long id) throws OrderLineNotFoundException {
-		if (repository.findById(id) != null)
+		if (repository.existsById(id))
 			repository.deleteById(id);
 		else
 			throw new OrderLineNotFoundException();

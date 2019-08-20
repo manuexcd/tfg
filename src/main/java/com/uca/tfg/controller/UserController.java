@@ -132,7 +132,6 @@ public class UserController {
 	
 	@PostMapping(value = Constants.PATH_SIGN_IN)
 	public ResponseEntity<UserDTO> registerUserAccount(@RequestBody UserDTO dto) {
-//		public ResponseEntity<UserDTO> registerUserAccount(@RequestBody UserDTO dto, WebRequest request) {
 		User registered = null;
 		try {
 			registered = userService.registerNewUserAccount(mapper.mapDtoToEntity(dto));

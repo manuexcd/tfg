@@ -8,6 +8,7 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -20,10 +21,14 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.uca.tfg.dto.OrderDTO;
 import com.uca.tfg.exception.EmailExistsException;
+import com.uca.tfg.exception.UserNotFoundException;
 import com.uca.tfg.mapper.OrderMapper;
 import com.uca.tfg.mapper.UserMapper;
 import com.uca.tfg.model.User;
+import com.uca.tfg.service.OrderService;
 import com.uca.tfg.service.UserService;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -39,6 +44,9 @@ public class UserControllerTest {
 
 	@Mock
 	private OrderMapper orderMapper;
+
+	@Mock
+	private OrderService orderService;
 
 	@InjectMocks
 	private UserController controller;
@@ -108,5 +116,91 @@ public class UserControllerTest {
 		given(service.registerNewUserAccount(any())).willThrow(EmailExistsException.class);
 		mvc.perform(post("/users/signin").content(body).contentType(APPLICATION_JSON))
 				.andExpect(status().is5xxServerError());
+	}
+
+	@Test
+	public void testGetOrdersByUser() throws Exception {
+		mvc.perform(get("/users/1/orders").contentType(APPLICATION_JSON)).andExpect(status().isOk());
+	}
+
+	@Test
+	public void testGetOrdersByUserException() throws Exception {
+		given(orderService.getOrdersByUser(anyLong(), any())).willThrow(UserNotFoundException.class);
+		mvc.perform(get("/users/1/orders").contentType(APPLICATION_JSON)).andExpect(status().isNotFound());
+	}
+
+	@Test
+	public void testCreateTemporalOrder() throws Exception {
+		ObjectMapper obj = new ObjectMapper();
+		mvc.perform(
+				post("/users/1/orders").content(obj.writeValueAsString(new OrderDTO())).contentType(APPLICATION_JSON))
+				.andExpect(status().is2xxSuccessful());
+	}
+
+	@Test
+	public void testCreateTemporalOrderException() throws Exception {
+		ObjectMapper obj = new ObjectMapper();
+		given(service.createTemporalOrder(anyLong(), any())).willThrow(UserNotFoundException.class);
+		mvc.perform(
+				post("/users/1/orders").content(obj.writeValueAsString(new OrderDTO())).contentType(APPLICATION_JSON))
+				.andExpect(status().isNotFound());
+	}
+
+	@Test
+	public void testUpdateOrder() throws Exception {
+		ObjectMapper obj = new ObjectMapper();
+		mvc.perform(
+				put("/users/1/orders").content(obj.writeValueAsString(new OrderDTO())).contentType(APPLICATION_JSON))
+				.andExpect(status().is2xxSuccessful());
+	}
+
+	@Test
+	public void testUpdateOrderException() throws Exception {
+		ObjectMapper obj = new ObjectMapper();
+		given(service.updateOrder(anyLong(), any())).willThrow(UserNotFoundException.class);
+		mvc.perform(
+				put("/users/1/orders").content(obj.writeValueAsString(new OrderDTO())).contentType(APPLICATION_JSON))
+				.andExpect(status().isNotFound());
+	}
+
+	@Test
+	public void testUpdateTemporalOrder() throws Exception {
+		ObjectMapper obj = new ObjectMapper();
+		mvc.perform(put("/users/1/orders/temporal").content(obj.writeValueAsString(new OrderDTO()))
+				.contentType(APPLICATION_JSON)).andExpect(status().is2xxSuccessful());
+	}
+
+	@Test
+	public void testUpdateTemporalOrderException() throws Exception {
+		ObjectMapper obj = new ObjectMapper();
+		given(service.updateTemporalOrder(anyLong(), any())).willThrow(UserNotFoundException.class);
+		mvc.perform(put("/users/1/orders/temporal").content(obj.writeValueAsString(new OrderDTO()))
+				.contentType(APPLICATION_JSON)).andExpect(status().isNotFound());
+	}
+
+	@Test
+	public void testCancelOrder() throws Exception {
+		ObjectMapper obj = new ObjectMapper();
+		mvc.perform(put("/users/1/orders/cancel/1").content(obj.writeValueAsString(new OrderDTO()))
+				.contentType(APPLICATION_JSON)).andExpect(status().is2xxSuccessful());
+	}
+
+	@Test
+	public void testCancelOrderException() throws Exception {
+		ObjectMapper obj = new ObjectMapper();
+		given(service.cancelOrder(anyLong(), anyLong())).willThrow(UserNotFoundException.class);
+		mvc.perform(put("/users/1/orders/cancel/1").content(obj.writeValueAsString(new OrderDTO()))
+				.contentType(APPLICATION_JSON)).andExpect(status().isNotFound());
+	}
+
+	@Test
+	public void testConfirmUser() throws Exception {
+		mvc.perform(post("/users/confirm/1").contentType(APPLICATION_JSON)).andExpect(status().is2xxSuccessful());
+	}
+
+	@Test
+	public void testConfirmUserException() throws Exception {
+		given(service.confirmUser(anyLong())).willThrow(UserNotFoundException.class);
+		mvc.perform(post("/users/confirm/1").contentType(APPLICATION_JSON)).andExpect(status().isNotFound());
 	}
 }

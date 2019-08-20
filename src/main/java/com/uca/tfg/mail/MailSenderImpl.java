@@ -4,17 +4,16 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Component;
 
 import com.samskivert.mustache.Mustache;
 
 @Component
-
 public class MailSenderImpl implements MailSender {
 
 	@Autowired
-	private JavaMailSender emailSender;
+	private JavaMailSenderImpl emailSender;
 
 	@Override
 	public void sendEmail(String to, String subject, String body, Map<Object, Object> params) {
