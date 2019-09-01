@@ -100,7 +100,7 @@ public class UserServiceImpl implements UserService {
 		Optional<User> user = repository.findById(id);
 		if (user.isPresent()) {
 			order.setUser(user.get());
-			return orderService.confirmTemporalOrder(order);
+			return orderService.updateOrder(order);
 		} else {
 			throw new UserNotFoundException();
 		}
@@ -147,5 +147,25 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void deleteUser(long id) {
 		repository.deleteById(id);
+	}
+
+	@Override
+	public User updateUser(User user) throws UserNotFoundException {
+		Optional<User> optionalUserToUpdate = repository.findById(user.getId());
+		if (optionalUserToUpdate.isPresent()) {
+			User userToUpdate = optionalUserToUpdate.get();
+			userToUpdate.setName(user.getName());
+			userToUpdate.setSurname(user.getSurname());
+			userToUpdate.setPhone(user.getPhone());
+			userToUpdate.setEmail(user.getEmail());
+			userToUpdate.setAddress(user.getAddress());
+			Map<Object, Object> params = new HashMap<>();
+			params.put(Constants.TEMPLATE_PARAM_FULLNAME, userToUpdate.getFullName());
+			mailSender.sendEmail(userToUpdate.getEmail(), Constants.SUBJECT_USER_REGISTERED,
+					Constants.TEMPLATE_USER_REGISTERED, params);
+			return repository.save(userToUpdate);
+		} else {
+			throw new UserNotFoundException();
+		}
 	}
 }

@@ -37,4 +37,6 @@ public interface UserService {
 	public boolean emailExist(String email);
 
 	public User confirmUser(long id) throws UserNotFoundException;
+	
+	public User updateUser(User user) throws UserNotFoundException;
 }

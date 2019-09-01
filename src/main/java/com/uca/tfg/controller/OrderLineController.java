@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.uca.tfg.exception.OrderLineNotFoundException;
+import com.uca.tfg.exception.OrderNotFoundException;
 import com.uca.tfg.model.Constants;
 import com.uca.tfg.model.OrderLine;
 import com.uca.tfg.service.OrderLineService;
@@ -35,7 +36,7 @@ public class OrderLineController {
 		try {
 			orderLineService.deleteOrderLine(id);
 			return new ResponseEntity<>(HttpStatus.OK);
-		} catch (OrderLineNotFoundException e) {
+		} catch (OrderLineNotFoundException | OrderNotFoundException e) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}

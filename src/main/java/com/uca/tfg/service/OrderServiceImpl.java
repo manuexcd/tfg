@@ -114,6 +114,8 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public Order updateOrder(Order order) {
+		order.getOrderLines().stream().forEach(line -> line.setOrder(order));
+		order.updatePrice();
 		Map<Object, Object> params = new HashMap<>();
 		params.put(Constants.TEMPLATE_PARAM_ORDER_ID, order.getId());
 		params.put(Constants.TEMPLATE_PARAM_ORDER_STATUS, order.getOrderStatus());

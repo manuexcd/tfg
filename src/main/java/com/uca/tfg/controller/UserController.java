@@ -129,7 +129,7 @@ public class UserController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
-	
+
 	@PostMapping(value = Constants.PATH_SIGN_IN)
 	public ResponseEntity<UserDTO> registerUserAccount(@RequestBody UserDTO dto) {
 		User registered = null;
@@ -146,6 +146,17 @@ public class UserController {
 	public ResponseEntity<UserDTO> confirmUser(@PathVariable long id) {
 		try {
 			return new ResponseEntity<>(mapper.mapEntityToDto(userService.confirmUser(id)), HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
+
+	@PutMapping(value = "/{id}")
+	public ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO dto) {
+		try {
+			userService.getUser(dto.getId());
+			return new ResponseEntity<>(mapper.mapEntityToDto(userService.updateUser(mapper.mapDtoToEntity(dto))),
+					HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}

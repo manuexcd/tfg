@@ -14,6 +14,7 @@ spring:
                  enable: true
                  required: true
   jpa:
+    show-sql: true
     database: mysql
     hibernate:
       ddl-auto: update
@@ -23,7 +24,7 @@ spring:
     username: tfg
     password: tfg
 server:
-  port: 8443
+  port: 8080
   ssl:
     enabled: true
     key-password: password
