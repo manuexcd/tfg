@@ -186,7 +186,7 @@ public class UserServiceTest {
 		User user = new User();
 		order.setUser(user);
 		given(dao.findById(anyLong())).willReturn(Optional.ofNullable(user));
-		given(orderService.confirmTemporalOrder(order)).willReturn(order);
+		given(orderService.updateOrder(order)).willReturn(order);
 		assertNotNull(service.updateTemporalOrder((long) 1, order));
 	}
 
@@ -195,7 +195,7 @@ public class UserServiceTest {
 		Order order = new Order();
 		User user = new User();
 		given(dao.findById(anyLong())).willReturn(Optional.ofNullable(user));
-		given(orderService.confirmTemporalOrder(order)).willReturn(order);
+		given(orderService.updateOrder(order)).willReturn(order);
 		assertNotNull(service.updateTemporalOrder((long) 1, order));
 	}
 
@@ -241,5 +241,25 @@ public class UserServiceTest {
 		long id = user.getId();
 		service.deleteUser(id);
 		assertFalse(dao.existsById(id));
+	}
+
+	@Test
+	public void testUpdateUser() throws UserNotFoundException {
+		User user = new User();
+		user.setName("");
+		user.setSurname("");
+		user.setId(1);
+		User userToUpdate = new User();
+		given(dao.findById(anyLong())).willReturn(Optional.ofNullable(userToUpdate));
+		given(dao.save(userToUpdate)).willReturn(userToUpdate);
+		assertNotNull(service.updateUser(user));
+	}
+
+	@Test(expected = UserNotFoundException.class)
+	public void testUpdateUserException() throws UserNotFoundException {
+		User user = new User();
+		user.setId(1);
+		given(dao.findById(anyLong())).willReturn(Optional.ofNullable(null));
+		assertNotNull(service.updateUser(user));
 	}
 }

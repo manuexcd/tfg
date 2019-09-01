@@ -10,6 +10,7 @@ import static org.mockito.BDDMockito.given;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.Test;
@@ -130,9 +131,17 @@ public class OrderServiceTest {
 	public void testUpdateOrder() throws OrderNotFoundException {
 		Order order = new Order();
 		User user = new User();
+		OrderLine line = new OrderLine();
+		Product product = new Product();
+		product.setPrice(10);
+		line.setProduct(product);
+		line.setQuantity(2);
+		List<OrderLine> list = new ArrayList<>();
+		list.add(line);
 		user.setEmail("aaa");
 		order.setUser(user);
 		order.setOrderStatus(Constants.ORDER_STATUS_RECEIVED);
+		order.setOrderLines(list);
 		given(dao.save(order)).willReturn(order);
 		assertNotNull(service.updateOrder(order));
 	}

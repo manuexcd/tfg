@@ -24,6 +24,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.uca.tfg.controller.UserController;
 import com.uca.tfg.dto.OrderDTO;
+import com.uca.tfg.dto.UserDTO;
 import com.uca.tfg.exception.EmailExistsException;
 import com.uca.tfg.exception.UserNotFoundException;
 import com.uca.tfg.mapper.OrderMapper;
@@ -203,5 +204,20 @@ public class UserControllerTest {
 	public void testConfirmUserException() throws Exception {
 		given(service.confirmUser(anyLong())).willThrow(UserNotFoundException.class);
 		mvc.perform(post("/users/confirm/1").contentType(APPLICATION_JSON)).andExpect(status().isNotFound());
+	}
+
+	@Test
+	public void testUpdateUser() throws Exception {
+		ObjectMapper obj = new ObjectMapper();
+		mvc.perform(put("/users/1").content(obj.writeValueAsString(new UserDTO())).contentType(APPLICATION_JSON))
+				.andExpect(status().is2xxSuccessful());
+	}
+
+	@Test
+	public void testUpdateUserException() throws Exception {
+		ObjectMapper obj = new ObjectMapper();
+		given(service.getUser(anyLong())).willThrow(UserNotFoundException.class);
+		mvc.perform(put("/users/1").content(obj.writeValueAsString(new UserDTO())).contentType(APPLICATION_JSON))
+				.andExpect(status().isNotFound());
 	}
 }
