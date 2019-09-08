@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.uca.tfg.dto.ImageDTO;
 import com.uca.tfg.exception.ImageNotFoundException;
-import com.uca.tfg.model.Image;
+import com.uca.tfg.mapper.ImageMapper;
 import com.uca.tfg.service.ImageService;
 
 @RestController
@@ -28,16 +28,17 @@ public class ImageController {
 	private ImageService imageManager;
 
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<Image> getImageById(@PathVariable String id) throws ImageNotFoundException {
+	public ResponseEntity<ImageDTO> getImageById(@PathVariable String id) throws ImageNotFoundException {
 		return Optional.ofNullable(imageManager.getImage(Long.valueOf(id)))
-				.map(image -> new ResponseEntity<>(image, HttpStatus.OK))
+				.map(image -> new ResponseEntity<>(mapper.mapEntityToDto(image), HttpStatus.OK))
 				.orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
 	}
 
 	@PostMapping
-	public ResponseEntity<Image> addImage(@RequestBody ImageDTO dto) {
-		return Optional.ofNullable(dto).map(
-				imageDto -> new ResponseEntity<>(imageManager.addImage(mapper.mapDtoToEntity(imageDto)), HttpStatus.OK))
+	public ResponseEntity<ImageDTO> addImage(@RequestBody ImageDTO dto) {
+		return Optional.ofNullable(dto)
+				.map(imageDto -> new ResponseEntity<>(
+						mapper.mapEntityToDto(imageManager.addImage(mapper.mapDtoToEntity(imageDto))), HttpStatus.OK))
 				.orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
 	}
 }

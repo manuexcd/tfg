@@ -1,9 +1,8 @@
-package com.uca.tfg.controller;
+package com.uca.tfg.mapper;
 
 import org.springframework.stereotype.Component;
 
 import com.uca.tfg.dto.ImageDTO;
-import com.uca.tfg.mapper.GenericMapperImpl;
 import com.uca.tfg.model.Image;
 
 @Component
