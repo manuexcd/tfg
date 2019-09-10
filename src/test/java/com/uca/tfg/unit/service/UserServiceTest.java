@@ -181,32 +181,6 @@ public class UserServiceTest {
 	}
 
 	@Test
-	public void testUpdateTemporalOrder() throws UserNotFoundException, OrderNotFoundException {
-		Order order = new Order();
-		User user = new User();
-		order.setUser(user);
-		given(dao.findById(anyLong())).willReturn(Optional.ofNullable(user));
-		given(orderService.updateOrder(order)).willReturn(order);
-		assertNotNull(service.updateTemporalOrder((long) 1, order));
-	}
-
-	@Test
-	public void testUpdateTemporalOrder2() throws UserNotFoundException, OrderNotFoundException {
-		Order order = new Order();
-		User user = new User();
-		given(dao.findById(anyLong())).willReturn(Optional.ofNullable(user));
-		given(orderService.updateOrder(order)).willReturn(order);
-		assertNotNull(service.updateTemporalOrder((long) 1, order));
-	}
-
-	@Test(expected = UserNotFoundException.class)
-	public void testUpdateTemporalOrderUserNotFound() throws UserNotFoundException, OrderNotFoundException {
-		Order order = new Order();
-		given(dao.findById(anyLong())).willReturn(Optional.ofNullable(null));
-		assertNotNull(service.updateTemporalOrder((long) 1, order));
-	}
-
-	@Test
 	public void testCancelOrder() throws UserNotFoundException, OrderNotFoundException {
 		User user = new User();
 		given(dao.findById(anyLong())).willReturn(Optional.ofNullable(user));

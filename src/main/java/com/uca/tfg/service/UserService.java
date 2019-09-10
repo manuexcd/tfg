@@ -28,8 +28,6 @@ public interface UserService {
 
 	public Order updateOrder(long id, Order order) throws UserNotFoundException;
 
-	public Order updateTemporalOrder(long id, Order order) throws UserNotFoundException, OrderNotFoundException;
-
 	public Order cancelOrder(long id, long orderId) throws UserNotFoundException, OrderNotFoundException;
 
 	public void deleteUser(long id);

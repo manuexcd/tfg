@@ -96,17 +96,6 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public Order updateTemporalOrder(long id, Order order) throws UserNotFoundException, OrderNotFoundException {
-		Optional<User> user = repository.findById(id);
-		if (user.isPresent()) {
-			order.setUser(user.get());
-			return orderService.updateOrder(order);
-		} else {
-			throw new UserNotFoundException();
-		}
-	}
-
-	@Override
 	public Order cancelOrder(long id, long orderId) throws UserNotFoundException, OrderNotFoundException {
 		Optional<User> user = repository.findById(id);
 		if (user.isPresent()) {

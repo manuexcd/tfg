@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.uca.tfg.dto.OrderDTO;
 import com.uca.tfg.dto.UserDTO;
 import com.uca.tfg.exception.EmailExistsException;
-import com.uca.tfg.exception.OrderNotFoundException;
 import com.uca.tfg.exception.UserNotFoundException;
 import com.uca.tfg.mapper.OrderMapper;
 import com.uca.tfg.mapper.UserMapper;
@@ -105,17 +104,6 @@ public class UserController {
 					orderMapper.mapEntityToDto(userService.updateOrder(id, orderMapper.mapDtoToEntity(dto))),
 					HttpStatus.CREATED);
 		} catch (UserNotFoundException e) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-	}
-
-	@PutMapping(value = Constants.PARAM_ID + Constants.PATH_ORDERS + "/temporal")
-	public ResponseEntity<OrderDTO> updateTemporalOrder(@PathVariable long id, @RequestBody OrderDTO dto) {
-		try {
-			return new ResponseEntity<>(
-					orderMapper.mapEntityToDto(userService.updateTemporalOrder(id, orderMapper.mapDtoToEntity(dto))),
-					HttpStatus.CREATED);
-		} catch (UserNotFoundException | OrderNotFoundException e) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}

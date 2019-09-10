@@ -166,21 +166,6 @@ public class UserControllerTest {
 	}
 
 	@Test
-	public void testUpdateTemporalOrder() throws Exception {
-		ObjectMapper obj = new ObjectMapper();
-		mvc.perform(put("/users/1/orders/temporal").content(obj.writeValueAsString(new OrderDTO()))
-				.contentType(APPLICATION_JSON)).andExpect(status().is2xxSuccessful());
-	}
-
-	@Test
-	public void testUpdateTemporalOrderException() throws Exception {
-		ObjectMapper obj = new ObjectMapper();
-		given(service.updateTemporalOrder(anyLong(), any())).willThrow(UserNotFoundException.class);
-		mvc.perform(put("/users/1/orders/temporal").content(obj.writeValueAsString(new OrderDTO()))
-				.contentType(APPLICATION_JSON)).andExpect(status().isNotFound());
-	}
-
-	@Test
 	public void testCancelOrder() throws Exception {
 		ObjectMapper obj = new ObjectMapper();
 		mvc.perform(put("/users/1/orders/cancel/1").content(obj.writeValueAsString(new OrderDTO()))

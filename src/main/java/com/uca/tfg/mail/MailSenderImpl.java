@@ -19,7 +19,6 @@ public class MailSenderImpl implements MailSender {
 	public void sendEmail(String to, String subject, String body, Map<Object, Object> params) {
 		Mustache.compiler().compile(body).execute(params);
 		SimpleMailMessage message = new SimpleMailMessage();
-//		message.setTo(to);
 		message.setTo("manuexcd@gmail.com");
 		message.setSubject(subject);
 		message.setText(Mustache.compiler().compile(body).execute(params));

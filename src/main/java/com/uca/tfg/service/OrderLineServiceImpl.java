@@ -29,7 +29,8 @@ public class OrderLineServiceImpl implements OrderLineService {
 			order.getOrderLines().remove(line);
 			orderService.updateOrder(order);
 			repository.deleteById(id);
-		} else
+		} else {
 			throw new OrderLineNotFoundException();
+		}
 	}
 }
